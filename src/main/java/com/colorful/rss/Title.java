@@ -17,18 +17,18 @@ public class Title implements Serializable {
 	 */
 	private static final long serialVersionUID = -8102075738201739128L;
 	
-	private final String text;
+	private final String title;
     
     /**
      * 
      * @param text the plain text.
      */
-    public Title(String text){
-        this.text = text;
+    public Title(String title){
+        this.title = title;
     }
 
-    public String getText() {
-        return text;
+    public String getTitle() {
+        return title;
     }
 
 }
