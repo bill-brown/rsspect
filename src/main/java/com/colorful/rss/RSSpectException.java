@@ -14,4 +14,5 @@ public class RSSpectException extends Exception {
     public RSSpectException(String message){
         super(message);
     }
+    
 }

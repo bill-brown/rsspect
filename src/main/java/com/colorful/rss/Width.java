@@ -2,6 +2,12 @@ package com.colorful.rss;
 
 import java.io.Serializable;
 
+/**
+ * Maximum value for width is 144, default value is 88. 
+ * 
+ * @author Bill Brown
+ *
+ */
 public class Width implements Serializable {
 
 	/**

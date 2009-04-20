@@ -3,7 +3,9 @@ package com.colorful.rss;
 import java.io.Serializable;
 
 /**
- * The URL to the HTML website corresponding to the channel.
+ * For Channel: The URL to the HTML website corresponding to the channel.
+ * 
+ * For Item: The URL of the item.
  * 
  * @author Bill Brown
  * 

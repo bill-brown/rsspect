@@ -1,6 +1,8 @@
 package com.colorful.rss;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Channel implements Serializable {
 
@@ -29,7 +31,7 @@ public class Channel implements Serializable {
 
 	private final LastBuildDate lastBuildDate;
 
-	private final Category category;
+	private final List<Category> categories;
 
 	private final Generator generator;
 
@@ -52,30 +54,31 @@ public class Channel implements Serializable {
 	Channel(Title title, Link link, Description description, Language language,
 			Copyright copyright, ManagingEditor managingEditor,
 			WebMaster webMaster, PubDate pubDate, LastBuildDate lastBuildDate,
-			Category category, Generator generator, Docs docs, Cloud cloud,
-			TTL ttl, Image image, Rating rating, TextInput textInput,
-			SkipHours skipHours, SkipDays skipDays) throws RSSpectException {
+			List<Category> categories, Generator generator, Docs docs,
+			Cloud cloud, TTL ttl, Image image, Rating rating,
+			TextInput textInput, SkipHours skipHours, SkipDays skipDays)
+			throws RSSpectException {
 
-		// make sure id is present
+		// make sure title is present
 		if (title == null) {
 			throw new RSSpectException(
 					"channel elements MUST contain a title element.");
 		}
-		this.title = title;
+		this.title = new Title(title.getTitle());
 
-		// make sure title is present
+		// make sure link is present
 		if (link == null) {
 			throw new RSSpectException(
 					"channel elements MUST contain a link element.");
 		}
-		this.link = link;
+		this.link = new Link(link.getLink());
 
-		// make sure updated is present
+		// make sure description is present
 		if (description == null) {
 			throw new RSSpectException(
 					"channel elements MUST contain a description element.");
 		}
-		this.description = description;
+		this.description = new Description(description.getDescription());
 
 		this.language = (language == null) ? null : new Language(language
 				.getLanguage());
@@ -89,8 +92,15 @@ public class Channel implements Serializable {
 				.getDateTime());
 		this.lastBuildDate = (lastBuildDate == null) ? null
 				: new LastBuildDate(lastBuildDate.getDateTime());
-		this.category = (category == null) ? null : new Category(category
-				.getCategory());
+		if (categories == null) {
+			this.categories = null;
+		} else {
+			this.categories = new LinkedList<Category>();
+			for (Category category : categories) {
+				this.categories.add(new Category(category.getCategory(),
+						category.getDomain()));
+			}
+		}
 		this.generator = (generator == null) ? null : new Generator(generator
 				.getGenerator());
 		this.docs = (docs == null) ? null : new Docs(docs.getDocs());
@@ -101,7 +111,8 @@ public class Channel implements Serializable {
 				.getHeight(), image.getDescription());
 		this.rating = (rating == null) ? null : new Rating(rating.getRating());
 		this.textInput = (textInput == null) ? null : new TextInput(textInput
-				.getTextInput());
+				.getTitle(), textInput.getDescription(), textInput.getName(),
+				textInput.getLink());
 		this.skipHours = (skipHours == null) ? null : new SkipHours(skipHours
 				.getSkipHours());
 		this.skipDays = (skipDays == null) ? null : new SkipDays(skipDays
@@ -144,8 +155,17 @@ public class Channel implements Serializable {
 		return new LastBuildDate(lastBuildDate.getDateTime());
 	}
 
-	public Category getCategory() {
-		return new Category(category.getCategory());
+	public List<Category> getCategories() {
+		if (categories == null) {
+			return null;
+		} else {
+			List<Category> catsCopy = new LinkedList<Category>();
+			for (Category category : this.categories) {
+				catsCopy.add(new Category(category.getCategory(), category
+						.getDomain()));
+			}
+			return catsCopy;
+		}
 	}
 
 	public Generator getGenerator() {
@@ -180,7 +200,14 @@ public class Channel implements Serializable {
 	}
 
 	public TextInput getTextInput() {
-		return new TextInput(textInput.getTextInput());
+		try {
+			return (textInput == null) ? null : new TextInput(textInput
+					.getTitle(), textInput.getDescription(), textInput
+					.getName(), textInput.getLink());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public SkipHours getSkipHours() {

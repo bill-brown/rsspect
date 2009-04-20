@@ -2,6 +2,12 @@ package com.colorful.rss;
 
 import java.io.Serializable;
 
+/**
+ * Maximum value for height is 400, default value is 31.
+ * 
+ * @author Bill Brown
+ *
+ */
 public class Height implements Serializable {
 
 	/**

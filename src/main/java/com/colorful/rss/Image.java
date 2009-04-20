@@ -58,21 +58,21 @@ public class Image implements Serializable {
 			throw new RSSpectException(
 					"image elements MUST contain a url element.");
 		}
-		this.url = url;
+		this.url = new URL(url.getUrl());
 
 		// make sure title is present
 		if (title == null) {
 			throw new RSSpectException(
-					"channel elements MUST contain a title element.");
+					"image elements MUST contain a title element.");
 		}
-		this.title = title;
+		this.title = new Title(title.getTitle());
 
 		// make sure updated is present
 		if (link == null) {
 			throw new RSSpectException(
-					"channel elements MUST contain a link element.");
+					"image elements MUST contain a link element.");
 		}
-		this.link = link;
+		this.link = new Link(link.getLink());
 
 		this.width = (width == null) ? null : new Width(width.getWidth());
 		this.height = (height == null) ? null : new Height(height.getHeight());
