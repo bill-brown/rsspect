@@ -17,7 +17,7 @@ public class Height implements Serializable {
 
 	private final String height;
 
-	public Height(String height) throws RSSpectException {
+	Height(String height) throws RSSpectException {
 		if(height != null) {
 			try {
 				int localHeight =  Integer.parseInt(height);

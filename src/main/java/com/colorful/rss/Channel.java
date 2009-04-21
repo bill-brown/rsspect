@@ -4,6 +4,19 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 
+ * A channel may contain any number of <item>s. An item may represent a "story"
+ * -- much like a story in a newspaper or magazine; if so its description is a
+ * synopsis of the story, and the link points to the full story. An item may
+ * also be complete in itself, if so, the description contains the text
+ * (entity-encoded HTML is allowed; see examples), and the link and title may be
+ * omitted. All elements of an item are optional, however at least one of title
+ * or description must be present.
+ * 
+ * @author billbrown
+ * 
+ */
 public class Channel implements Serializable {
 
 	/**
@@ -51,12 +64,17 @@ public class Channel implements Serializable {
 
 	private final SkipDays skipDays;
 
+	private final List<Item> items;
+
+	private final List<Extension> extensions;
+
 	Channel(Title title, Link link, Description description, Language language,
 			Copyright copyright, ManagingEditor managingEditor,
 			WebMaster webMaster, PubDate pubDate, LastBuildDate lastBuildDate,
 			List<Category> categories, Generator generator, Docs docs,
 			Cloud cloud, TTL ttl, Image image, Rating rating,
-			TextInput textInput, SkipHours skipHours, SkipDays skipDays)
+			TextInput textInput, SkipHours skipHours, SkipDays skipDays,
+			List<Item> items, List<Extension> extensions)
 			throws RSSpectException {
 
 		// make sure title is present
@@ -117,6 +135,29 @@ public class Channel implements Serializable {
 				.getSkipHours());
 		this.skipDays = (skipDays == null) ? null : new SkipDays(skipDays
 				.getSkipDays());
+
+		if (items == null) {
+			this.items = null;
+		} else {
+			this.items = new LinkedList<Item>();
+			for (Item item : items) {
+				this.items.add(new Item(item.getTitle(), item.getLink(), item
+						.getDescription(), item.getAuthor(), item
+						.getCategories(), item.getComments(), item
+						.getEnclosure(), item.getGuid(), item.getPubDate(),
+						item.getSource(), item.getExtensions()));
+			}
+		}
+
+		if (extensions == null) {
+			this.extensions = null;
+		} else {
+			this.extensions = new LinkedList<Extension>();
+			for (Extension extension : extensions) {
+				this.extensions.add(new Extension(extension.getElementName(),
+						extension.getAttributes(), extension.getContent()));
+			}
+		}
 	}
 
 	public Title getTitle() {
@@ -124,7 +165,12 @@ public class Channel implements Serializable {
 	}
 
 	public Link getLink() {
-		return new Link(link.getLink());
+		try {
+			return (link == null) ? null : new Link(link.getLink());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public Description getDescription() {
@@ -216,5 +262,43 @@ public class Channel implements Serializable {
 
 	public SkipDays getSkipDays() {
 		return new SkipDays(skipDays.getSkipDays());
+	}
+
+	public List<Item> getItems() {
+		try {
+			if (items == null) {
+				return null;
+			} else {
+				List<Item> itemsCopy = new LinkedList<Item>();
+				for (Item item : this.items) {
+					itemsCopy.add(new Item(item.getTitle(), item.getLink(),
+							item.getDescription(), item.getAuthor(), item
+									.getCategories(), item.getComments(), item
+									.getEnclosure(), item.getGuid(), item
+									.getPubDate(), item.getSource(), item
+									.getExtensions()));
+				}
+				return itemsCopy;
+			}
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @return the extensions for this entry.
+	 */
+	public List<Extension> getExtensions() {
+		if (extensions == null) {
+			return null;
+		}
+		List<Extension> extsCopy = new LinkedList<Extension>();
+		for (Extension extension : this.extensions) {
+			extsCopy.add(new Extension(extension.getElementName(), extension
+					.getAttributes(), extension.getContent()));
+		}
+		return extsCopy;
 	}
 }

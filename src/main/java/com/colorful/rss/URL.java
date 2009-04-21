@@ -11,8 +11,21 @@ public class URL implements Serializable {
 
 	private final String url;
 
-	public URL(String url) {
-		this.url = url;
+	URL(String url) throws RSSpectException {
+		if (url != null) {
+			url = url.trim();
+			url = url.substring(0, url.indexOf(":"));
+			if (URIScheme.contains(url)) {
+				this.url = url;
+			} else {
+				throw new RSSpectException(
+						"link elements must start with a valid "
+								+ "Uniform Resource Identifer (URI) Schemes.  "
+								+ "See www.iana.org.");
+			}
+		} else {
+			this.url = url;
+		}
 	}
 
 	public String getUrl() {

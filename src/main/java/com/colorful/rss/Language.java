@@ -23,7 +23,7 @@ public class Language implements Serializable {
 
 	private final String language;
 
-	public Language(String language) {
+	Language(String language) {
 		this.language = language;
 	}
 

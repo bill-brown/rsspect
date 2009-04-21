@@ -38,7 +38,7 @@ public class TextInput implements Serializable {
 	private final Name name;
 	private final Link link;
 
-	public TextInput(Title title, Description description, Name name, Link link)
+	TextInput(Title title, Description description, Name name, Link link)
 			throws RSSpectException {
 		// make sure title is present
 		if (title == null) {
@@ -83,7 +83,12 @@ public class TextInput implements Serializable {
 	}
 
 	public Link getLink() {
-		return new Link(link.getLink());
+		try {
+			return (link == null) ? null : new Link(link.getLink());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 }

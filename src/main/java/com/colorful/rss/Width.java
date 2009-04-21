@@ -17,11 +17,11 @@ public class Width implements Serializable {
 
 	private final String width;
 
-	public Width(String width) throws RSSpectException {
+	Width(String width) throws RSSpectException {
 		if(width != null) {
 			try {
 				int localHeight =  Integer.parseInt(width);
-				if(localHeight > 400){
+				if(localHeight > 144){
 					throw new RSSpectException("height cannot be greater than 144px.");
 				}
 			}catch(NumberFormatException n){

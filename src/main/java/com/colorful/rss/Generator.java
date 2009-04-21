@@ -17,7 +17,7 @@ public class Generator implements Serializable {
 
 	private final String generator;
 
-	public Generator(String generator) {
+	Generator(String generator) {
 		this.generator = generator;
 	}
 

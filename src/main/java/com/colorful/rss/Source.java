@@ -33,7 +33,7 @@ public class Source implements Serializable {
 	private final String source;
 	private final Attribute url;
 
-	public Source(String source, Attribute url) throws RSSpectException {
+	Source(String source, Attribute url) throws RSSpectException {
 		// make sure the url attribute is present
 		if (url == null) {
 			throw new RSSpectException(

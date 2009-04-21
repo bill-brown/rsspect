@@ -29,7 +29,7 @@ public class TTL implements Serializable {
 
 	private final String ttl;
 
-	public TTL(String ttl) {
+	TTL(String ttl) {
 		this.ttl = ttl;
 	}
 

@@ -3,7 +3,6 @@ package com.colorful.rss;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 class RSSDateConstruct implements Serializable {
 
@@ -18,7 +17,7 @@ class RSSDateConstruct implements Serializable {
      * 
      * @param updated the date formatted to [RFC3339]
      */
-    public RSSDateConstruct(Date dateTime){
+    RSSDateConstruct(Date dateTime){
     	
     	if(dateTime == null){
     		this.dateTime = null;
@@ -44,16 +43,8 @@ class RSSDateConstruct implements Serializable {
     	if(dateTime == null){
     		return null;
     	}
-    	//example 2006-04-28T12:50:43.337-05:00
-    	final String timeZoneOffset;
-    	TimeZone timeZone = TimeZone.getDefault();
-        int hours = (((timeZone.getRawOffset()/1000)/60)/60);
-        if(hours >= 0){
-            timeZoneOffset = TimeZone.getTimeZone("GMT"+"+"+hours).getID().substring(3);
-        }else{
-            timeZoneOffset = TimeZone.getTimeZone("GMT"+"-"+Math.abs(hours)).getID().substring(3);
-        }
-        return new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SS\'"+timeZoneOffset+"\'").format(dateTime);
+    	//example Sun, 19 May 2002 15:21:36 GMT
+        return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").format(dateTime);
     }
 
 }

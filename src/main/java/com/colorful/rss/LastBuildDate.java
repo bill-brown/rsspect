@@ -18,7 +18,7 @@ public class LastBuildDate implements Serializable {
 
 private final RSSDateConstruct lastBuildDate;
 	
-	public LastBuildDate(Date lastBuildDate) {
+	LastBuildDate(Date lastBuildDate) {
 		this.lastBuildDate = new RSSDateConstruct(lastBuildDate);
 	}
 

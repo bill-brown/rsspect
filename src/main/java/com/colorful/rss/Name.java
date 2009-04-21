@@ -17,7 +17,7 @@ public class Name implements Serializable {
 
 	private final String name;
 
-	public Name(String name) {
+	Name(String name) {
 		this.name = name;
 	}
 

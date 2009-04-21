@@ -43,7 +43,7 @@ public class Cloud implements Serializable {
 
 	private final String cloud;
 
-	public Cloud(String cloud) {
+	Cloud(String cloud) {
 		this.cloud = cloud;
 	}
 

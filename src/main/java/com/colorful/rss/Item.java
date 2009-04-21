@@ -46,9 +46,12 @@ public class Item implements Serializable {
 
 	private final Source source;
 
-	public Item(Title title, Link link, Description description, Author author,
+	private final List<Extension> extensions;
+
+	Item(Title title, Link link, Description description, Author author,
 			List<Category> categories, Comments comments, Enclosure enclosure,
-			GUID guid, PubDate pubDate, Source source) throws RSSpectException {
+			GUID guid, PubDate pubDate, Source source,
+			List<Extension> extensions) throws RSSpectException {
 
 		// make sure title or description is present
 		if (title == null && description == null) {
@@ -80,13 +83,24 @@ public class Item implements Serializable {
 		this.enclosure = (enclosure == null) ? null : new Enclosure(enclosure
 				.getEnclosure(), enclosure.getAttributes());
 
-		this.guid = (guid == null) ? null : new GUID(guid.getGuid());
+		this.guid = (guid == null) ? null : new GUID(guid.getGuid(), guid
+				.getIsPermaLink());
 
 		this.pubDate = (pubDate == null) ? null : new PubDate(pubDate
 				.getDateTime());
 
 		this.source = (source == null) ? null : new Source(source.getSource(),
 				source.getUrl());
+		
+		if (extensions == null) {
+			this.extensions = null;
+		} else {
+			this.extensions = new LinkedList<Extension>();
+			for (Extension extension : extensions) {
+				this.extensions.add(new Extension(extension.getElementName(),
+						extension.getAttributes(), extension.getContent()));
+			}
+		}
 
 	}
 
@@ -99,7 +113,12 @@ public class Item implements Serializable {
 	}
 
 	public Link getLink() {
-		return new Link(link.getLink());
+		try {
+			return (link == null) ? null : new Link(link.getLink());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public Author getAuthor() {
@@ -112,8 +131,8 @@ public class Item implements Serializable {
 		} else {
 			List<Category> catsCopy = new LinkedList<Category>();
 			for (Category category : this.categories) {
-				catsCopy.add(new Category(category.getCategory(),
-						category.getDomain()));
+				catsCopy.add(new Category(category.getCategory(), category
+						.getDomain()));
 			}
 			return catsCopy;
 		}
@@ -134,7 +153,7 @@ public class Item implements Serializable {
 	}
 
 	public GUID getGuid() {
-		return new GUID(guid.getGuid());
+		return new GUID(guid.getGuid(), guid.getIsPermaLink());
 	}
 
 	public PubDate getPubDate() {
@@ -151,4 +170,20 @@ public class Item implements Serializable {
 		}
 	}
 
+	/**
+	 * 
+	 * @return the extensions for this entry.
+	 */
+	public List<Extension> getExtensions() {
+		if (extensions == null) {
+			return null;
+		}
+		List<Extension> extsCopy = new LinkedList<Extension>();
+		for (Extension extension : this.extensions) {
+			extsCopy.add(new Extension(extension.getElementName(), extension
+					.getAttributes(), extension.getContent()));
+		}
+		return extsCopy;
+	}
+	
 }

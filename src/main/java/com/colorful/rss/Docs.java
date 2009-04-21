@@ -19,7 +19,7 @@ public class Docs implements Serializable {
 
 	private final String docs;
 
-	public Docs(String docs) {
+	Docs(String docs) {
 		this.docs = docs;
 	}
 

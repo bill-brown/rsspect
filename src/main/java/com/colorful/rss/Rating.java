@@ -17,7 +17,7 @@ public class Rating implements Serializable {
 
 	private final String rating;
 
-	public Rating(String rating) {
+	Rating(String rating) {
 		this.rating = rating;
 	}
 

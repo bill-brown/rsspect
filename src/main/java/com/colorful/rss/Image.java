@@ -51,7 +51,7 @@ public class Image implements Serializable {
 
 	private final Description description;
 
-	public Image(URL url, Title title, Link link, Width width, Height height,
+	Image(URL url, Title title, Link link, Width width, Height height,
 			Description description) throws RSSpectException {
 		// make sure id is present
 		if (url == null) {
@@ -81,7 +81,12 @@ public class Image implements Serializable {
 	}
 
 	public URL getUrl() {
-		return new URL(url.getUrl());
+		try {
+			return (url == null) ? null : new URL(url.getUrl());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public Title getTitle() {
@@ -89,7 +94,12 @@ public class Image implements Serializable {
 	}
 
 	public Link getLink() {
-		return new Link(link.getLink());
+		try {
+			return (link == null) ? null : new Link(link.getLink());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public Width getWidth() {

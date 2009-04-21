@@ -17,7 +17,7 @@ public class Copyright implements Serializable {
 
 	private final String copyright;
 	
-	public Copyright(String copyright) {
+	Copyright(String copyright) {
 		this.copyright = copyright;
 	}
 

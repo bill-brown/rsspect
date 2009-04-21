@@ -16,6 +16,14 @@ import java.util.Date;
  * "http://cyber.law.harvard.edu/rss/rss.html#ltpubdategtSubelementOfLtitemgt"
  * >More</a>.
  * 
+ * <pubDate> is an optional sub-element of <item>.
+ * 
+ * Its value is a <a href="http://asg.web.cmu.edu/rfc/rfc822.html">date</a>,
+ * indicating when the item was published. If it's a date in the future,
+ * aggregators may choose to not display the item until that date.
+ * 
+ * <pubDate>Sun, 19 May 2002 15:21:36 GMT</pubDate>
+ * 
  * @author Bill Brown
  * 
  */
@@ -28,7 +36,7 @@ public class PubDate implements Serializable {
 
 	private final RSSDateConstruct pubDate;
 
-	public PubDate(Date pubDate) {
+	PubDate(Date pubDate) {
 		this.pubDate = new RSSDateConstruct(pubDate);
 	}
 

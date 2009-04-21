@@ -19,7 +19,7 @@ public class Description implements Serializable {
 
 	private final String description;
 
-	public Description(String description) {
+	Description(String description) {
 		this.description = description;
 	}
 

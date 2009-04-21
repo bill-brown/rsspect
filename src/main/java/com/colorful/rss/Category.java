@@ -45,10 +45,10 @@ public class Category implements Serializable {
 
 	private final Attribute domain;
 
-	public Category(String category, Attribute domain) {
-		this.category = category;
+	Category(Attribute domain, String category) {
 		this.domain = (domain == null) ? null : new Attribute(domain.getName(),
 				domain.getValue());
+		this.category = category;
 	}
 
 	public String getCategory() {

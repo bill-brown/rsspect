@@ -37,7 +37,8 @@ public class Enclosure implements Serializable {
 
 	private final List<Attribute> attributes;
 
-	public Enclosure(String enclosure, List<Attribute> attributes) throws RSSpectException {
+	Enclosure(List<Attribute> attributes, String enclosure)
+			throws RSSpectException {
 
 		if (attributes == null) {
 			throw new RSSpectException(
@@ -91,7 +92,7 @@ public class Enclosure implements Serializable {
 	public String getEnclosure() {
 		return enclosure;
 	}
-	
+
 	/**
 	 * 
 	 * @return the attributes for this element.

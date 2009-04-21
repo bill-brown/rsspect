@@ -25,7 +25,7 @@ public class Title implements Serializable {
      * 
      * @param text the plain text.
      */
-    public Title(String title){
+    Title(String title){
         this.title = title;
     }
 

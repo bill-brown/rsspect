@@ -19,7 +19,7 @@ public class SkipDays implements Serializable {
 
 	private final String skipDays;
 
-	public SkipDays(String skipDays) {
+	SkipDays(String skipDays) {
 		this.skipDays = skipDays;
 	}
 

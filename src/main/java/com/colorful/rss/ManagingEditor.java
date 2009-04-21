@@ -17,7 +17,7 @@ public class ManagingEditor implements Serializable {
 
 	private final String managingEditor;
 
-	public ManagingEditor(String managingEditor) {
+	ManagingEditor(String managingEditor) {
 		this.managingEditor = managingEditor;
 	}
 

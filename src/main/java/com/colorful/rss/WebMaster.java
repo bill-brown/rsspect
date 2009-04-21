@@ -18,7 +18,7 @@ public class WebMaster implements Serializable {
 
 	private final String webMaster;
 
-	public WebMaster(String webMaster) {
+	WebMaster(String webMaster) {
 		this.webMaster = webMaster;
 	}
 
