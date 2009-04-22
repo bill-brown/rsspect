@@ -27,9 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TimeZone;
-import java.util.TreeMap;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -52,7 +49,7 @@ class RSSReader {
 	 * @throws Exception
 	 *             if the stream cannot be parsed.
 	 */
-	RSS readFeed(XMLStreamReader reader) throws Exception {
+	RSS readRSS(XMLStreamReader reader) throws Exception {
 
 		Channel channel = null;
 		List<Attribute> attributes = null;
@@ -170,9 +167,18 @@ class RSSReader {
 		return RSSDoc.buildAuthor(reader.getElementText());
 	}
 
-	Category readCategory(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildCategory(RSSDoc.getAttributeFromGroup(getAttributes(
-				reader, null), "domain"), reader.getElementText());
+	List<Category> readCategory(XMLStreamReader reader,
+			List<Category> categories) throws Exception {
+
+		if (categories == null) {
+			categories = new LinkedList<Category>();
+		}
+
+		categories.add(RSSDoc
+				.buildCategory(RSSDoc.getAttributeFromGroup(getAttributes(
+						reader, null), "domain"), reader.getElementText()));
+
+		return categories;
 	}
 
 	Channel readChannel(XMLStreamReader reader) throws Exception {
@@ -224,7 +230,7 @@ class RSSReader {
 				} else if (reader.getLocalName().equals("lastBuildDate")) {
 					lastBuildDate = readLastBuildDate(reader);
 				} else if (reader.getLocalName().equals("category")) {
-					categories = readCategories(reader, categories);
+					categories = readCategory(reader, categories);
 				} else if (reader.getLocalName().equals("generator")) {
 					generator = readGenerator(reader);
 				} else if (reader.getLocalName().equals("docs")) {
@@ -359,7 +365,7 @@ class RSSReader {
 		GUID guid = null;
 		PubDate pubDate = null;
 		Source source = null;
-		List<Extension> extensions;
+		List<Extension> extensions = null;
 
 		while (reader.hasNext()) {
 			switch (reader.next()) {
@@ -411,96 +417,122 @@ class RSSReader {
 
 		return items;
 	}
-	
+
 	Language readLanguage(XMLStreamReader reader) throws Exception {
 		return RSSDoc.buildLanguage(reader.getElementText());
 	}
 
-	
-	
-	SortedMap<String, Entry> readEntry(XMLStreamReader reader,
-			SortedMap<String, Entry> entries) throws Exception {
-
-		if (entries == null) {
-			entries = new TreeMap<String, Entry>();
+	LastBuildDate readLastBuildDate(XMLStreamReader reader) throws Exception {
+		String dateText = reader.getElementText();
+		try {
+			return RSSDoc.buildLastBuildDate(getSimpleDateFormat().parse(
+					dateText));
+		} catch (Exception e) {
+			SimpleDateFormat simpleDateFmt2 = new SimpleDateFormat(
+					getSimpleDateFormat().toPattern().substring(0, 19));
+			return RSSDoc.buildLastBuildDate(simpleDateFmt2.parse(dateText
+					.substring(0, 19)));
 		}
-		boolean breakOut = false;
+	}
 
-		Id id = null;
+	Link readLink(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildLink(reader.getElementText());
+	}
+
+	ManagingEditor readManagingEditor(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildManagingEditor(reader.getElementText());
+	}
+
+	Name readName(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildName(reader.getElementText());
+	}
+
+	SimpleDateFormat getSimpleDateFormat() {
+		// example Sun, 19 May 2002 15:21:36 GMT
+		return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+	}
+
+	PubDate readPubDate(XMLStreamReader reader) throws Exception {
+		String dateText = reader.getElementText();
+		try {
+			return RSSDoc.buildPubDate(getSimpleDateFormat().parse(dateText));
+		} catch (Exception e) {
+			SimpleDateFormat simpleDateFmt2 = new SimpleDateFormat(
+					getSimpleDateFormat().toPattern().substring(0, 19));
+			return RSSDoc.buildPubDate(simpleDateFmt2.parse(dateText.substring(
+					0, 19)));
+		}
+	}
+
+	Rating readRating(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildRating(reader.getElementText());
+	}
+
+	SkipDays readSkipDays(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildSkipDays(reader.getElementText());
+	}
+
+	SkipHours readSkipHours(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildSkipHours(reader.getElementText());
+	}
+
+	Source readSource(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildSource(RSSDoc.getAttributeFromGroup(getAttributes(
+				reader, null), "url"), reader.getElementText());
+	}
+
+	TextInput readTextInput(XMLStreamReader reader) throws Exception {
+
 		Title title = null;
-		Updated updated = null;
-		Rights rights = null;
-		Content content = null;
-		List<Attribute> attributes = null;
-		List<Author> authors = null;
-		List<Category> categories = null;
-		List<Contributor> contributors = null;
-		List<Link> links = null;
-		List<Extension> extensions = null;
-		Published published = null;
-		Summary summary = null;
-		Source source = null;
-
-		attributes = getAttributes(reader, attributes);
+		Description description = null;
+		Name name = null;
+		Link link = null;
 
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 
-			case XMLStreamConstants.START_DOCUMENT:
-				RSSDoc.encoding = reader.getEncoding();
-				RSSDoc.xml_version = reader.getVersion();
-				break;
-
 			case XMLStreamConstants.START_ELEMENT:
 
 				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("id")) {
-					id = readId(reader);
-				} else if (reader.getLocalName().equals("author")) {
-					authors = readAuthor(reader, authors);
-				} else if (reader.getLocalName().equals("category")) {
-					categories = readCategory(reader, categories);
-				} else if (reader.getLocalName().equals("contributor")) {
-					contributors = readContributor(reader, contributors);
-				} else if (reader.getLocalName().equals("content")) {
-					content = readContent(reader);
-				} else if (reader.getLocalName().equals("link")) {
-					links = readLink(reader, links);
-				} else if (reader.getLocalName().equals("published")) {
-					published = readPublished(reader);
-				} else if (reader.getLocalName().equals("rights")) {
-					rights = readRights(reader);
-				} else if (reader.getLocalName().equals("source")) {
-					source = readSource(reader);
-				} else if (reader.getLocalName().equals("summary")) {
-					summary = readSummary(reader);
-				} else if (reader.getLocalName().equals("title")) {
+				if (reader.getLocalName().equals("title")) {
 					title = readTitle(reader);
-				} else if (reader.getLocalName().equals("updated")) {
-					updated = readUpdated(reader);
-				} else {// extension
-					extensions = readExtension(reader, extensions);
+				} else if (reader.getLocalName().equals("description")) {
+					description = readDescription(reader);
+				} else if (reader.getLocalName().equals("name")) {
+					name = readName(reader);
+				} else if (reader.getLocalName().equals("link")) {
+					link = readLink(reader);
 				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("entry")) {
-					breakOut = true;
-				} else {
-					reader.next();
-				}
-				break;
-			}
-			if (breakOut) {
+				reader.next();
 				break;
 			}
 		}
 
-		entries.put(updated.getText(), RSSDoc.buildEntry(id, title, updated,
-				rights, content, authors, categories, contributors, links,
-				attributes, extensions, published, summary, source));
+		return RSSDoc.buildTextInput(title, description, name, link);
 
-		return entries;
+	}
+
+	Title readTitle(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildTitle(reader.getElementText());
+	}
+
+	TTL readTTL(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildTTL(reader.getElementText());
+	}
+
+	URL readURL(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildURL(reader.getElementText());
+	}
+
+	WebMaster readWebMaster(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildWebMaster(reader.getElementText());
+	}
+
+	Width readWidth(XMLStreamReader reader) throws Exception {
+		return RSSDoc.buildWidth(reader.getElementText());
 	}
 
 	boolean containsXHTML(List<Attribute> attributes) {
@@ -516,133 +548,6 @@ class RSSReader {
 			}
 		}
 		return false;
-	}
-
-	Source readSource(XMLStreamReader reader) throws Exception {
-		boolean breakOut = false;
-
-		List<Attribute> attributes = null;
-		List<Author> authors = null;
-		List<Category> categories = null;
-		List<Contributor> contributors = null;
-		List<Link> links = null;
-		List<Extension> extensions = null;
-		Generator generator = null;
-		Icon icon = null;
-		Id id = null;
-		Logo logo = null;
-		Rights rights = null;
-		Subtitle subtitle = null;
-		Title title = null;
-		Updated updated = null;
-
-		attributes = getAttributes(reader, attributes);
-
-		while (reader.hasNext()) {
-			switch (reader.next()) {
-
-			case XMLStreamConstants.START_ELEMENT:
-				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("author")) {
-					authors = readAuthor(reader, authors);
-				} else if (reader.getLocalName().equals("category")) {
-					categories = readCategory(reader, categories);
-				} else if (reader.getLocalName().equals("contributor")) {
-					contributors = readContributor(reader, contributors);
-				} else if (reader.getLocalName().equals("generator")) {
-					generator = readGenerator(reader);
-				} else if (reader.getLocalName().equals("icon")) {
-					icon = readIcon(reader);
-				} else if (reader.getLocalName().equals("id")) {
-					id = readId(reader);
-				} else if (reader.getLocalName().equals("link")) {
-					links = readLink(reader, links);
-				} else if (reader.getLocalName().equals("logo")) {
-					logo = readLogo(reader);
-				} else if (reader.getLocalName().equals("rights")) {
-					rights = readRights(reader);
-				} else if (reader.getLocalName().equals("subtitle")) {
-					subtitle = readSubtitle(reader);
-				} else if (reader.getLocalName().equals("title")) {
-					title = readTitle(reader);
-				} else if (reader.getLocalName().equals("updated")) {
-					updated = readUpdated(reader);
-				} else {// extension
-					extensions = readExtension(reader, extensions);
-				}
-				break;
-
-			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("source")) {
-					breakOut = true;
-				} else {
-					reader.next();
-				}
-				break;
-			}
-			if (breakOut) {
-				break;
-			}
-		}
-		return RSSDoc.buildSource(id, title, updated, rights, authors,
-				categories, contributors, links, attributes, extensions,
-				generator, subtitle, icon, logo);
-	}
-
-	SimpleDateFormat getSimpleDateFormat() {
-		//example Sun, 19 May 2002 15:21:36 GMT
-        return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-	}
-
-	PubDate readPubDate(XMLStreamReader reader) throws Exception {
-		String dateText = reader.getElementText();
-		try {
-			return RSSDoc.buildPubDate(getSimpleDateFormat().parse(dateText));
-		} catch (Exception e) {
-			SimpleDateFormat simpleDateFmt2 = new SimpleDateFormat(
-					getSimpleDateFormat().toPattern().substring(0, 19));
-			return RSSDoc.buildPubDate(simpleDateFmt2.parse(dateText
-					.substring(0, 19)));
-		}
-		
-	}
-
-	Content readContent(XMLStreamReader reader) throws Exception {
-		List<Attribute> attributes = getAttributes(reader, null);
-		// if the content is XHTML, we need to skip the contents of the div.
-		String content = null;
-		if (containsXHTML(attributes)) {
-			content = readXHTML(reader);
-		} else {
-			content = reader.getElementText();
-		}
-		return RSSDoc.buildContent(content, attributes);
-	}
-
-	Updated readUpdated(XMLStreamReader reader) throws Exception {
-		List<Attribute> attributes = getAttributes(reader, null);
-		String dateText = reader.getElementText();
-		try {
-			return RSSDoc.buildUpdated(getSimpleDateFormat().parse(dateText),
-					attributes);
-		} catch (Exception e) {
-			SimpleDateFormat simpleDateFmt2 = new SimpleDateFormat(
-					getSimpleDateFormat().toPattern().substring(0, 19));
-			return RSSDoc.buildUpdated(simpleDateFmt2.parse(dateText.substring(
-					0, 19)), attributes);
-		}
-	}
-
-	Title readTitle(XMLStreamReader reader) throws Exception {
-		List<Attribute> attributes = getAttributes(reader, null);
-		// if the content is XHTML, we need to read in the contents of the div.
-		String title = null;
-		if (containsXHTML(attributes)) {
-			title = readXHTML(reader);
-		} else {
-			title = reader.getElementText();
-		}
-		return RSSDoc.buildTitle(title, attributes);
 	}
 
 	String readXHTML(XMLStreamReader reader) throws XMLStreamException,
@@ -702,135 +607,5 @@ class RSSReader {
 		}
 		return xhtml.toString().replaceAll("<br></br>", "<br />").replaceAll(
 				"<hr></hr>", "<hr />");
-	}
-
-	Subtitle readSubtitle(XMLStreamReader reader) throws Exception {
-		List<Attribute> attributes = getAttributes(reader, null);
-		// if the content is XHTML, we need to read in the contents of the div.
-		String subtitle = null;
-		if (containsXHTML(attributes)) {
-			subtitle = readXHTML(reader);
-		} else {
-			subtitle = reader.getElementText();
-		}
-		return RSSDoc.buildSubtitle(subtitle, attributes);
-	}
-
-	Rights readRights(XMLStreamReader reader) throws Exception {
-		List<Attribute> attributes = getAttributes(reader, null);
-		// if the content is XHTML, we need to read in the contents of the div.
-		String rights = null;
-		if (containsXHTML(attributes)) {
-			rights = readXHTML(reader);
-		} else {
-			rights = reader.getElementText();
-		}
-		return RSSDoc.buildRights(rights, attributes);
-	}
-
-	Logo readLogo(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildLogo(getAttributes(reader, null), reader
-				.getElementText());
-	}
-
-	List<Link> readLink(XMLStreamReader reader, List<Link> links)
-			throws Exception {
-		if (links == null) {
-			links = new LinkedList<Link>();
-		}
-		links.add(RSSDoc.buildLink(getAttributes(reader, null), reader
-				.getElementText()));
-		return links;
-	}
-
-	Id readId(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildId(getAttributes(reader, null), reader
-				.getElementText());
-	}
-
-	Icon readIcon(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildIcon(getAttributes(reader, null), reader
-				.getElementText());
-	}
-
-	List<Contributor> readContributor(XMLStreamReader reader,
-			List<Contributor> contributors) throws Exception {
-
-		if (contributors == null) {
-			contributors = new LinkedList<Contributor>();
-		}
-
-		AtomPersonConstruct person = readAtomPersonConstruct(reader,
-				"contributor");
-		contributors.add(RSSDoc.buildContributor(person.getName(), person
-				.getUri(), person.getEmail(), person.getAttributes(), person
-				.getExtensions()));
-
-		return contributors;
-	}
-
-	List<Category> readCategory(XMLStreamReader reader,
-			List<Category> categories) throws Exception {
-		if (categories == null) {
-			categories = new LinkedList<Category>();
-		}
-		categories.add(RSSDoc.buildCategory(getAttributes(reader, null), reader
-				.getElementText()));
-		return categories;
-	}
-
-	List<Author> readAuthor(XMLStreamReader reader, List<Author> authors)
-			throws Exception {
-		if (authors == null) {
-			authors = new LinkedList<Author>();
-		}
-		AtomPersonConstruct person = readAtomPersonConstruct(reader, "author");
-		authors.add(RSSDoc.buildAuthor(person.getName(), person.getUri(),
-				person.getEmail(), person.getAttributes(), person
-						.getExtensions()));
-		return authors;
-	}
-
-	AtomPersonConstruct readAtomPersonConstruct(XMLStreamReader reader,
-			String personType) throws Exception {
-		boolean breakOut = false;
-		final List<Attribute> attributes = getAttributes(reader, null);
-		Name name = null;
-		URI uri = null;
-		Email email = null;
-		List<Extension> extensions = null;
-		while (reader.hasNext()) {
-			switch (reader.next()) {
-			case XMLStreamConstants.START_ELEMENT:
-
-				if (reader.getLocalName().equals("name")) {
-					name = RSSDoc.buildName(reader.getElementText());
-				} else if (reader.getLocalName().equals("uri")) {
-					uri = RSSDoc.buildURI(reader.getElementText());
-				} else if (reader.getLocalName().equals("email")) {
-					email = RSSDoc.buildEmail(reader.getElementText());
-				} else {
-					if (extensions == null) {
-						extensions = new LinkedList<Extension>();
-					}
-					extensions = readExtension(reader, extensions);
-				}
-				break;
-
-			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals(personType)) {
-					breakOut = true;
-				} else {
-					reader.next();
-				}
-				break;
-			}
-			if (breakOut) {
-				break;
-			}
-
-		}
-		return RSSDoc.buildAtomPersonConstruct(name, uri, email, attributes,
-				extensions);
 	}
 }

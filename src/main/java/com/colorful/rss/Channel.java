@@ -14,7 +14,7 @@ import java.util.List;
  * omitted. All elements of an item are optional, however at least one of title
  * or description must be present.
  * 
- * @author billbrown
+ * @author Bill Brown
  * 
  */
 public class Channel implements Serializable {
@@ -115,8 +115,8 @@ public class Channel implements Serializable {
 		} else {
 			this.categories = new LinkedList<Category>();
 			for (Category category : categories) {
-				this.categories.add(new Category(category.getCategory(),
-						category.getDomain()));
+				this.categories.add(new Category(category.getDomain(), category
+						.getCategory()));
 			}
 		}
 		this.generator = (generator == null) ? null : new Generator(generator
@@ -207,8 +207,8 @@ public class Channel implements Serializable {
 		} else {
 			List<Category> catsCopy = new LinkedList<Category>();
 			for (Category category : this.categories) {
-				catsCopy.add(new Category(category.getCategory(), category
-						.getDomain()));
+				catsCopy.add(new Category(category.getDomain(), category
+						.getCategory()));
 			}
 			return catsCopy;
 		}

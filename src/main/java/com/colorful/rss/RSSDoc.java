@@ -592,14 +592,14 @@ public class RSSDoc {
 
 	/**
 	 * 
-	 * @param source
 	 * @param url
+	 * @param source
 	 * @return an immutable Source object.
 	 * @throws RSSpectException
 	 */
-	public static Source buildSource(String source, Attribute url)
+	public static Source buildSource(Attribute url, String source)
 			throws RSSpectException {
-		return new Source(source, url);
+		return new Source(url, source);
 	}
 
 	/**
