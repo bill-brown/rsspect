@@ -39,12 +39,14 @@ public class Image implements Serializable {
 	 */
 	private static final long serialVersionUID = -812074455770644390L;
 
+	/* required sub elements */
 	private final URL url;
 
 	private final Title title;
 
 	private final Link link;
 
+	/* optional sub elements */
 	private final Width width;
 
 	private final Height height;

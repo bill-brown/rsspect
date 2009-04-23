@@ -1,35 +1,10 @@
-/*
-Atomsphere - an atom feed library.
-Copyright (C) 2006 William R. Brown.
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-/* Change History:
- *  2006-11-14 wbrown - added javadoc documentation.
- *  2008-03-11 wbrown - fix bug for atomXHTMLTextConstruct to wrap contents in xhtml:div element.
- *  2008-04-17 wbrown - add check for start document in readEntry
- */
 package com.colorful.rss;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
@@ -44,7 +19,7 @@ class RSSReader {
 	 * This method transforms an xml stream into a Feed bean
 	 * 
 	 * @param reader
-	 *            the object containing the atom data
+	 *            the object containing the rss data
 	 * @return the rsspect RSS bean
 	 * @throws Exception
 	 *             if the stream cannot be parsed.
@@ -533,79 +508,5 @@ class RSSReader {
 
 	Width readWidth(XMLStreamReader reader) throws Exception {
 		return RSSDoc.buildWidth(reader.getElementText());
-	}
-
-	boolean containsXHTML(List<Attribute> attributes) {
-		if (attributes != null) {
-			Iterator<Attribute> attrsItr = attributes.iterator();
-			// look for the xhtml type.
-			while (attrsItr.hasNext()) {
-				Attribute attribute = (Attribute) attrsItr.next();
-				if (attribute.getName().equals("type")
-						&& attribute.getValue().equals("xhtml")) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	String readXHTML(XMLStreamReader reader) throws XMLStreamException,
-			Exception {
-		StringBuffer xhtml = new StringBuffer();
-		while (reader.hasNext()) {
-			boolean breakOut = false;
-			switch (reader.next()) {
-			case XMLStreamConstants.START_ELEMENT:
-				if (reader.getLocalName().equals("div")) {
-					// for now just ignore the attributes
-					getAttributes(reader, null);
-				} else {
-					if (reader.getPrefix() != null
-							&& !reader.getPrefix().equals("")) {
-						xhtml.append("<" + reader.getPrefix() + ":"
-								+ reader.getLocalName());
-					} else {
-						xhtml.append("<" + reader.getLocalName());
-					}
-					List<Attribute> attributes = getAttributes(reader, null);
-					// add the attributes
-					if (attributes != null && attributes.size() > 0) {
-						Iterator<Attribute> attrItr = attributes.iterator();
-						while (attrItr.hasNext()) {
-							Attribute attr = (Attribute) attrItr.next();
-							xhtml.append(" " + attr.getName() + "="
-									+ attr.getValue());
-						}
-						xhtml.append(" ");
-					}
-					xhtml.append(">");
-
-				}
-				break;
-			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("div")) {
-					breakOut = true;
-				} else {
-					if (reader.getPrefix() != null
-							&& !reader.getPrefix().equals("")) {
-						xhtml.append("</" + reader.getPrefix() + ":"
-								+ reader.getLocalName() + ">");
-					} else {
-						xhtml.append("</" + reader.getLocalName() + ">");
-					}
-				}
-				break;
-			default:
-				xhtml.append(reader.getText());
-			}
-			if (breakOut) {
-				// clear past the end enclosing div.
-				reader.next();
-				break;
-			}
-		}
-		return xhtml.toString().replaceAll("<br></br>", "<br />").replaceAll(
-				"<hr></hr>", "<hr />");
 	}
 }

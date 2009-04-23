@@ -9,12 +9,8 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -87,9 +83,9 @@ public class RSSDoc {
 	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
-	public static void writeFeedDoc(OutputStream output, RSS rss,
+	public static void writeRSSDoc(OutputStream output, RSS rss,
 			String encoding, String version) throws Exception {
-		writeFeedDoc(XMLOutputFactory.newInstance().createXMLStreamWriter(
+		writeRSSDoc(XMLOutputFactory.newInstance().createXMLStreamWriter(
 				output, encoding), rss, encoding, version);
 	}
 
@@ -106,10 +102,10 @@ public class RSSDoc {
 	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
-	public static void writeFeedDoc(Writer output, RSS rss, String encoding,
+	public static void writeRSSDoc(Writer output, RSS rss, String encoding,
 			String version) throws Exception {
-		writeFeedDoc(XMLOutputFactory.newInstance().createXMLStreamWriter(
-				output), rss, encoding, version);
+		writeRSSDoc(XMLOutputFactory.newInstance()
+				.createXMLStreamWriter(output), rss, encoding, version);
 	}
 
 	/**
@@ -135,18 +131,18 @@ public class RSSDoc {
 	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
-	public static void writeFeedDoc(XMLStreamWriter output, RSS rss,
+	public static void writeRSSDoc(XMLStreamWriter output, RSS rss,
 			String encoding, String version) throws Exception {
 
 		try {
-			writeFeedOutput(rss, output, encoding, version);
+			writeRSSOutput(rss, output, encoding, version);
 		} catch (Exception e) {
 			throw new Exception("error creating the feed document.", e);
 		}
 	}
 
 	/**
-	 * This method reads in a Feed element and returns the contents as an atom
+	 * This method reads in a Feed element and returns the contents as an rss
 	 * feed string with formatting specified by the fully qualified
 	 * XMLStreamWriter class name (uses reflection internally). For example you
 	 * can pass the TXW com.sun.xml.txw2.output.IndentingXMLStreamWriter or the
@@ -160,14 +156,14 @@ public class RSSDoc {
 	 * if the XMLStreamWriter class cannot be found in the classpath.
 	 * 
 	 * @param rss
-	 *            the rss object to be converted to an atom document string.
+	 *            the rss object to be converted to an rss document string.
 	 * @param xmlStreamWriter
 	 *            the fully qualified XMLStreamWriter class name.
-	 * @return an atom feed document string.
+	 * @return an rss feed document string.
 	 * @throws Exception
 	 *             thrown if the feed cannot be returned as a String
 	 */
-	public static String readFeedToString(RSS rss, String xmlStreamWriter)
+	public static String readRSSToString(RSS rss, String xmlStreamWriter)
 			throws Exception {
 
 		StringWriter theString = new StringWriter();
@@ -179,25 +175,25 @@ public class RSSDoc {
 					.createXMLStreamWriter(theString) };
 			XMLStreamWriter writer = (XMLStreamWriter) ct.newInstance(arglist);
 
-			writeFeedOutput(rss, writer, encoding, xml_version);
+			writeRSSOutput(rss, writer, encoding, xml_version);
 
 		} catch (Exception e) {
-			return readFeedToString(rss);
+			return readRSSToString(rss);
 		}
 		return theString.toString();
 	}
 
 	/**
-	 * This method reads in a Feed bean and returns the contents as an atom feed
+	 * This method reads in a Feed bean and returns the contents as an rss feed
 	 * string.
 	 * 
 	 * @param rss
-	 *            the rss object to be converted to an atom string.
-	 * @return an atom feed document string.
+	 *            the rss object to be converted to an rss string.
+	 * @return an rss feed document string.
 	 * @throws Exception
 	 *             thrown if the feed cannot be returned as a String
 	 */
-	public static String readFeedToString(RSS rss) throws Exception {
+	public static String readRSSToString(RSS rss) throws Exception {
 
 		StringWriter theString = new StringWriter();
 		try {
@@ -205,7 +201,7 @@ public class RSSDoc {
 			XMLStreamWriter writer = outputFactory
 					.createXMLStreamWriter(theString);
 
-			writeFeedOutput(rss, writer, encoding, xml_version);
+			writeRSSOutput(rss, writer, encoding, xml_version);
 
 		} catch (Exception e) {
 			throw new Exception("error creating xml file.", e);
@@ -238,7 +234,7 @@ public class RSSDoc {
 	 * @throws Exception
 	 *             if the file cannot be parsed into a RSS element.
 	 */
-	public static RSS readFeedToBean(File file) throws Exception {
+	public static RSS readRSSToBean(File file) throws Exception {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLStreamReader reader = inputFactory
 				.createXMLStreamReader(new FileInputStream(file));
@@ -255,7 +251,7 @@ public class RSSDoc {
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
 	public static RSS readRSSToBean(java.net.URL url) throws Exception {
-		return readFeedToBean(url.openStream());
+		return readRSSToBean(url.openStream());
 	}
 
 	/**
@@ -267,7 +263,7 @@ public class RSSDoc {
 	 * @throws Exception
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
-	public static RSS readFeedToBean(InputStream inputStream) throws Exception {
+	public static RSS readRSSToBean(InputStream inputStream) throws Exception {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLStreamReader reader = inputFactory
 				.createXMLStreamReader(inputStream);
@@ -665,7 +661,7 @@ public class RSSDoc {
 	}
 
 	// used to write feed output for several feed writing methods.
-	private static void writeFeedOutput(RSS rss, XMLStreamWriter writer,
+	private static void writeRSSOutput(RSS rss, XMLStreamWriter writer,
 			String encoding, String version) throws XMLStreamException,
 			Exception {
 

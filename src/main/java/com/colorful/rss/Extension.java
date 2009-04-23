@@ -1,7 +1,6 @@
 package com.colorful.rss;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,9 +30,7 @@ public class Extension implements Serializable {
 			this.attributes = null;
 		} else {
 			this.attributes = new LinkedList<Attribute>();
-			Iterator<Attribute> attrItr = attributes.iterator();
-			while (attrItr.hasNext()) {
-				Attribute attr = attrItr.next();
+			for (Attribute attr : attributes) {
 				this.attributes.add(new Attribute(attr.getName(), attr
 						.getValue()));
 			}
@@ -49,9 +46,7 @@ public class Extension implements Serializable {
 			return null;
 		}
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
-		Iterator<Attribute> attrItr = this.attributes.iterator();
-		while (attrItr.hasNext()) {
-			Attribute attr = attrItr.next();
+		for (Attribute attr : this.attributes) {
 			attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
 		}
 		return attrsCopy;
