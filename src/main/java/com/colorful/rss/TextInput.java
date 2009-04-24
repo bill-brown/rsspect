@@ -71,14 +71,14 @@ public class TextInput implements Serializable {
 		}
 		this.description = new Description(description.getDescription());
 
-		// make sure id is present
+		// make sure name is present
 		if (name == null) {
 			throw new RSSpectException(
 					"textInput elements MUST contain a name element.");
 		}
 		this.name = new Name(name.getName());
 
-		// make sure updated is present
+		// make sure link is present
 		if (link == null) {
 			throw new RSSpectException(
 					"textInput elements MUST contain a link element.");
@@ -101,7 +101,7 @@ public class TextInput implements Serializable {
 
 	public Link getLink() {
 		try {
-			return (link == null) ? null : new Link(link.getLink());
+			return new Link(link.getLink());
 		} catch (Exception e) {
 			// we should never get here.
 			return null;

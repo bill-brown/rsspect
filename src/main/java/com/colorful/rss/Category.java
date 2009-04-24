@@ -73,7 +73,8 @@ public class Category implements Serializable {
 	}
 
 	public Attribute getDomain() {
-		return new Attribute(domain.getName(), domain.getValue());
+		return (domain == null) ? null : new Attribute(domain.getName(), domain
+				.getValue());
 	}
 
 }

@@ -86,8 +86,10 @@ public class RSS implements Serializable {
 			this.attributes = null;
 		} else {
 			this.attributes = new LinkedList<Attribute>();
-			// always add the version attribute first.
-			this.attributes.add(new Attribute("version", "2.0"));
+			// always add the version attribute if it's not in the list.
+			if(RSSDoc.getAttributeFromGroup(attributes,"version") == null){
+				this.attributes.add(new Attribute("version", "2.0"));
+			}
 			for (Attribute attr : attributes) {
 				this.attributes.add(new Attribute(attr.getName(), attr
 						.getValue()));

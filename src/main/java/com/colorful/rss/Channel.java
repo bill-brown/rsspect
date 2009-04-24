@@ -191,31 +191,36 @@ public class Channel implements Serializable {
 	}
 
 	public Description getDescription() {
-		return new Description(description.getDescription());
+		return (description == null) ? null : new Description(description
+				.getDescription());
 	}
 
 	public Language getLanguage() {
-		return new Language(language.getLanguage());
+		return (language == null) ? null : new Language(language.getLanguage());
 	}
 
 	public Copyright getCopyright() {
-		return new Copyright(copyright.getCopyright());
+		return (copyright == null) ? null : new Copyright(copyright
+				.getCopyright());
 	}
 
 	public ManagingEditor getManagingEditor() {
-		return new ManagingEditor(managingEditor.getManagingEditor());
+		return (managingEditor == null) ? null : new ManagingEditor(
+				managingEditor.getManagingEditor());
 	}
 
 	public WebMaster getWebMaster() {
-		return new WebMaster(webMaster.getWebMaster());
+		return (webMaster == null) ? null : new WebMaster(webMaster
+				.getWebMaster());
 	}
 
 	public PubDate getPubDate() {
-		return new PubDate(pubDate.getDateTime());
+		return (pubDate == null) ? null : new PubDate(pubDate.getDateTime());
 	}
 
 	public LastBuildDate getLastBuildDate() {
-		return new LastBuildDate(lastBuildDate.getDateTime());
+		return (lastBuildDate == null) ? null : new LastBuildDate(lastBuildDate
+				.getDateTime());
 	}
 
 	public List<Category> getCategories() {
@@ -232,19 +237,20 @@ public class Channel implements Serializable {
 	}
 
 	public Generator getGenerator() {
-		return new Generator(generator.getGenerator());
+		return (generator == null) ? null : new Generator(generator
+				.getGenerator());
 	}
 
 	public Docs getDocs() {
-		return new Docs(docs.getDocs());
+		return (docs == null) ? null : new Docs(docs.getDocs());
 	}
 
 	public Cloud getCloud() {
-		return new Cloud(cloud.getCloud());
+		return (cloud == null) ? null : new Cloud(cloud.getCloud());
 	}
 
 	public TTL getTtl() {
-		return new TTL(ttl.getTtl());
+		return (ttl == null) ? null : new TTL(ttl.getTtl());
 	}
 
 	public Image getImage() {
@@ -259,7 +265,7 @@ public class Channel implements Serializable {
 	}
 
 	public Rating getRating() {
-		return new Rating(rating.getRating());
+		return (rating == null) ? null : new Rating(rating.getRating());
 	}
 
 	public TextInput getTextInput() {
@@ -274,11 +280,12 @@ public class Channel implements Serializable {
 	}
 
 	public SkipHours getSkipHours() {
-		return new SkipHours(skipHours.getSkipHours());
+		return (skipHours == null) ? null : new SkipHours(skipHours
+				.getSkipHours());
 	}
 
 	public SkipDays getSkipDays() {
-		return new SkipDays(skipDays.getSkipDays());
+		return (skipDays == null) ? null : new SkipDays(skipDays.getSkipDays());
 	}
 
 	public List<Item> getItems() {

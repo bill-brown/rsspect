@@ -70,6 +70,7 @@ public class GUID implements Serializable {
 	}
 
 	public Attribute getIsPermaLink() {
-		return new Attribute(isPermaLink.getName(), isPermaLink.getValue());
+		return (isPermaLink == null) ? null : new Attribute(isPermaLink
+				.getName(), isPermaLink.getValue());
 	}
 }

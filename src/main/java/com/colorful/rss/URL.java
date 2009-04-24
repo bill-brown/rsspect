@@ -30,9 +30,9 @@ public class URL implements Serializable {
 
 	URL(String url) throws RSSpectException {
 		if (url != null) {
-			url = url.trim();
-			url = url.substring(0, url.indexOf(":"));
-			if (URIScheme.contains(url)) {
+			String urlLocal = url.trim();
+			if (URIScheme
+					.contains(urlLocal.substring(0, urlLocal.indexOf(":")))) {
 				this.url = url;
 			} else {
 				throw new RSSpectException(

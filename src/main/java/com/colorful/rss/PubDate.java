@@ -62,7 +62,7 @@ public class PubDate implements Serializable {
 	 * @return the date timestamp for this element.
 	 */
 	protected Date getDateTime() {
-		return pubDate.getDateTime();
+		return (pubDate == null) ? null : pubDate.getDateTime();
 	}
 
 	/**
@@ -71,6 +71,6 @@ public class PubDate implements Serializable {
 	 *         2006-04-28T12:50:43.337-05:00
 	 */
 	public String getText() {
-		return pubDate.getText();
+		return (pubDate == null) ? null : pubDate.getText();
 	}
 }

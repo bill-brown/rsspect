@@ -122,11 +122,12 @@ public class Item implements Serializable {
 	}
 
 	public Title getTitle() {
-		return new Title(title.getTitle());
+		return (title == null) ? null : new Title(title.getTitle());
 	}
 
 	public Description getDescription() {
-		return new Description(description.getDescription());
+		return (description == null) ? null : new Description(description
+				.getDescription());
 	}
 
 	public Link getLink() {
@@ -139,7 +140,7 @@ public class Item implements Serializable {
 	}
 
 	public Author getAuthor() {
-		return new Author(author.getAuthor());
+		return (author == null) ? null : new Author(author.getAuthor());
 	}
 
 	public List<Category> getCategories() {
@@ -156,7 +157,7 @@ public class Item implements Serializable {
 	}
 
 	public Comments getComments() {
-		return new Comments(comments.getComments());
+		return (comments == null) ? null : new Comments(comments.getComments());
 	}
 
 	public Enclosure getEnclosure() {
@@ -170,11 +171,12 @@ public class Item implements Serializable {
 	}
 
 	public GUID getGuid() {
-		return new GUID(guid.getIsPermaLink(), guid.getGuid());
+		return (guid == null) ? null : new GUID(guid.getIsPermaLink(), guid
+				.getGuid());
 	}
 
 	public PubDate getPubDate() {
-		return new PubDate(pubDate.getDateTime());
+		return (pubDate == null) ? null : new PubDate(pubDate.getDateTime());
 	}
 
 	public Source getSource() {

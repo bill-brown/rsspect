@@ -37,16 +37,17 @@ public class Link implements Serializable {
 	private final String link;
 
 	Link(String link) throws RSSpectException {
-		if (link != null) {
-			link = link.trim();
-			link = link.substring(0, link.indexOf(":"));
-			if (URIScheme.contains(link)) {
+		if (link != null && link.length() > 0) {
+			String linkLocal = link.trim();
+			if (URIScheme.contains(linkLocal.substring(0, linkLocal
+					.indexOf(":")))) {
 				this.link = link;
 			} else {
 				throw new RSSpectException(
 						"link elements must start with a valid "
 								+ "Uniform Resource Identifer (URI) Schemes.  "
-								+ "See www.iana.org.");
+								+ "See www.iana.org. Yours started with: "
+								+ link);
 			}
 		} else {
 			this.link = link;

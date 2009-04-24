@@ -141,6 +141,7 @@ class RSSReader {
 		if (extensions == null) {
 			extensions = new LinkedList<Extension>();
 		}
+		boolean breakOut = false;
 
 		String elementName = null;
 		String prefix = reader.getPrefix();
@@ -150,8 +151,30 @@ class RSSReader {
 			elementName = reader.getLocalName();
 		}
 
-		extensions.add(RSSDoc.buildExtension(elementName, getAttributes(reader,
-				null), reader.getElementText()));
+		List<Attribute> attributes = getAttributes(reader, null);
+
+		while (reader.hasNext()) {
+			switch (reader.next()) {
+			case XMLStreamConstants.START_ELEMENT:
+				extensions.add(RSSDoc.buildExtension(elementName, attributes,
+						reader.getElementText()));
+				break;
+
+			case XMLStreamConstants.END_ELEMENT:
+				if (reader.getLocalName().equals(elementName)) {
+					breakOut = true;
+				} else {
+					reader.next();
+				}
+				break;
+			case XMLStreamConstants.CHARACTERS:
+
+			}
+			if (breakOut) {
+				break;
+			}
+		}
+
 		return extensions;
 	}
 
@@ -196,7 +219,8 @@ class RSSReader {
 		SkipDays skipDays = null;
 		List<Item> items = null;
 		List<Extension> extensions = null;
-
+		boolean breakOut = false;
+		
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 
@@ -249,7 +273,14 @@ class RSSReader {
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				reader.next();
+				if (reader.getLocalName().equals("channel")) {
+					breakOut = true;
+				} else {
+					reader.next();
+				}
+				break;
+			}
+			if (breakOut) {
 				break;
 			}
 		}
@@ -407,6 +438,7 @@ class RSSReader {
 				categories, comments, enclosure, guid, pubDate, source,
 				extensions));
 
+		System.out.println("items size = "+items.size());
 		return items;
 	}
 

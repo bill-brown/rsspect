@@ -101,7 +101,7 @@ public class Image implements Serializable {
 
 	public URL getUrl() {
 		try {
-			return (url == null) ? null : new URL(url.getUrl());
+			return new URL(url.getUrl());
 		} catch (Exception e) {
 			// we should never get here.
 			return null;
@@ -114,7 +114,7 @@ public class Image implements Serializable {
 
 	public Link getLink() {
 		try {
-			return (link == null) ? null : new Link(link.getLink());
+			return new Link(link.getLink());
 		} catch (Exception e) {
 			// we should never get here.
 			return null;
@@ -140,6 +140,7 @@ public class Image implements Serializable {
 	}
 
 	public Description getDescription() {
-		return new Description(description.getDescription());
+		return (description == null) ? null : new Description(description
+				.getDescription());
 	}
 }

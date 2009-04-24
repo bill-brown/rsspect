@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright (C) 2009 William R. Brown <info@colorfulsoftware.com>
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+-->
+<?xml-stylesheet href="/css/rss20.xsl" type="text/xsl"?>
+<rss xmlns:pheedo="http://www.pheedo.com/namespace/pheedo" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:nyt="http://www.nytimes.com/namespaces/rss/2.0" version="2.0">
+	<channel>
+		<title>NYT &gt; Home Page</title>
+		<link>http://www.nytimes.com/pages/index.html?partner=rss</link>
+		<atom:link rel="self" type="application/rss+xml" href="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"/>
+		<description/>
+		<language>en-us</language>
+		<copyright>Copyright 2009
+ The New York Times Company</copyright>
+		<lastBuildDate>Fri, 24 Apr 2009 18:45:40 GMT
+</lastBuildDate>
+		<image>
+			<title>NYT &gt; Home Page</title>
+			<url>http://graphics.nytimes.com/images/section/NytSectionHeader.gif</url>
+			<link>http://www.nytimes.com/pages/index.html?partner=rss</link>
+		</image>
+		<item>
+			<title>Democrats&#x2019; Budget Deal Sets Up Fight on Health Plan</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=c4d47cdc79672e4bcfc1d8cb81786491</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/us/politics/25budget.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/us/politics/25budget.html</guid>
+			<description>The plan seems certain to include a procedural maneuver meant to avoid filibusters on health care reform, and likely to anger Republicans.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=c4d47cdc79672e4bcfc1d8cb81786491&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=c4d47cdc79672e4bcfc1d8cb81786491&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By CARL HULSE</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 17:42:19 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Budgets and Budgeting</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Democratic Party</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Senate</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">House of Representatives</category>
+		</item>
+		<item>
+			<title>Regulators Disclose Criteria for Bank &#x2018;Stress Tests&#x2019;</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=8d7bd538be6b51318b998b8473cf43a4</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/business/economy/25bank.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/business/economy/25bank.html</guid>
+			<description>The 21-page report from Federal Reserve regulators provided little new information for investors to distinguish the weak banks from the strong.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=8d7bd538be6b51318b998b8473cf43a4&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=8d7bd538be6b51318b998b8473cf43a4&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By ERIC DASH</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:32:07 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Banks and Banking</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Treasury Department</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">United States Economy</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Recession and Depression</category>
+		</item>
+		<item>
+			<title>Ford Has Loss of $1.4 Billion, but Beats Forecast</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=0155467d396aa780c181f5f7809a803e</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/business/25ford.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/business/25ford.html</guid>
+			<description>Despite the quarterly loss, Ford said that it was using up less cash than before and that it had $21.3 billion in cash as of March 31.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=0155467d396aa780c181f5f7809a803e&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=0155467d396aa780c181f5f7809a803e&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By NICK BUNKLEY</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:40:39 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Ford Motor Co|F|NYSE</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Subprime Mortgage Crisis</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Company Reports</category>
+		</item>
+		<item>
+			<title>Your Money: The Pros and Cons of Buying a Chevy</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=7c719e96a49716e1528799ba76ee378a</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/your-money/25money.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/your-money/25money.html</guid>
+			<media:content url="http://graphics8.nytimes.com/images/2009/04/25/your-money/25money.75.jpg" medium="image" height="75" width="75"/>
+			<media:description>A customer at a Chrysler Jeep dealership in Doylestown, Pa.</media:description>
+			<media:credit>Bradley C. Bower/Bloomberg News</media:credit>
+			<description>With automakers facing bankruptcy, car shoppers would do well to think beyond the sticker price.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=7c719e96a49716e1528799ba76ee378a&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=7c719e96a49716e1528799ba76ee378a&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By RON LIEBER</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:38:21 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">General Motors Corp|GM|NYSE</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Chrysler LLC</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Automobiles</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Subprime Mortgage Crisis</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Guarantees and Warranties</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Personal Finances</category>
+		</item>
+		<item>
+			<title>Economic Signals Surpass Expectations</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=b33040d9d8b8de6a36be2de792a17e73</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/business/economy/25econ.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/business/economy/25econ.html</guid>
+			<description>Demand for big-ticket manufactured goods and new home sales both were better than expected in March, raising some hopes that the long slides are slowly coming to an end.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=b33040d9d8b8de6a36be2de792a17e73&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=b33040d9d8b8de6a36be2de792a17e73&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By THE ASSOCIATED PRESS</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 17:50:51 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Durable Goods (Economic Indicator)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Factories and Manufacturing</category>
+		</item>
+		<item>
+			<title>Gun Matches Bullets in Craigslist Murder Case</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=bbdaf7e17c71ebeac11fd71534a78b44</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/us/25boston.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/us/25boston.html</guid>
+			<description>Ballistics tests have made a preliminary match between the bullets that killed an aspiring model and a gun found in the home of Philip Markoff, police said Friday.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=bbdaf7e17c71ebeac11fd71534a78b44&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=bbdaf7e17c71ebeac11fd71534a78b44&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By ABBY GOODNOUGH</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 17:01:04 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Murders and Attempted Murders</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Markoff, Philip</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Brisman, Julissa</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Boston (Mass)</category>
+		</item>
+		<item>
+			<title>City Room: Teacher&#x2019;s Threat in Bronx School Prompts Evacuation</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=cf329e1eb4d1e3c1435e84421f8a22eb</link>
+			<pheedo:origLink>http://cityroom.blogs.nytimes.com/2009/04/24/bronx-school-evacuated-after-teachers-threat/index.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://cityroom.blogs.nytimes.com/2009/04/24/bronx-school-evacuated-after-teachers-threat/index.html</guid>
+			<description>A middle school with about 1,200 students was evacuated after a teacher made a bomb threat on Friday. Police said no bomb was found.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=cf329e1eb4d1e3c1435e84421f8a22eb&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=cf329e1eb4d1e3c1435e84421f8a22eb&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By AL BAKER and JENNIFER MEDINA</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:43:41 GMT</pubDate>
+		</item>
+		<item>
+			<title>Mexico Shuts Some Schools Amid Deadly Flu Outbreak</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=997b9c41afd3ecfe2c6466c69acd29fb</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/world/americas/25mexico.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/world/americas/25mexico.html</guid>
+			<media:content url="http://graphics8.nytimes.com/images/2009/04/24/world/mexico.75755.jpg" medium="image" height="75" width="75"/>
+			<media:description>People wearing surgical masks at the General Hospital in Mexico City on Friday.</media:description>
+			<media:credit>Dario Lopez-Mills/Associated Press</media:credit>
+			<description>Scrambling to contain an outbreak of swine flu that has killed at least 16 in recent weeks, authorities are shuttering schools for millions.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=997b9c41afd3ecfe2c6466c69acd29fb&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=997b9c41afd3ecfe2c6466c69acd29fb&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By MARC LACEY and DONALD G. McNEIL Jr.</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:10:26 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Mexico</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Epidemics</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Influenza</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Livestock Diseases</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Pigs</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Education and Schools</category>
+		</item>
+		<item>
+			<title>At Least 60 More Are Killed in New Attacks in Baghdad</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=fc9008de1b57c65c3ed32c7c74613c9a</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/world/middleeast/25iraq.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/world/middleeast/25iraq.html</guid>
+			<media:content url="http://graphics8.nytimes.com/images/2009/04/24/world/25iraq.ms.75.jpg" medium="image" height="75" width="75"/>
+			<media:description>A man injured in a suicide bombing at the Kazimiyah hospital in Baghdad on Friday.</media:description>
+			<media:credit>Khalid Mohammed/Associated Press</media:credit>
+			<description>The attacks outside the gates of the holiest Shiite site in Baghdad on Friday came a day after the deadliest day in Iraq in more than a year.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By STEVEN LEE MYERS and TIMOTHY WILLIAMS</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:16:00 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Iraq</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Iraq War (2003- )</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Bombs and Explosives</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Terrorism</category>
+		</item>
+		<item>
+			<title>Taliban Hold Valley in Pakistan as They Remove Some Forces</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=4e5953f1fda4ad05bdbf0cd30ce01882</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/world/asia/25pstan.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/world/asia/25pstan.html</guid>
+			<media:content url="http://graphics8.nytimes.com/images/2009/04/24/world/pakistan.757575.jpg" medium="image" height="75" width="75"/>
+			<media:description>A group of Taliban militants pulling out of Buner, a recently seized district of northwestern Pakistan, on Friday.</media:description>
+			<media:credit>Abdullah Khan/Associated Press</media:credit>
+			<description>Some Taliban left a key district not far from the capital, but the militants remained in control, as Pakistan&#x2019;s military defended its response.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=4e5953f1fda4ad05bdbf0cd30ce01882&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=4e5953f1fda4ad05bdbf0cd30ce01882&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By CARLOTTA GALL and ERIC SCHMITT</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:16:44 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Pakistan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Taliban</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Civil War and Guerrilla Warfare</category>
+		</item>
+		<item>
+			<title>Pentagon Agrees to Release Detainee Photos</title>
+			<link>http://feeds.nytimes.com/click.phdo?i=68c03f47a0508fe90395912590a28899</link>
+			<pheedo:origLink>http://www.nytimes.com/2009/04/25/us/politics/24web-prison.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>
+			<guid isPermaLink="false">http://www.nytimes.com/2009/04/25/us/politics/24web-prison.html</guid>
+			<description>The photos, which will be made available by May 28, depict abuse by American military personnel of captives in Iraq and Afghanistan.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;
+&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=68c03f47a0508fe90395912590a28899&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=68c03f47a0508fe90395912590a28899&amp;p=1&quot;/&gt;&lt;/a&gt;
+</description>
+			<dc:creator>By DAVID STOUT</dc:creator>
+			<pubDate>Fri, 24 Apr 2009 18:03:19 GMT</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/mdes">Detainees</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Afghanistan War (2001- )</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Defense Department</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Iraq War (2003- )</category>
+		</item>
+	</channel>
+</rss>
