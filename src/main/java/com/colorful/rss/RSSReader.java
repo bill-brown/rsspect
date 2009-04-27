@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
@@ -57,9 +58,9 @@ class RSSReader {
 
 			case XMLStreamConstants.START_ELEMENT:
 				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("rss")) {
+				if (reader.getName().toString().equals("rss")) {
 					attributes = getAttributes(reader, attributes);
-				} else if (reader.getLocalName().equals("channel")) {
+				} else if (reader.getName().toString().equals("channel")) {
 					channel = readChannel(reader);
 				} else {// extension
 					extensions = readExtension(reader, extensions);
@@ -141,7 +142,7 @@ class RSSReader {
 		if (extensions == null) {
 			extensions = new LinkedList<Extension>();
 		}
-		boolean breakOut = false;
+		
 
 		String elementName = null;
 		String prefix = reader.getPrefix();
@@ -150,31 +151,40 @@ class RSSReader {
 		} else {
 			elementName = reader.getLocalName();
 		}
-
+		
+		StringBuffer extText = new StringBuffer();
 		List<Attribute> attributes = getAttributes(reader, null);
 
 		while (reader.hasNext()) {
+			boolean breakOut = false;
 			switch (reader.next()) {
-			case XMLStreamConstants.START_ELEMENT:
-				extensions.add(RSSDoc.buildExtension(elementName, attributes,
-						reader.getElementText()));
+			case XMLStreamConstants.START_ELEMENT:				
+				extensions = readExtension(reader,null);
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals(elementName)) {
+				String elementNameEnd = null;
+				String prefixEnd = reader.getPrefix();				
+				if (prefixEnd != null && !prefixEnd.equals("")) {
+					elementNameEnd = prefixEnd + ":" + reader.getLocalName();
+				} else {
+					elementNameEnd = reader.getLocalName();
+				}
+				if (elementNameEnd.equals(elementName)) {
 					breakOut = true;
 				} else {
 					reader.next();
 				}
 				break;
-			case XMLStreamConstants.CHARACTERS:
-
+			default:
+				extText = extText.append(reader.getText());
 			}
 			if (breakOut) {
 				break;
 			}
 		}
-
+		extensions.add(RSSDoc.buildExtension(elementName, attributes,
+				extText.toString()));
 		return extensions;
 	}
 
@@ -219,53 +229,54 @@ class RSSReader {
 		SkipDays skipDays = null;
 		List<Item> items = null;
 		List<Extension> extensions = null;
-		boolean breakOut = false;
 		
+
 		while (reader.hasNext()) {
+			boolean breakOut = false;
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
 
 				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("title")) {
+				if (reader.getName().toString().equals("title")) {
 					title = readTitle(reader);
-				} else if (reader.getLocalName().equals("link")) {
+				} else if (reader.getName().toString().equals("link")) {
 					link = readLink(reader);
-				} else if (reader.getLocalName().equals("description")) {
+				} else if (reader.getName().toString().equals("description")) {
 					description = readDescription(reader);
-				} else if (reader.getLocalName().equals("language")) {
+				} else if (reader.getName().toString().equals("language")) {
 					language = readLanguage(reader);
-				} else if (reader.getLocalName().equals("copyright")) {
+				} else if (reader.getName().toString().equals("copyright")) {
 					copyright = readCopyright(reader);
-				} else if (reader.getLocalName().equals("managingEditor")) {
+				} else if (reader.getName().toString().equals("managingEditor")) {
 					managingEditor = readManagingEditor(reader);
-				} else if (reader.getLocalName().equals("webMaster")) {
+				} else if (reader.getName().toString().equals("webMaster")) {
 					webMaster = readWebMaster(reader);
-				} else if (reader.getLocalName().equals("pubDate")) {
+				} else if (reader.getName().toString().equals("pubDate")) {
 					pubDate = readPubDate(reader);
-				} else if (reader.getLocalName().equals("lastBuildDate")) {
+				} else if (reader.getName().toString().equals("lastBuildDate")) {
 					lastBuildDate = readLastBuildDate(reader);
-				} else if (reader.getLocalName().equals("category")) {
+				} else if (reader.getName().toString().equals("category")) {
 					categories = readCategory(reader, categories);
-				} else if (reader.getLocalName().equals("generator")) {
+				} else if (reader.getName().toString().equals("generator")) {
 					generator = readGenerator(reader);
-				} else if (reader.getLocalName().equals("docs")) {
+				} else if (reader.getName().toString().equals("docs")) {
 					docs = readDocs(reader);
-				} else if (reader.getLocalName().equals("cloud")) {
+				} else if (reader.getName().toString().equals("cloud")) {
 					cloud = readCloud(reader);
-				} else if (reader.getLocalName().equals("ttl")) {
+				} else if (reader.getName().toString().equals("ttl")) {
 					ttl = readTTL(reader);
-				} else if (reader.getLocalName().equals("image")) {
+				} else if (reader.getName().toString().equals("image")) {
 					image = readImage(reader);
-				} else if (reader.getLocalName().equals("rating")) {
+				} else if (reader.getName().toString().equals("rating")) {
 					rating = readRating(reader);
-				} else if (reader.getLocalName().equals("textInput")) {
+				} else if (reader.getName().toString().equals("textInput")) {
 					textInput = readTextInput(reader);
-				} else if (reader.getLocalName().equals("skipHours")) {
+				} else if (reader.getName().toString().equals("skipHours")) {
 					skipHours = readSkipHours(reader);
-				} else if (reader.getLocalName().equals("skipDays")) {
+				} else if (reader.getName().toString().equals("skipDays")) {
 					skipDays = readSkipDays(reader);
-				} else if (reader.getLocalName().equals("item")) {
+				} else if (reader.getName().toString().equals("item")) {
 					items = readItem(reader, items);
 				} else {// extension
 					extensions = readExtension(reader, extensions);
@@ -273,7 +284,7 @@ class RSSReader {
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("channel")) {
+				if (reader.getName().toString().equals("channel")) {
 					breakOut = true;
 				} else {
 					reader.next();
@@ -340,6 +351,7 @@ class RSSReader {
 		Description description = null;
 
 		while (reader.hasNext()) {
+			boolean breakOut = false;
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
@@ -361,7 +373,14 @@ class RSSReader {
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				reader.next();
+				if (reader.getLocalName().equals("image")) {
+					breakOut = true;
+				} else {
+					reader.next();
+				}
+				break;
+			}
+			if (breakOut) {
 				break;
 			}
 		}
@@ -377,7 +396,6 @@ class RSSReader {
 			items = new LinkedList<Item>();
 		}
 		boolean breakOut = false;
-		System.out.println("items size ="+items.size());
 		Title title = null;
 		Link link = null;
 		Description description = null;
@@ -396,25 +414,25 @@ class RSSReader {
 			case XMLStreamConstants.START_ELEMENT:
 
 				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("title")) {
+				if (reader.getName().toString().equals("title")) {
 					title = readTitle(reader);
 				} else if (reader.getLocalName().equals("link")) {
 					link = readLink(reader);
-				} else if (reader.getLocalName().equals("description")) {
-					description = readDescription(reader);
-				} else if (reader.getLocalName().equals("author")) {
+				} else if (reader.getName().toString().equals("description")) {
+					description = RSSDoc.buildDescription(readEncodedHTML(reader));
+				} else if (reader.getName().toString().equals("author")) {
 					author = readAuthor(reader);
-				} else if (reader.getLocalName().equals("category")) {
+				} else if (reader.getName().toString().equals("category")) {
 					categories = readCategory(reader, categories);
-				} else if (reader.getLocalName().equals("comments")) {
+				} else if (reader.getName().toString().equals("comments")) {
 					comments = readComments(reader);
-				} else if (reader.getLocalName().equals("enclosure")) {
+				} else if (reader.getName().toString().equals("enclosure")) {
 					enclosure = readEnclosure(reader);
-				} else if (reader.getLocalName().equals("guid")) {
+				} else if (reader.getName().toString().equals("guid")) {
 					guid = readGUID(reader);
-				} else if (reader.getLocalName().equals("pubDate")) {
+				} else if (reader.getName().toString().equals("pubDate")) {
 					pubDate = readPubDate(reader);
-				} else if (reader.getLocalName().equals("source")) {
+				} else if (reader.getName().toString().equals("source")) {
 					source = readSource(reader);
 				} else {// extension
 					extensions = readExtension(reader, extensions);
@@ -438,7 +456,6 @@ class RSSReader {
 				categories, comments, enclosure, guid, pubDate, source,
 				extensions));
 
-		System.out.println("items size = "+items.size());
 		return items;
 	}
 
@@ -557,5 +574,61 @@ class RSSReader {
 
 	Width readWidth(XMLStreamReader reader) throws Exception {
 		return RSSDoc.buildWidth(reader.getElementText());
+	}
+
+	String readEncodedHTML(XMLStreamReader reader) throws XMLStreamException,
+			Exception {
+		StringBuffer xhtml = new StringBuffer();
+		while (reader.hasNext()) {
+			boolean breakOut = false;
+			switch (reader.next()) {
+			case XMLStreamConstants.START_ELEMENT:
+				if (reader.getPrefix() != null
+						&& !reader.getPrefix().equals("")) {
+					xhtml.append("&gt;" + reader.getPrefix() + ":"
+							+ reader.getLocalName());
+				} else {
+					xhtml.append("&gt;" + reader.getLocalName());
+				}
+				List<Attribute> attributes = getAttributes(reader, null);
+				// add the attributes
+				if (attributes != null && attributes.size() > 0) {
+					for (Attribute attr : attributes) {
+						xhtml.append(" " + attr.getName() + "="
+								+ attr.getValue());
+					}
+					xhtml.append(" ");
+				}
+				xhtml.append("&lt;");
+				break;
+			case XMLStreamConstants.END_ELEMENT:
+				if (reader.getLocalName().equals("description")) {
+					breakOut = true;
+				} else {
+					if (reader.getPrefix() != null
+							&& !reader.getPrefix().equals("")) {
+						xhtml.append("&gt;/" + reader.getPrefix() + ":"
+								+ reader.getLocalName() + "&lt;");
+					} else {
+						xhtml.append("&gt;/" + reader.getLocalName() + "&lt;");
+					}
+				}
+				break;
+			case XMLStreamConstants.END_DOCUMENT:
+				break;
+			case XMLStreamConstants.CDATA:
+				xhtml.append("![CDATA[" + reader.getText() + "]]");
+				break;
+			default:
+				xhtml.append(reader.getText());
+			}
+			if (breakOut) {
+				// clear past the end enclosing div.
+				reader.next();
+				break;
+			}
+		}
+		return xhtml.toString().replaceAll("<br></br>", "<br />").replaceAll(
+				"<hr></hr>", "<hr />");
 	}
 }

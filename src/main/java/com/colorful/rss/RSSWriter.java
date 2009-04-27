@@ -222,8 +222,16 @@ class RSSWriter {
 	}
 
 	void writeCloud(XMLStreamWriter writer, Cloud cloud) throws Exception {
-		writer.writeStartElement("cloud");
-		writer.writeCharacters(cloud.getCloud());
+		
+		if (cloud.getCloud() == null
+				|| cloud.getCloud().trim().equals("")) {
+			writer.writeEmptyElement("cloud");
+		} else {
+			writer.writeStartElement("cloud");
+			writer.writeCharacters(cloud.getCloud());
+		}
+		
+		
 		writer.writeEndElement();
 	}
 
@@ -243,9 +251,14 @@ class RSSWriter {
 
 	void writeDescription(XMLStreamWriter writer, Description description)
 			throws Exception {
-		writer.writeStartElement("description");
-		writer.writeCharacters(description.getDescription());
-		writer.writeEndElement();
+		if (description.getDescription() == null
+				|| description.getDescription().trim().equals("")) {
+			writer.writeEmptyElement("description");
+		} else {
+			writer.writeStartElement("description");
+			writer.writeCharacters(description.getDescription());
+			writer.writeEndElement();
+		}
 	}
 
 	void writeDocs(XMLStreamWriter writer, Docs docs) throws Exception {
@@ -257,8 +270,13 @@ class RSSWriter {
 	void writeEnclosure(XMLStreamWriter writer, Enclosure enclosure)
 			throws Exception {
 
-		writer.writeStartElement("enclosure");
-
+		if (enclosure.getEnclosure() == null
+				|| enclosure.getEnclosure().trim().equals("")) {
+			writer.writeEmptyElement("enclosure");
+		} else {
+			writer.writeStartElement("enclosure");
+		}
+		
 		if (enclosure.getAttributes() != null) {
 			for (Attribute attr : enclosure.getAttributes()) {
 				writer.writeAttribute(attr.getName(), attr.getValue());
@@ -276,7 +294,8 @@ class RSSWriter {
 
 			// if there is no content, then
 			// write an empty extension element.
-			if (extension.getContent() == null) {
+			if (extension.getContent() == null
+					|| extension.getContent().trim().equals("")) {
 				String elementName = extension.getElementName();
 				if (elementName.indexOf(":") == -1) {
 					writer.writeEmptyElement(elementName);
@@ -400,7 +419,7 @@ class RSSWriter {
 	}
 
 	void writePubDate(XMLStreamWriter writer, PubDate pubDate) throws Exception {
-		writer.writeStartElement("lastBuildDate");
+		writer.writeStartElement("pubDate");
 		writer.writeCharacters(pubDate.getText());
 		writer.writeEndElement();
 	}

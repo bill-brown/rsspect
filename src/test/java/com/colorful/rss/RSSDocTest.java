@@ -89,8 +89,6 @@ public class RSSDocTest {
 			+ "<pubDate>Fri, 24 Apr 2009 17:28:46 GMT</pubDate>" + "</item>"
 			+ "</channel>" + "</rss>";
 
-	private String expectedRSS2 = "&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;rss xmlns:pheedo=&quot;http://www.pheedo.com/namespace/pheedo&quot; xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot; xmlns:media=&quot;http://search.yahoo.com/mrss/&quot; xmlns:atom=&quot;http://www.w3.org/2005/Atom&quot; xmlns:nyt=&quot;http://www.nytimes.com/namespaces/rss/2.0&quot; version=&quot;2.0&quot;&gt;&lt;channel&gt;&lt;title&gt;NYT &amp;gt; Home Page&lt;/title&gt;&lt;link&gt;&lt;/link&gt;&lt;description&gt;&lt;/description&gt;&lt;language&gt;en-us&lt;/language&gt;&lt;copyright&gt;Copyright 2009 The New York Times Company&lt;/copyright&gt;&lt;lastBuildDate&gt;Fri, 24 Apr 2009 12:29:13 CDT&lt;/lastBuildDate&gt;&lt;height&gt;&lt;url&gt;http://graphics.nytimes.com/images/section/NytSectionHeader.gif&lt;/url&gt;&lt;title&gt;The Caucus: Congress Reaches a Tentative Deal on the Budget&lt;/title&gt;&lt;link&gt;http://feeds.nytimes.com/click.phdo?i=89ed26c949918ac94a090111fd880424&lt;/link&gt;&lt;/height&gt;&lt;/channel&gt;&lt;/rss&gt;";
-
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -99,8 +97,6 @@ public class RSSDocTest {
 	}
 
 	private RSS rss1;
-	private Channel channel1;
-	private Item item1, item2, item3;
 
 	@Before
 	public void setUp() throws Exception {
@@ -108,6 +104,8 @@ public class RSSDocTest {
 
 	@After
 	public void tearDown() throws Exception {
+		new File("out1.xml").delete();
+		//new File("out2.xml").delete();
 	}
 
 	@Test
@@ -118,8 +116,8 @@ public class RSSDocTest {
 	@Test
 	public void testWriteRSSDocOutputStreamRSSStringString() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(new File(
-			"src/test/resources/nyTimes.rss.xml"));
+			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			"http://feeds.nytimes.com/nyt/rss/HomePage"));
 			System.out.println("channel = "+rss1.getChannel());
 			System.out.println("items = "+rss1.getChannel().getItems());
 			RSSDoc.writeRSSDoc(new FileOutputStream("out1.xml"), rss1,
@@ -139,12 +137,15 @@ public class RSSDocTest {
 	public void testWriteRSSDocWriterRSSStringString() {
 		// fail("Not yet implemented");
 	}
-
+	
 	@Test
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(new File(
-			"src/test/resources/nyTimes.rss.xml"));
+			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			"http://feeds.nytimes.com/nyt/rss/HomePage"));
+			System.out.println("rss channel link: "+rss1.getChannel().getLink());
+			System.out.println("rss channel link val: "+rss1.getChannel().getLink().getLink());
+			//fail("could not write output file with file output stream.");
 		XMLStreamWriter writer = new IndentingXMLStreamWriter(XMLOutputFactory
 						.newInstance().createXMLStreamWriter(
 				 				new FileOutputStream("out2.xml"), RSSDoc.encoding));
@@ -154,7 +155,7 @@ public class RSSDocTest {
 			fail("could not write output file with file output stream.");
 		}
 	}
-
+	
 	@Test
 	public void testReadRSSToStringRSSString() {
 
@@ -240,7 +241,7 @@ public class RSSDocTest {
 			fail("should be working. " + e.getLocalizedMessage());
 		}
 	}
-
+	
 	@Test
 	public void testBuildRSS() {
 		// fail("Not yet implemented");

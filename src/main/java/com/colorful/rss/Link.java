@@ -55,7 +55,7 @@ public class Link implements Serializable {
 	}
 
 	public String getLink() {
-		return link;
+		return this.link;
 	}
 
 }
