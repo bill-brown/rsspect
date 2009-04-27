@@ -377,7 +377,7 @@ class RSSReader {
 			items = new LinkedList<Item>();
 		}
 		boolean breakOut = false;
-
+		System.out.println("items size ="+items.size());
 		Title title = null;
 		Link link = null;
 		Description description = null;
