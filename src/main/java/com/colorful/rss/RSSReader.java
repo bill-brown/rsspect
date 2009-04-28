@@ -47,6 +47,7 @@ class RSSReader {
 		Channel channel = null;
 		List<Attribute> attributes = null;
 		List<Extension> extensions = null;
+		String elementName = null;
 
 		while (reader.hasNext()) {
 			switch (reader.next()) {
@@ -57,13 +58,14 @@ class RSSReader {
 				break;
 
 			case XMLStreamConstants.START_ELEMENT:
+				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
-				if (reader.getName().toString().equals("rss")) {
+				if (elementName.equals("rss")) {
 					attributes = getAttributes(reader, attributes);
-				} else if (reader.getName().toString().equals("channel")) {
+				} else if (elementName.equals("channel")) {
 					channel = readChannel(reader);
 				} else {// extension
-					extensions = readExtension(reader, extensions);
+					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
 
@@ -137,39 +139,25 @@ class RSSReader {
 	}
 
 	List<Extension> readExtension(XMLStreamReader reader,
-			List<Extension> extensions) throws Exception {
+			List<Extension> extensions, String elementName) throws Exception {
 
 		if (extensions == null) {
 			extensions = new LinkedList<Extension>();
 		}
-		
 
-		String elementName = null;
-		String prefix = reader.getPrefix();
-		if (prefix != null && !prefix.equals("")) {
-			elementName = prefix + ":" + reader.getLocalName();
-		} else {
-			elementName = reader.getLocalName();
-		}
-		
 		StringBuffer extText = new StringBuffer();
 		List<Attribute> attributes = getAttributes(reader, null);
 
 		while (reader.hasNext()) {
 			boolean breakOut = false;
 			switch (reader.next()) {
-			case XMLStreamConstants.START_ELEMENT:				
-				extensions = readExtension(reader,null);
+			case XMLStreamConstants.START_ELEMENT:
+				elementName = getElementName(reader);
+				extensions = readExtension(reader, null, elementName);
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				String elementNameEnd = null;
-				String prefixEnd = reader.getPrefix();				
-				if (prefixEnd != null && !prefixEnd.equals("")) {
-					elementNameEnd = prefixEnd + ":" + reader.getLocalName();
-				} else {
-					elementNameEnd = reader.getLocalName();
-				}
+				String elementNameEnd = getElementName(reader);
 				if (elementNameEnd.equals(elementName)) {
 					breakOut = true;
 				} else {
@@ -183,8 +171,8 @@ class RSSReader {
 				break;
 			}
 		}
-		extensions.add(RSSDoc.buildExtension(elementName, attributes,
-				extText.toString()));
+		extensions.add(RSSDoc.buildExtension(elementName, attributes, extText
+				.toString()));
 		return extensions;
 	}
 
@@ -229,62 +217,63 @@ class RSSReader {
 		SkipDays skipDays = null;
 		List<Item> items = null;
 		List<Extension> extensions = null;
-		
+		String elementName = null;
 
 		while (reader.hasNext()) {
 			boolean breakOut = false;
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
-
+				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
-				if (reader.getName().toString().equals("title")) {
+				if (elementName.equals("title")) {
 					title = readTitle(reader);
-				} else if (reader.getName().toString().equals("link")) {
+				} else if (elementName.equals("link")) {
 					link = readLink(reader);
-				} else if (reader.getName().toString().equals("description")) {
+				} else if (elementName.equals("description")) {
 					description = readDescription(reader);
-				} else if (reader.getName().toString().equals("language")) {
+				} else if (elementName.equals("language")) {
 					language = readLanguage(reader);
-				} else if (reader.getName().toString().equals("copyright")) {
+				} else if (elementName.equals("copyright")) {
 					copyright = readCopyright(reader);
-				} else if (reader.getName().toString().equals("managingEditor")) {
+				} else if (elementName.equals("managingEditor")) {
 					managingEditor = readManagingEditor(reader);
-				} else if (reader.getName().toString().equals("webMaster")) {
+				} else if (elementName.equals("webMaster")) {
 					webMaster = readWebMaster(reader);
-				} else if (reader.getName().toString().equals("pubDate")) {
+				} else if (elementName.equals("pubDate")) {
 					pubDate = readPubDate(reader);
-				} else if (reader.getName().toString().equals("lastBuildDate")) {
+				} else if (elementName.equals("lastBuildDate")) {
 					lastBuildDate = readLastBuildDate(reader);
-				} else if (reader.getName().toString().equals("category")) {
+				} else if (elementName.equals("category")) {
 					categories = readCategory(reader, categories);
-				} else if (reader.getName().toString().equals("generator")) {
+				} else if (elementName.equals("generator")) {
 					generator = readGenerator(reader);
-				} else if (reader.getName().toString().equals("docs")) {
+				} else if (elementName.equals("docs")) {
 					docs = readDocs(reader);
-				} else if (reader.getName().toString().equals("cloud")) {
+				} else if (elementName.equals("cloud")) {
 					cloud = readCloud(reader);
-				} else if (reader.getName().toString().equals("ttl")) {
+				} else if (elementName.equals("ttl")) {
 					ttl = readTTL(reader);
-				} else if (reader.getName().toString().equals("image")) {
+				} else if (elementName.equals("image")) {
 					image = readImage(reader);
-				} else if (reader.getName().toString().equals("rating")) {
+				} else if (elementName.equals("rating")) {
 					rating = readRating(reader);
-				} else if (reader.getName().toString().equals("textInput")) {
+				} else if (elementName.equals("textInput")) {
 					textInput = readTextInput(reader);
-				} else if (reader.getName().toString().equals("skipHours")) {
+				} else if (elementName.equals("skipHours")) {
 					skipHours = readSkipHours(reader);
-				} else if (reader.getName().toString().equals("skipDays")) {
+				} else if (elementName.equals("skipDays")) {
 					skipDays = readSkipDays(reader);
-				} else if (reader.getName().toString().equals("item")) {
+				} else if (elementName.equals("item")) {
 					items = readItem(reader, items);
 				} else {// extension
-					extensions = readExtension(reader, extensions);
+					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getName().toString().equals("channel")) {
+				elementName = getElementName(reader);
+				if (elementName.equals("channel")) {
 					breakOut = true;
 				} else {
 					reader.next();
@@ -349,31 +338,33 @@ class RSSReader {
 		Width width = null;
 		Height height = null;
 		Description description = null;
+		String elementName = null;
 
 		while (reader.hasNext()) {
 			boolean breakOut = false;
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
-
+				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("url")) {
+				if (elementName.equals("url")) {
 					url = readURL(reader);
-				} else if (reader.getLocalName().equals("title")) {
+				} else if (elementName.equals("title")) {
 					title = readTitle(reader);
-				} else if (reader.getLocalName().equals("link")) {
+				} else if (elementName.equals("link")) {
 					link = readLink(reader);
-				} else if (reader.getLocalName().equals("width")) {
+				} else if (elementName.equals("width")) {
 					width = readWidth(reader);
-				} else if (reader.getLocalName().equals("height")) {
+				} else if (elementName.equals("height")) {
 					height = readHeight(reader);
-				} else if (reader.getLocalName().equals("description")) {
+				} else if (elementName.equals("description")) {
 					description = readDescription(reader);
 				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("image")) {
+				elementName = getElementName(reader);
+				if (elementName.equals("image")) {
 					breakOut = true;
 				} else {
 					reader.next();
@@ -407,40 +398,43 @@ class RSSReader {
 		PubDate pubDate = null;
 		Source source = null;
 		List<Extension> extensions = null;
+		String elementName = null;
 
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
-
+				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
-				if (reader.getName().toString().equals("title")) {
+				if (elementName.equals("title")) {
 					title = readTitle(reader);
-				} else if (reader.getLocalName().equals("link")) {
+				} else if (elementName.equals("link")) {
 					link = readLink(reader);
-				} else if (reader.getName().toString().equals("description")) {
-					description = RSSDoc.buildDescription(readEncodedHTML(reader));
-				} else if (reader.getName().toString().equals("author")) {
+				} else if (elementName.equals("description")) {
+					description = RSSDoc
+							.buildDescription(readEncodedHTML(reader));
+				} else if (elementName.equals("author")) {
 					author = readAuthor(reader);
-				} else if (reader.getName().toString().equals("category")) {
+				} else if (elementName.equals("category")) {
 					categories = readCategory(reader, categories);
-				} else if (reader.getName().toString().equals("comments")) {
+				} else if (elementName.equals("comments")) {
 					comments = readComments(reader);
-				} else if (reader.getName().toString().equals("enclosure")) {
+				} else if (elementName.equals("enclosure")) {
 					enclosure = readEnclosure(reader);
-				} else if (reader.getName().toString().equals("guid")) {
+				} else if (elementName.equals("guid")) {
 					guid = readGUID(reader);
-				} else if (reader.getName().toString().equals("pubDate")) {
+				} else if (elementName.equals("pubDate")) {
 					pubDate = readPubDate(reader);
-				} else if (reader.getName().toString().equals("source")) {
+				} else if (elementName.equals("source")) {
 					source = readSource(reader);
 				} else {// extension
-					extensions = readExtension(reader, extensions);
+					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("item")) {
+				elementName = getElementName(reader);
+				if (elementName.equals("item")) {
 					breakOut = true;
 				} else {
 					reader.next();
@@ -528,20 +522,21 @@ class RSSReader {
 		Description description = null;
 		Name name = null;
 		Link link = null;
+		String elementName = null;
 
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
-
+				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
-				if (reader.getLocalName().equals("title")) {
+				if (elementName.equals("title")) {
 					title = readTitle(reader);
-				} else if (reader.getLocalName().equals("description")) {
+				} else if (elementName.equals("description")) {
 					description = readDescription(reader);
-				} else if (reader.getLocalName().equals("name")) {
+				} else if (elementName.equals("name")) {
 					name = readName(reader);
-				} else if (reader.getLocalName().equals("link")) {
+				} else if (elementName.equals("link")) {
 					link = readLink(reader);
 				}
 				break;
@@ -579,17 +574,15 @@ class RSSReader {
 	String readEncodedHTML(XMLStreamReader reader) throws XMLStreamException,
 			Exception {
 		StringBuffer xhtml = new StringBuffer();
+		String elementName = null;
 		while (reader.hasNext()) {
 			boolean breakOut = false;
 			switch (reader.next()) {
 			case XMLStreamConstants.START_ELEMENT:
-				if (reader.getPrefix() != null
-						&& !reader.getPrefix().equals("")) {
-					xhtml.append("&gt;" + reader.getPrefix() + ":"
-							+ reader.getLocalName());
-				} else {
-					xhtml.append("&gt;" + reader.getLocalName());
-				}
+				elementName = getElementName(reader);
+
+				xhtml.append("&gt;" + elementName);
+
 				List<Attribute> attributes = getAttributes(reader, null);
 				// add the attributes
 				if (attributes != null && attributes.size() > 0) {
@@ -602,19 +595,12 @@ class RSSReader {
 				xhtml.append("&lt;");
 				break;
 			case XMLStreamConstants.END_ELEMENT:
-				if (reader.getLocalName().equals("description")) {
+				elementName = getElementName(reader);
+				if (elementName.equals("description")) {
 					breakOut = true;
 				} else {
-					if (reader.getPrefix() != null
-							&& !reader.getPrefix().equals("")) {
-						xhtml.append("&gt;/" + reader.getPrefix() + ":"
-								+ reader.getLocalName() + "&lt;");
-					} else {
-						xhtml.append("&gt;/" + reader.getLocalName() + "&lt;");
-					}
+					xhtml.append("&gt;/" + elementName + "&lt;");
 				}
-				break;
-			case XMLStreamConstants.END_DOCUMENT:
 				break;
 			case XMLStreamConstants.CDATA:
 				xhtml.append("![CDATA[" + reader.getText() + "]]");
@@ -623,12 +609,21 @@ class RSSReader {
 				xhtml.append(reader.getText());
 			}
 			if (breakOut) {
-				// clear past the end enclosing div.
-				reader.next();
 				break;
 			}
 		}
-		return xhtml.toString().replaceAll("<br></br>", "<br />").replaceAll(
-				"<hr></hr>", "<hr />");
+		return xhtml.toString().replaceAll("<", "&lt;").replaceAll(
+				">", "&gt;");
+	}
+
+	private String getElementName(XMLStreamReader reader) {
+		String elementName = null;
+		String prefix = reader.getPrefix();
+		if (prefix != null && !prefix.equals("")) {
+			elementName = prefix + ":" + reader.getLocalName();
+		} else {
+			elementName = reader.getLocalName();
+		}
+		return elementName;
 	}
 }

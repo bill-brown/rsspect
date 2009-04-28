@@ -118,8 +118,6 @@ public class RSSDocTest {
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
 			"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			System.out.println("channel = "+rss1.getChannel());
-			System.out.println("items = "+rss1.getChannel().getItems());
 			RSSDoc.writeRSSDoc(new FileOutputStream("out1.xml"), rss1,
 					RSSDoc.encoding, RSSDoc.xml_version);
 			RSS rss2 = RSSDoc.readRSSToBean(new File("out1.xml"));
@@ -143,8 +141,6 @@ public class RSSDocTest {
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
 			"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			System.out.println("rss channel link: "+rss1.getChannel().getLink());
-			System.out.println("rss channel link val: "+rss1.getChannel().getLink().getLink());
 			//fail("could not write output file with file output stream.");
 		XMLStreamWriter writer = new IndentingXMLStreamWriter(XMLOutputFactory
 						.newInstance().createXMLStreamWriter(

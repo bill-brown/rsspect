@@ -38,7 +38,6 @@ public class Description implements Serializable {
 
 	Description(String description) {
 		//descriptions can be empty
-		System.out.println("desc in constructor: "+description);
 		this.description = (description == null)?"":description;
 	}
 

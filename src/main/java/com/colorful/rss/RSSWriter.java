@@ -39,15 +39,15 @@ class RSSWriter {
 				writer.writeAttribute(attr.getName(), attr.getValue());
 			}
 		}
+		
+		// write the extensions
+		if (rss.getExtensions() != null) {
+			writeExtensions(writer, rss.getExtensions());
+		}
 
 		// write the channel
 		if (rss.getChannel() != null) {
 			writeChannel(writer, rss.getChannel());
-		}
-
-		// write the extensions
-		if (rss.getExtensions() != null) {
-			writeExtensions(writer, rss.getExtensions());
 		}
 
 		writer.writeEndElement();
@@ -130,12 +130,14 @@ class RSSWriter {
 			writeSkipDays(writer, channel.getSkipDays());
 		}
 
-		if (channel.getItems() != null) {
-			writeItems(writer, channel.getItems());
-		}
-
+		//add the extensions before the items.
 		if (channel.getExtensions() != null) {
 			writeExtensions(writer, channel.getExtensions());
+		}
+		
+		//finally write the items
+		if (channel.getItems() != null) {
+			writeItems(writer, channel.getItems());
 		}
 
 		writer.writeEndElement();
