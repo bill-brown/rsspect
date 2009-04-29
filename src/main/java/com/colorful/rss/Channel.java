@@ -91,7 +91,7 @@ public class Channel implements Serializable {
 			List<Category> categories, Generator generator, Docs docs,
 			Cloud cloud, TTL ttl, Image image, Rating rating,
 			TextInput textInput, SkipHours skipHours, SkipDays skipDays,
-			List<Item> items, List<Extension> extensions)
+			List<Extension> extensions, List<Item> items)
 			throws RSSpectException {
 
 		// make sure title is present

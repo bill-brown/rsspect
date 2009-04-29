@@ -77,7 +77,7 @@ public class RSS implements Serializable {
 							.getCloud(), channel.getTtl(), channel.getImage(),
 					channel.getRating(), channel.getTextInput(), channel
 							.getSkipHours(), channel.getSkipDays(), channel
-							.getItems(), channel.getExtensions());
+							.getExtensions(), channel.getItems());
 		} catch (RSSpectException e) {
 			throw e;
 		}
@@ -87,7 +87,7 @@ public class RSS implements Serializable {
 		} else {
 			this.attributes = new LinkedList<Attribute>();
 			// always add the version attribute if it's not in the list.
-			if(RSSDoc.getAttributeFromGroup(attributes,"version") == null){
+			if (RSSDoc.getAttributeFromGroup(attributes, "version") == null) {
 				this.attributes.add(new Attribute("version", "2.0"));
 			}
 			for (Attribute attr : attributes) {
@@ -118,8 +118,8 @@ public class RSS implements Serializable {
 							.getDocs(), channel.getCloud(), channel.getTtl(),
 					channel.getImage(), channel.getRating(), channel
 							.getTextInput(), channel.getSkipHours(), channel
-							.getSkipDays(), channel.getItems(), channel
-							.getExtensions());
+							.getSkipDays(), channel.getExtensions(), channel
+							.getItems());
 		} catch (Exception e) {
 			// we should never get here.
 			return null;

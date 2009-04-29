@@ -10,7 +10,7 @@
 	<artifactId>rsspect</artifactId>
 	<packaging>jar</packaging>
 	<name>RSSpect</name>
-	<url>http://www.colorfulsoftware.com/projects/rsspect/</url>
+	<url>http://www.colorfulsoftware.com/projects/rsspect</url>
 	<version>1.0.0.0-SNAPSHOT</version>
 	<description>RSSpect - An RSS 2.0 Feed Library written in Java</description>
 	<scm>
@@ -65,7 +65,7 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>true</uniqueVersion>
@@ -104,16 +104,43 @@
 					</properties>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<configuration>
+					<instrumentation>
+						<excludes>
+							<exclude>
+								src/test/java/**/*.class
+							</exclude>
+						</excludes>
+					</instrumentation>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax.xml</groupId>

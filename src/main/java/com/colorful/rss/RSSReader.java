@@ -288,7 +288,7 @@ class RSSReader {
 		return RSSDoc.buildChannel(title, link, description, language,
 				copyright, managingEditor, webMaster, pubDate, lastBuildDate,
 				categories, generator, docs, cloud, ttl, image, rating,
-				textInput, skipHours, skipDays, items, extensions);
+				textInput, skipHours, skipDays, extensions, items);
 
 	}
 
