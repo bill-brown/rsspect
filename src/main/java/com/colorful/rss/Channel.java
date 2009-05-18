@@ -139,7 +139,7 @@ public class Channel implements Serializable {
 		this.generator = (generator == null) ? null : new Generator(generator
 				.getGenerator());
 		this.docs = (docs == null) ? null : new Docs(docs.getDocs());
-		this.cloud = (cloud == null) ? null : new Cloud(cloud.getCloud());
+		this.cloud = (cloud == null) ? null : new Cloud(cloud.getAttributes());
 		this.ttl = (ttl == null) ? null : new TTL(ttl.getTtl());
 		this.image = (image == null) ? null : new Image(image.getUrl(), image
 				.getTitle(), image.getLink(), image.getWidth(), image
@@ -246,7 +246,12 @@ public class Channel implements Serializable {
 	}
 
 	public Cloud getCloud() {
-		return (cloud == null) ? null : new Cloud(cloud.getCloud());
+		try {
+			return (cloud == null) ? null : new Cloud(cloud.getAttributes());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public TTL getTtl() {

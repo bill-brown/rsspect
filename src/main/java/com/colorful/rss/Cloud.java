@@ -18,6 +18,8 @@
 package com.colorful.rss;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Allows processes to register with a cloud to be notified of updates to the
@@ -58,14 +60,98 @@ public class Cloud implements Serializable {
 	 */
 	private static final long serialVersionUID = 4431999134564899474L;
 
-	private final String cloud;
+	private final List<Attribute> attributes;
+	private final Attribute domain;
+	private final Attribute port;
+	private final Attribute path;
+	private final Attribute registerProcedure;
+	private final Attribute protocol;
 
-	Cloud(String cloud) {
-		this.cloud = cloud;
+	Cloud(List<Attribute> attributes) throws RSSpectException {
+		if (attributes == null) {
+			throw new RSSpectException(
+					"The cloud element requires attributes:  See \"http://cyber.law.harvard.edu/rss/soapMeetsRss.html#rsscloudInterface\".");
+		} else {
+			this.attributes = new LinkedList<Attribute>();
+			for (Attribute attr : attributes) {
+				// check for unsupported attribute.
+				this.attributes.add(new Attribute(attr.getName(), attr
+						.getValue()));
+			}
+		}
+
+		if ((this.domain = RSSDoc.getAttributeFromGroup(this.attributes,
+				"domain")) == null) {
+			throw new RSSpectException(
+					"cloud elements MUST have a domain attribute.");
+		}
+
+		if ((this.port = RSSDoc.getAttributeFromGroup(this.attributes, "port")) == null) {
+			throw new RSSpectException(
+					"cloud elements MUST have a port attribute.");
+		}
+
+		if ((this.path = RSSDoc.getAttributeFromGroup(this.attributes, "path")) == null) {
+			throw new RSSpectException(
+					"cloud elements MUST have a path attribute.");
+		}
+
+		if ((this.registerProcedure = RSSDoc.getAttributeFromGroup(
+				this.attributes, "registerProcedure")) == null) {
+			throw new RSSpectException(
+					"cloud elements MUST have a registerProcedure attribute.");
+		}
+
+		if ((this.protocol = RSSDoc.getAttributeFromGroup(this.attributes,
+				"protocol")) == null) {
+			throw new RSSpectException(
+					"cloud elements MUST have a protocol attribute.");
+		}
+		if (!this.protocol.equals(RSSDoc.buildAttribute("protocol", "xml-rpc"))
+				&& !this.protocol.equals(RSSDoc.buildAttribute("protocol",
+						"soap"))) {
+			throw new RSSpectException(
+					"the cloud's protocol attribute must be 'xml-rpc' or 'soap', case-sensitive.");
+		}
 	}
 
-	public String getCloud() {
-		return cloud;
+	/**
+	 * 
+	 * @return the category attribute list.
+	 */
+	public List<Attribute> getAttributes() {
+
+		List<Attribute> attrsCopy = new LinkedList<Attribute>();
+		if (this.attributes != null) {
+			for (Attribute attr : this.attributes) {
+				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
+			}
+		}
+		return (this.attributes == null) ? null : attrsCopy;
 	}
 
+	public Attribute getDomain() {
+		return (domain == null) ? null : new Attribute(domain.getName(), domain
+				.getValue());
+	}
+
+	public Attribute getPort() {
+		return (port == null) ? null : new Attribute(port.getName(), port
+				.getValue());
+	}
+
+	public Attribute getPath() {
+		return (path == null) ? null : new Attribute(path.getName(), path
+				.getValue());
+	}
+
+	public Attribute getRegisterProcedure() {
+		return (registerProcedure == null) ? null : new Attribute(
+				registerProcedure.getName(), registerProcedure.getValue());
+	}
+
+	public Attribute getProtocol() {
+		return (protocol == null) ? null : new Attribute(protocol.getName(),
+				protocol.getValue());
+	}
 }

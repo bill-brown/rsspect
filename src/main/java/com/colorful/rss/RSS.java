@@ -83,13 +83,10 @@ public class RSS implements Serializable {
 		}
 
 		if (attributes == null) {
-			this.attributes = null;
+			throw new RSSpectException("RSS elements must contain a version attribute.");
 		} else {
 			this.attributes = new LinkedList<Attribute>();
-			// always add the version attribute if it's not in the list.
-			if (RSSDoc.getAttributeFromGroup(attributes, "version") == null) {
-				this.attributes.add(new Attribute("version", "2.0"));
-			}
+
 			for (Attribute attr : attributes) {
 				this.attributes.add(new Attribute(attr.getName(), attr
 						.getValue()));
@@ -131,15 +128,14 @@ public class RSS implements Serializable {
 	 * @return the attributes for this element.
 	 */
 	public List<Attribute> getAttributes() {
-		if (attributes == null) {
-			return null;
-		} else {
-			List<Attribute> attrsCopy = new LinkedList<Attribute>();
+
+		List<Attribute> attrsCopy = new LinkedList<Attribute>();
+		if (this.attributes != null) {
 			for (Attribute attr : this.attributes) {
 				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
 			}
-			return attrsCopy;
 		}
+		return (this.attributes == null) ? null : attrsCopy;
 	}
 
 	/**

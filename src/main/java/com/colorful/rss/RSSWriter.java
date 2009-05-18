@@ -39,7 +39,7 @@ class RSSWriter {
 				writer.writeAttribute(attr.getName(), attr.getValue());
 			}
 		}
-		
+
 		// write the extensions
 		if (rss.getExtensions() != null) {
 			writeExtensions(writer, rss.getExtensions());
@@ -130,12 +130,12 @@ class RSSWriter {
 			writeSkipDays(writer, channel.getSkipDays());
 		}
 
-		//add the extensions before the items.
+		// add the extensions before the items.
 		if (channel.getExtensions() != null) {
 			writeExtensions(writer, channel.getExtensions());
 		}
-		
-		//finally write the items
+
+		// finally write the items
 		if (channel.getItems() != null) {
 			writeItems(writer, channel.getItems());
 		}
@@ -224,17 +224,12 @@ class RSSWriter {
 	}
 
 	void writeCloud(XMLStreamWriter writer, Cloud cloud) throws Exception {
-		
-		if (cloud.getCloud() == null
-				|| cloud.getCloud().trim().equals("")) {
-			writer.writeEmptyElement("cloud");
-		} else {
-			writer.writeStartElement("cloud");
-			writer.writeCharacters(cloud.getCloud());
+		writer.writeEmptyElement("cloud");
+		if (cloud.getAttributes() != null) {
+			for (Attribute attr : cloud.getAttributes()) {
+				writer.writeAttribute(attr.getName(), attr.getValue());
+			}
 		}
-		
-		
-		writer.writeEndElement();
 	}
 
 	void writeComments(XMLStreamWriter writer, Comments comments)
@@ -278,7 +273,7 @@ class RSSWriter {
 		} else {
 			writer.writeStartElement("enclosure");
 		}
-		
+
 		if (enclosure.getAttributes() != null) {
 			for (Attribute attr : enclosure.getAttributes()) {
 				writer.writeAttribute(attr.getName(), attr.getValue());

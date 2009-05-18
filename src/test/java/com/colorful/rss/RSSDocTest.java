@@ -22,6 +22,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import javanet.staxutils.IndentingXMLStreamWriter;
 
@@ -38,7 +40,11 @@ public class RSSDocTest {
 	private String expectedRSS1 = "<?xml version=\"1.0\"?>"
 			+ "<?xml-stylesheet href=\"/css/rss20.xsl\" type=\"text/xsl\"?>"
 			+ "<rss xmlns:pheedo=\"http://www.pheedo.com/namespace/pheedo\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:media=\"http://search.yahoo.com/mrss/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:nyt=\"http://www.nytimes.com/namespaces/rss/2.0\" version=\"2.0\">"
+			+ "<fakeExt xmlns=\"http://www.fake.extension.org/fakeness\" />"
 			+ "<channel>"
+			+ "<category>music</category>"
+			+ "<category>news</category>"
+			+ "<cloud domain=\"rpc.sys.com\" port=\"80\" path=\"/RPC2\" registerProcedure=\"pingMe\" protocol=\"soap\"/>"
 			+ "<title>NYT &gt; Home Page</title>"
 			+ "<link>http://www.nytimes.com/pages/index.html?partner=rss</link>"
 			+ "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml\"/>"
@@ -55,6 +61,7 @@ public class RSSDocTest {
 			+ "<title>Ford Has Loss of $1.4 Billion in Quarter, but Beats Forecast</title>"
 			+ "<link>http://feeds.nytimes.com/click.phdo?i=0155467d396aa780c181f5f7809a803e</link>"
 			+ "<pheedo:origLink>http://www.nytimes.com/2009/04/25/business/25ford.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>"
+			+ "<author>Someone important</author>"
 			+ "<guid isPermaLink=\"false\">http://www.nytimes.com/2009/04/25/business/25ford.html</guid>"
 			+ "<description>Despite the loss, Ford said that it was using up less cash than before and that it had $21.3 billion in cash as of March 31.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=0155467d396aa780c181f5f7809a803e&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=0155467d396aa780c181f5f7809a803e&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By NICK BUNKLEY</dc:creator>"
@@ -67,6 +74,7 @@ public class RSSDocTest {
 			+ "<title>At Least 60 More Are Killed in New Attacks in Baghdad</title>"
 			+ "<link>http://feeds.nytimes.com/click.phdo?i=fc9008de1b57c65c3ed32c7c74613c9a</link>"
 			+ "<pheedo:origLink>http://www.nytimes.com/2009/04/25/world/middleeast/25iraq.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>"
+			+ "<author>Someone important</author>"
 			+ "<guid isPermaLink=\"false\">http://www.nytimes.com/2009/04/25/world/middleeast/25iraq.html</guid>"
 			+ "<media:content url=\"http://graphics8.nytimes.com/images/2009/04/24/world/25iraq.ms.75.jpg\" medium=\"image\" height=\"75\" width=\"75\"/>"
 			+ "<media:description>A man injured in a suicide bombing at the Kazimiyah hospital in Baghdad on Friday.</media:description>"
@@ -83,11 +91,16 @@ public class RSSDocTest {
 			+ "<title>The Caucus: Congress Reaches a Tentative Deal on the Budget</title>"
 			+ "<link>http://feeds.nytimes.com/click.phdo?i=89ed26c949918ac94a090111fd880424</link>"
 			+ "<pheedo:origLink>http://thecaucus.blogs.nytimes.com/2009/04/24/congress-reaches-tentative-deal-on-the-budget/index.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>"
+			+ "<author>Someone important</author>"
 			+ "<guid isPermaLink=\"false\">http://thecaucus.blogs.nytimes.com/2009/04/24/congress-reaches-tentative-deal-on-the-budget/index.html</guid>"
 			+ "<description>The negotiated plan seems certain to include a procedural maneuver in an effort to avoid filibusters on health care reform.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By CARL HULSE</dc:creator>"
 			+ "<pubDate>Fri, 24 Apr 2009 17:28:46 GMT</pubDate>" + "</item>"
 			+ "</channel>" + "</rss>";
+
+	private String expectedRSS2 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
+
+	private String expectedRSS3 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><item><title>simplest feed</title><comments>these are comments.  they contain </comments><description><b xmlns=\"http://www.w3.org/1999/xhtml\">html</b></description></item></channel></rss>";
 
 	private static Calendar theDate;
 	static {
@@ -105,7 +118,7 @@ public class RSSDocTest {
 	@After
 	public void tearDown() throws Exception {
 		new File("out1.xml").delete();
-		//new File("out2.xml").delete();
+		// new File("out2.xml").delete();
 	}
 
 	@Test
@@ -117,7 +130,7 @@ public class RSSDocTest {
 	public void testWriteRSSDocOutputStreamRSSStringString() {
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
-			"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://feeds.nytimes.com/nyt/rss/HomePage"));
 			RSSDoc.writeRSSDoc(new FileOutputStream("out1.xml"), rss1,
 					RSSDoc.encoding, RSSDoc.xml_version);
 			RSS rss2 = RSSDoc.readRSSToBean(new File("out1.xml"));
@@ -135,23 +148,23 @@ public class RSSDocTest {
 	public void testWriteRSSDocWriterRSSStringString() {
 		// fail("Not yet implemented");
 	}
-	
+
 	@Test
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
-			"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			//fail("could not write output file with file output stream.");
-		XMLStreamWriter writer = new IndentingXMLStreamWriter(XMLOutputFactory
-						.newInstance().createXMLStreamWriter(
-				 				new FileOutputStream("out2.xml"), RSSDoc.encoding));
-				 RSSDoc.writeRSSDoc(writer, rss1, null, null);
+					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+			// fail("could not write output file with file output stream.");
+			XMLStreamWriter writer = new IndentingXMLStreamWriter(
+					XMLOutputFactory.newInstance().createXMLStreamWriter(
+							new FileOutputStream("out2.xml"), RSSDoc.encoding));
+			RSSDoc.writeRSSDoc(writer, rss1, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
 		}
 	}
-	
+
 	@Test
 	public void testReadRSSToStringRSSString() {
 
@@ -167,7 +180,7 @@ public class RSSDocTest {
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
-			assertNull(rss1.getExtensions());
+			assertNotNull(rss1.getExtensions());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -182,7 +195,7 @@ public class RSSDocTest {
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
-			assertNull(rss1.getExtensions());
+			assertNotNull(rss1.getExtensions());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,7 +211,6 @@ public class RSSDocTest {
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
-			assertNull(rss1.getExtensions());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -214,7 +226,6 @@ public class RSSDocTest {
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
-			assertNull(rss1.getExtensions());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -237,15 +248,59 @@ public class RSSDocTest {
 			fail("should be working. " + e.getLocalizedMessage());
 		}
 	}
-	
+
 	@Test
 	public void testBuildRSS() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS2);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
 	public void testBuildAttribute() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = RSSDoc.readRSSToString(rss1);
+			assertNotNull(rss1Str);
+			rss1 = RSSDoc.readRSSToBean(rss1Str);
+
+			assertNotNull(rss1);
+			assertNotNull(rss1.getExtensions());
+
+			for (Attribute attr : rss1.getAttributes()) {
+				assertNotNull(attr);
+				assertNotNull(attr.getName());
+				assertNotNull(attr.getValue());
+
+				if (attr.getName().equals("xmlns:pheedo")) {
+					assertTrue(attr.equals(RSSDoc.buildAttribute(
+							"xmlns:pheedo",
+							"http://www.pheedo.com/namespace/pheedo")));
+				}
+
+				if (attr.getName().equals("xmlns:dc")) {
+					assertTrue(attr.equals(RSSDoc.buildAttribute("xmlns:dc",
+							"http://purl.org/dc/elements/1.1/")));
+				}
+
+				assertFalse(attr.equals(RSSDoc.buildAttribute("xmlns:pheedo",
+						"http://www.pheedo.com/namespace/bobo")));
+
+				assertFalse(attr.equals(RSSDoc.buildAttribute("dude", null)));
+
+				assertFalse(attr
+						.equals("xmlns:pheedo=\"http://www.pheedo.com/namespace/bobo\""));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
@@ -260,17 +315,170 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildChannel() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS2);
+			String rss1Str = RSSDoc.readRSSToString(rss1);
+			assertNotNull(rss1Str);
+			rss1 = RSSDoc.readRSSToBean(rss1Str);
+
+			try {
+				RSSDoc.buildChannel(null, null, null, null, null, null, null,
+						null, null, null, null, null, null, null, null, null,
+						null, null, null, null, null);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"channel elements MUST contain a title element.");
+			}
+
+			try {
+				RSSDoc.buildChannel(RSSDoc.buildTitle("this is a title"), null,
+						null, null, null, null, null, null, null, null, null,
+						null, null, null, null, null, null, null, null, null,
+						null);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"channel elements MUST contain a link element.");
+			}
+
+			try {
+				RSSDoc.buildChannel(RSSDoc.buildTitle("this is a title"),
+						RSSDoc.buildLink("http://www.minoritydirectory.net"),
+						null, null, null, null, null, null, null, null, null,
+						null, null, null, null, null, null, null, null, null,
+						null);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"channel elements MUST contain a description element.");
+			}
+
+			try {
+				assertNotNull(RSSDoc.buildChannel(RSSDoc
+						.buildTitle("this is a title"), RSSDoc
+						.buildLink("http://www.minoritydirectory.net"), RSSDoc
+						.buildDescription("this is a description"), null, null,
+						null, null, null, null, null, null, null, null, null,
+						null, null, null, null, null, null, null));
+			} catch (RSSpectException r) {
+				fail("this shouldn't happen");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
 	public void testBuildCloud() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			Cloud cloud = rss1.getChannel().getCloud();
+			assertNotNull(cloud);
+			assertNotNull(cloud.getAttributes());
+			assertNotNull(cloud.getDomain());
+			assertNotNull(cloud.getPath());
+			assertNotNull(cloud.getPort());
+			assertNotNull(cloud.getProtocol());
+			assertNotNull(cloud.getRegisterProcedure());
+			for (Attribute attr : cloud.getAttributes()) {
+				assertNotNull(attr);
+				assertNotNull(attr.getName());
+				assertNotNull(attr.getValue());
+			}
+
+			try {
+				RSSDoc.buildCloud(null);
+			} catch (RSSpectException r) {
+				assertEquals(
+						r.getMessage(),
+						"The cloud element requires attributes:  See \"http://cyber.law.harvard.edu/rss/soapMeetsRss.html#rsscloudInterface\".");
+			}
+
+			List<Attribute> attrs = new LinkedList<Attribute>();
+			try {
+				RSSDoc.buildCloud(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"cloud elements MUST have a domain attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("domain", "domain"));
+
+			try {
+				RSSDoc.buildCloud(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"cloud elements MUST have a port attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("port", "port"));
+
+			try {
+				RSSDoc.buildCloud(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"cloud elements MUST have a path attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("path", "path"));
+
+			try {
+				RSSDoc.buildCloud(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"cloud elements MUST have a registerProcedure attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("registerProcedure",
+					"registerProcedure"));
+
+			try {
+				RSSDoc.buildCloud(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"cloud elements MUST have a protocol attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("protocol", "protocol"));
+
+			try {
+				RSSDoc.buildCloud(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"the cloud's protocol attribute must be 'xml-rpc' or 'soap', case-sensitive.");
+			}
+
+			attrs = new LinkedList<Attribute>();
+			attrs.add(RSSDoc.buildAttribute("domain", "domain"));
+			attrs.add(RSSDoc.buildAttribute("port", "port"));
+			attrs.add(RSSDoc.buildAttribute("path", "path"));
+			attrs.add(RSSDoc.buildAttribute("registerProcedure",
+					"registerProcedure"));
+			attrs.add(RSSDoc.buildAttribute("protocol", "soap"));
+			assertNotNull(RSSDoc.buildCloud(attrs));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
 	public void testBuildComments() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS3);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+
+			List<Item> items = rss1.getChannel().getItems();
+			assertNotNull(items);
+			for (Item item : items) {
+				Comments comments = item.getComments();
+				assertNotNull(comments);
+				assertNotNull(comments.getComments());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
@@ -320,7 +528,21 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildItem() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			List<Item> items = rss1.getChannel().getItems();
+			assertNotNull(items);
+			for (Item item : items) {
+				assertNotNull(item.getTitle());
+				assertNotNull(item.getDescription());
+				assertNotNull(item.getAuthor());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test

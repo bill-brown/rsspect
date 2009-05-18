@@ -61,7 +61,7 @@ class RSSReader {
 				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
 				if (elementName.equals("rss")) {
-					attributes = getAttributes(reader, attributes);
+					attributes = getAttributes(reader);
 				} else if (elementName.equals("channel")) {
 					channel = readChannel(reader);
 				} else {// extension
@@ -94,15 +94,16 @@ class RSSReader {
 		return RSSDoc.buildRSS(channel, attributes, extensions);
 	}
 
-	List<Attribute> getAttributes(XMLStreamReader reader,
-			List<Attribute> attributes) throws Exception {
-		if (attributes == null) {
-			attributes = new LinkedList<Attribute>();
-		}
+	List<Attribute> getAttributes(XMLStreamReader reader) throws Exception {
 
-		// skip the start document section if we are passed a document fragment.
+		List<Attribute> attributes = new LinkedList<Attribute>();
+
 		if (reader.getEventType() == XMLStreamConstants.START_DOCUMENT) {
 			reader.next();
+		}
+
+		if (reader.getEventType() != XMLStreamConstants.START_ELEMENT) {
+			return null;
 		}
 
 		int eventSkip = 0;
@@ -112,9 +113,7 @@ class RSSReader {
 			if (reader.getNamespacePrefix(i) != null) {
 				attrName += ":" + reader.getNamespacePrefix(i);
 			}
-			if (attributes == null) {
-				attributes = new LinkedList<Attribute>();
-			}
+
 			attributes.add(RSSDoc.buildAttribute(attrName, reader
 					.getNamespaceURI(i)));
 		}
@@ -128,14 +127,13 @@ class RSSReader {
 			} else {
 				attrName = reader.getAttributeName(i).getLocalPart();
 			}
-			if (attributes == null) {
-				attributes = new LinkedList<Attribute>();
-			}
+
 			attributes.add(RSSDoc.buildAttribute(attrName, reader
 					.getAttributeValue(i)));
 		}
 
-		return attributes;
+		// return null if no attributes were created.
+		return (attributes.size() == 0) ? null : attributes;
 	}
 
 	List<Extension> readExtension(XMLStreamReader reader,
@@ -146,24 +144,44 @@ class RSSReader {
 		}
 
 		StringBuffer extText = new StringBuffer();
-		List<Attribute> attributes = getAttributes(reader, null);
+		List<Attribute> attributes = getAttributes(reader);
 
 		while (reader.hasNext()) {
 			boolean breakOut = false;
+			String elementNamePrev = null;
 			switch (reader.next()) {
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
-				extensions = readExtension(reader, null, elementName);
+				if ((elementNamePrev != null)
+						&& (!elementName.equals(elementNamePrev))) {
+					List<Extension> subExtn = readExtension(reader, null,
+							elementName);
+					Extension extn = subExtn.get(0);
+					if (extn != null) {
+						StringBuffer extnStr = new StringBuffer();
+						extnStr.append("<" + extn.getElementName());
+						List<Attribute> extnAttrs = extn.getAttributes();
+						// add the attributes
+						if (extnAttrs != null && extnAttrs.size() > 0) {
+							for (Attribute attr : extnAttrs) {
+								extnStr.append(" " + attr.getName() + "=\""
+										+ attr.getValue() + "\"");
+							}
+						}
+						extnStr.append(">");
+						extnStr.append(extn.getContent());
+						extnStr.append("</" + extn.getElementName() + ">");
+					}
+				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
 				String elementNameEnd = getElementName(reader);
 				if (elementNameEnd.equals(elementName)) {
 					breakOut = true;
-				} else {
-					reader.next();
 				}
 				break;
+
 			default:
 				extText = extText.append(reader.getText());
 			}
@@ -187,9 +205,8 @@ class RSSReader {
 			categories = new LinkedList<Category>();
 		}
 
-		categories.add(RSSDoc
-				.buildCategory(RSSDoc.getAttributeFromGroup(getAttributes(
-						reader, null), "domain"), reader.getElementText()));
+		categories.add(RSSDoc.buildCategory(RSSDoc.getAttributeFromGroup(
+				getAttributes(reader), "domain"), reader.getElementText()));
 
 		return categories;
 	}
@@ -275,8 +292,6 @@ class RSSReader {
 				elementName = getElementName(reader);
 				if (elementName.equals("channel")) {
 					breakOut = true;
-				} else {
-					reader.next();
 				}
 				break;
 			}
@@ -293,7 +308,7 @@ class RSSReader {
 	}
 
 	Cloud readCloud(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildCloud(reader.getElementText());
+		return RSSDoc.buildCloud(getAttributes(reader));
 	}
 
 	Comments readComments(XMLStreamReader reader) throws Exception {
@@ -305,7 +320,7 @@ class RSSReader {
 	}
 
 	Description readDescription(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildDescription(reader.getElementText());
+		return RSSDoc.buildDescription(readEncodedHTML(reader, "description"));
 	}
 
 	Docs readDocs(XMLStreamReader reader) throws Exception {
@@ -313,7 +328,7 @@ class RSSReader {
 	}
 
 	Enclosure readEnclosure(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildEnclosure(getAttributes(reader, null), reader
+		return RSSDoc.buildEnclosure(getAttributes(reader), reader
 				.getElementText());
 	}
 
@@ -322,8 +337,8 @@ class RSSReader {
 	}
 
 	GUID readGUID(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildGUID(RSSDoc.getAttributeFromGroup(getAttributes(
-				reader, null), "isPermaLink"), reader.getElementText());
+		return RSSDoc.buildGUID(RSSDoc.getAttributeFromGroup(
+				getAttributes(reader), "isPermaLink"), reader.getElementText());
 	}
 
 	Height readHeight(XMLStreamReader reader) throws Exception {
@@ -366,8 +381,6 @@ class RSSReader {
 				elementName = getElementName(reader);
 				if (elementName.equals("image")) {
 					breakOut = true;
-				} else {
-					reader.next();
 				}
 				break;
 			}
@@ -411,8 +424,8 @@ class RSSReader {
 				} else if (elementName.equals("link")) {
 					link = readLink(reader);
 				} else if (elementName.equals("description")) {
-					description = RSSDoc
-							.buildDescription(readEncodedHTML(reader));
+					description = RSSDoc.buildDescription(readEncodedHTML(
+							reader, "description"));
 				} else if (elementName.equals("author")) {
 					author = readAuthor(reader);
 				} else if (elementName.equals("category")) {
@@ -436,8 +449,6 @@ class RSSReader {
 				elementName = getElementName(reader);
 				if (elementName.equals("item")) {
 					breakOut = true;
-				} else {
-					reader.next();
 				}
 				break;
 			}
@@ -512,8 +523,8 @@ class RSSReader {
 	}
 
 	Source readSource(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildSource(RSSDoc.getAttributeFromGroup(getAttributes(
-				reader, null), "url"), reader.getElementText());
+		return RSSDoc.buildSource(RSSDoc.getAttributeFromGroup(
+				getAttributes(reader), "url"), reader.getElementText());
 	}
 
 	TextInput readTextInput(XMLStreamReader reader) throws Exception {
@@ -525,6 +536,7 @@ class RSSReader {
 		String elementName = null;
 
 		while (reader.hasNext()) {
+			boolean breakOut = false;
 			switch (reader.next()) {
 
 			case XMLStreamConstants.START_ELEMENT:
@@ -542,7 +554,13 @@ class RSSReader {
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				reader.next();
+				elementName = getElementName(reader);
+				if (elementName.equals("textInput")) {
+					breakOut = true;
+				}
+				break;
+			}
+			if (breakOut) {
 				break;
 			}
 		}
@@ -571,50 +589,60 @@ class RSSReader {
 		return RSSDoc.buildWidth(reader.getElementText());
 	}
 
-	String readEncodedHTML(XMLStreamReader reader) throws XMLStreamException,
-			Exception {
+	String readEncodedHTML(XMLStreamReader reader, String parentElement)
+			throws XMLStreamException, Exception {
 		StringBuffer xhtml = new StringBuffer();
 		String elementName = null;
+
 		while (reader.hasNext()) {
 			boolean breakOut = false;
-			switch (reader.next()) {
+			int next = reader.next();
+
+			switch (next) {
+
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
-
-				xhtml.append("&gt;" + elementName);
-
-				List<Attribute> attributes = getAttributes(reader, null);
+				xhtml.append("<" + elementName);
+				List<Attribute> attributes = getAttributes(reader);
 				// add the attributes
 				if (attributes != null && attributes.size() > 0) {
 					for (Attribute attr : attributes) {
-						xhtml.append(" " + attr.getName() + "="
-								+ attr.getValue());
+						xhtml.append(" " + attr.getName() + "=\""
+								+ attr.getValue() + "\"");
 					}
-					xhtml.append(" ");
 				}
-				xhtml.append("&lt;");
+				xhtml.append(">");
 				break;
+
 			case XMLStreamConstants.END_ELEMENT:
 				elementName = getElementName(reader);
-				if (elementName.equals("description")) {
+				if (elementName.equals(parentElement)
+						&& namespaceURI.equals("")) {
 					breakOut = true;
 				} else {
-					xhtml.append("&gt;/" + elementName + "&lt;");
+					xhtml.append("</" + elementName + ">");
 				}
 				break;
+
 			case XMLStreamConstants.CDATA:
-				xhtml.append("![CDATA[" + reader.getText() + "]]");
+				xhtml.append("<![CDATA[" + reader.getText() + "]]>");
 				break;
+
 			default:
-				xhtml.append(reader.getText());
+				// escape the necessary characters.
+				String escapedTxt = reader.getText().replaceAll("&", "&amp;")
+						.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+				xhtml.append(escapedTxt);
 			}
 			if (breakOut) {
 				break;
 			}
 		}
-		return xhtml.toString().replaceAll("<", "&lt;").replaceAll(
-				">", "&gt;");
+		return xhtml.toString();
 	}
+
+	// set the current namespace to the "empty namespace".
+	private String namespaceURI = "";
 
 	private String getElementName(XMLStreamReader reader) {
 		String elementName = null;
@@ -624,6 +652,9 @@ class RSSReader {
 		} else {
 			elementName = reader.getLocalName();
 		}
+		// set the current namespace prefix:
+		namespaceURI = (reader.getNamespaceURI() == null) ? "" : reader
+				.getNamespaceURI();
 		return elementName;
 	}
 }
