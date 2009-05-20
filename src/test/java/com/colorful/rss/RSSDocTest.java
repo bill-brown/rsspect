@@ -45,6 +45,7 @@ public class RSSDocTest {
 			+ "<category>music</category>"
 			+ "<category>news</category>"
 			+ "<cloud domain=\"rpc.sys.com\" port=\"80\" path=\"/RPC2\" registerProcedure=\"pingMe\" protocol=\"soap\"/>"
+			+ "<docs>http://www.colorfulsoftware.com</docs>"
 			+ "<title>NYT &gt; Home Page</title>"
 			+ "<link>http://www.nytimes.com/pages/index.html?partner=rss</link>"
 			+ "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml\"/>"
@@ -56,12 +57,17 @@ public class RSSDocTest {
 			+ "<title>NYT &gt; Home Page</title>"
 			+ "<url>http://graphics.nytimes.com/images/section/NytSectionHeader.gif</url>"
 			+ "<link>http://www.nytimes.com/pages/index.html?partner=rss</link>"
+			+ "<height>100</height>"
+			+ "<width>144</width>"
+			+ "<description>this is the coolest image</description>"
 			+ "</image>"
+
 			+ "<item>"
 			+ "<title>Ford Has Loss of $1.4 Billion in Quarter, but Beats Forecast</title>"
 			+ "<link>http://feeds.nytimes.com/click.phdo?i=0155467d396aa780c181f5f7809a803e</link>"
 			+ "<pheedo:origLink>http://www.nytimes.com/2009/04/25/business/25ford.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>"
 			+ "<author>Someone important</author>"
+			+ "<enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/flac\" />"
 			+ "<guid isPermaLink=\"false\">http://www.nytimes.com/2009/04/25/business/25ford.html</guid>"
 			+ "<description>Despite the loss, Ford said that it was using up less cash than before and that it had $21.3 billion in cash as of March 31.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=0155467d396aa780c181f5f7809a803e&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=0155467d396aa780c181f5f7809a803e&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By NICK BUNKLEY</dc:creator>"
@@ -70,11 +76,13 @@ public class RSSDocTest {
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Subprime Mortgage Crisis</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Company Reports</category>"
 			+ "</item>"
+
 			+ "<item>"
 			+ "<title>At Least 60 More Are Killed in New Attacks in Baghdad</title>"
 			+ "<link>http://feeds.nytimes.com/click.phdo?i=fc9008de1b57c65c3ed32c7c74613c9a</link>"
 			+ "<pheedo:origLink>http://www.nytimes.com/2009/04/25/world/middleeast/25iraq.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>"
 			+ "<author>Someone important</author>"
+			+ "<enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3?addSomeSpice=yes&amp;does=thisWork\" length=\"12216320\" type=\"audio/flac\" />"
 			+ "<guid isPermaLink=\"false\">http://www.nytimes.com/2009/04/25/world/middleeast/25iraq.html</guid>"
 			+ "<media:content url=\"http://graphics8.nytimes.com/images/2009/04/24/world/25iraq.ms.75.jpg\" medium=\"image\" height=\"75\" width=\"75\"/>"
 			+ "<media:description>A man injured in a suicide bombing at the Kazimiyah hospital in Baghdad on Friday.</media:description>"
@@ -87,11 +95,13 @@ public class RSSDocTest {
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Bombs and Explosives</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Terrorism</category>"
 			+ "</item>"
+
 			+ "<item>"
 			+ "<title>The Caucus: Congress Reaches a Tentative Deal on the Budget</title>"
 			+ "<link>http://feeds.nytimes.com/click.phdo?i=89ed26c949918ac94a090111fd880424</link>"
 			+ "<pheedo:origLink>http://thecaucus.blogs.nytimes.com/2009/04/24/congress-reaches-tentative-deal-on-the-budget/index.html?partner=rss&amp;amp;emc=rss</pheedo:origLink>"
 			+ "<author>Someone important</author>"
+			+ "<enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3?addSomeSpice=yes&amp;does=thisWork\" length=\"12216320\" type=\"audio/flac\" />"
 			+ "<guid isPermaLink=\"false\">http://thecaucus.blogs.nytimes.com/2009/04/24/congress-reaches-tentative-deal-on-the-budget/index.html</guid>"
 			+ "<description>The negotiated plan seems certain to include a procedural maneuver in an effort to avoid filibusters on health care reform.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By CARL HULSE</dc:creator>"
@@ -498,7 +508,70 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildEnclosure() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			List<Item> items = rss1.getChannel().getItems();
+			assertNotNull(items);
+			assertTrue(items.size() == 3);
+			for (Item item : items) {
+
+				assertNotNull(item.getEnclosure());
+				Enclosure enclosure = item.getEnclosure();
+				assertNotNull(enclosure.getAttributes());
+				assertNotNull(enclosure.getUrl());
+				assertNotNull(enclosure.getLength());
+				assertNotNull(enclosure.getType());
+
+				for (Attribute attr : enclosure.getAttributes()) {
+					assertNotNull(attr);
+					assertNotNull(attr.getName());
+					assertNotNull(attr.getValue());
+				}
+			}
+
+			try {
+				RSSDoc.buildEnclosure(null);
+			} catch (RSSpectException r) {
+				assertEquals(
+						r.getMessage(),
+						"enclosure elements MUST contain the url, length and type attributes.  See: http://cyber.law.harvard.edu/rss/rss.html#ltenclosuregtSubelementOfLtitemgt");
+			}
+
+			List<Attribute> attrs = new LinkedList<Attribute>();
+			try {
+				RSSDoc.buildEnclosure(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"enclusure elements MUST have a url attribute.");
+			}
+			attrs
+					.add(RSSDoc.buildAttribute("url",
+							"http://www.earthbeats.net"));
+
+			try {
+				RSSDoc.buildEnclosure(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"enclusure elements MUST have a length attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("length", "1234567"));
+
+			try {
+				RSSDoc.buildEnclosure(attrs);
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"enclusure elements MUST have a type attribute.");
+			}
+			attrs.add(RSSDoc.buildAttribute("type", "media/flac"));
+
+			assertNotNull(RSSDoc.buildEnclosure(attrs));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
@@ -518,12 +591,72 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildHeight() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getChannel().getImage());
+			assertNotNull(rss1.getChannel().getImage().getHeight());
+			assertNotNull(rss1.getChannel().getImage().getHeight().getHeight());
+			assertEquals(rss1.getChannel().getImage().getHeight().getHeight(),
+					"100");
+			try {
+				RSSDoc.buildHeight("401");
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"height cannot be greater than 400px.");
+			}
+
+			try {
+				RSSDoc.buildHeight("abc");
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"invalid number format for height.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test
 	public void testBuildImage() {
-		// fail("Not yet implemented");
+		URL url = null;
+		Title title = null;
+		Link link = null;
+		try {
+			RSSDoc.buildImage(url, title, link, null, null, null);
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"image elements MUST contain a url element.");
+		}
+
+		try {
+			url = RSSDoc.buildURL("http://www.earthbeats.net");
+			RSSDoc.buildImage(url, title, link, null, null, null);
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"image elements MUST contain a title element.");
+		}
+
+		try {
+			title = RSSDoc.buildTitle("this is a title");
+			RSSDoc.buildImage(url, title, link, null, null, null);
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"image elements MUST contain a link element.");
+		}
+		try {
+			link = RSSDoc.buildLink("http://www.earthbeats.net");
+			Image image = RSSDoc.buildImage(url, title, link, null, null, null);
+			assertNotNull(image);
+			assertEquals(image.getUrl().getUrl(), "http://www.earthbeats.net");
+			assertEquals(image.getTitle().getTitle(), "this is a title");
+			assertEquals(image.getLink().getLink(), "http://www.earthbeats.net");
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
@@ -622,7 +755,32 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildWidth() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getChannel().getImage());
+			assertNotNull(rss1.getChannel().getImage().getWidth());
+			assertNotNull(rss1.getChannel().getImage().getWidth().getWidth());
+			assertEquals(rss1.getChannel().getImage().getWidth().getWidth(),
+					"144");
+			try {
+				RSSDoc.buildWidth("145");
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"width cannot be greater than 144px.");
+			}
+
+			try {
+				RSSDoc.buildWidth("abc");
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(), "invalid number format for width.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
 	}
 
 	@Test

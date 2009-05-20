@@ -125,7 +125,7 @@ public class RSS implements Serializable {
 
 	/**
 	 * 
-	 * @return the attributes for this element.
+	 * @return the attribute list.
 	 */
 	public List<Attribute> getAttributes() {
 

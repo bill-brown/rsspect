@@ -328,8 +328,7 @@ class RSSReader {
 	}
 
 	Enclosure readEnclosure(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildEnclosure(getAttributes(reader), reader
-				.getElementText());
+		return RSSDoc.buildEnclosure(getAttributes(reader));
 	}
 
 	Generator readGenerator(XMLStreamReader reader) throws Exception {

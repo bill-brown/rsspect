@@ -117,7 +117,7 @@ public class Cloud implements Serializable {
 
 	/**
 	 * 
-	 * @return the category attribute list.
+	 * @return the cloud attribute list.
 	 */
 	public List<Attribute> getAttributes() {
 

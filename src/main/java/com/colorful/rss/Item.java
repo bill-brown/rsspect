@@ -98,7 +98,7 @@ public class Item implements Serializable {
 				.getComments());
 
 		this.enclosure = (enclosure == null) ? null : new Enclosure(enclosure
-				.getAttributes(), enclosure.getEnclosure());
+				.getAttributes());
 
 		this.guid = (guid == null) ? null : new GUID(guid.getIsPermaLink(),
 				guid.getGuid());
@@ -163,7 +163,7 @@ public class Item implements Serializable {
 	public Enclosure getEnclosure() {
 		try {
 			return (enclosure == null) ? null : new Enclosure(enclosure
-					.getAttributes(), enclosure.getEnclosure());
+					.getAttributes());
 		} catch (Exception e) {
 			// we should never get here.
 			return null;

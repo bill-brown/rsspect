@@ -267,21 +267,12 @@ class RSSWriter {
 	void writeEnclosure(XMLStreamWriter writer, Enclosure enclosure)
 			throws Exception {
 
-		if (enclosure.getEnclosure() == null
-				|| enclosure.getEnclosure().trim().equals("")) {
-			writer.writeEmptyElement("enclosure");
-		} else {
-			writer.writeStartElement("enclosure");
-		}
-
+		writer.writeEmptyElement("enclosure");
 		if (enclosure.getAttributes() != null) {
 			for (Attribute attr : enclosure.getAttributes()) {
 				writer.writeAttribute(attr.getName(), attr.getValue());
 			}
 		}
-
-		writer.writeCharacters(enclosure.getEnclosure());
-		writer.writeEndElement();
 	}
 
 	void writeExtensions(XMLStreamWriter writer, List<Extension> extensions)

@@ -50,80 +50,70 @@ public class Enclosure implements Serializable {
 	 */
 	private static final long serialVersionUID = -7669768690905784080L;
 
-	private final String enclosure;
-
 	private final List<Attribute> attributes;
+	private final Attribute url;
+	private final Attribute length;
+	private final Attribute type;
 
-	Enclosure(List<Attribute> attributes, String enclosure)
-			throws RSSpectException {
+	Enclosure(List<Attribute> attributes) throws RSSpectException {
 
 		if (attributes == null) {
 			throw new RSSpectException(
-					"enclosure elements MUST contain the url, length and type attributes.");
-
+					"enclosure elements MUST contain the url, length and type attributes.  See: http://cyber.law.harvard.edu/rss/rss.html#ltenclosuregtSubelementOfLtitemgt");
 		} else {
-
-			boolean hasURL = false;
-			boolean hasLength = false;
-			boolean hasType = false;
-			for (Attribute attr : attributes) {
-				// check for url attribute
-				if (attr.getName().equals("url")) {
-					hasURL = true;
-				}
-				// check for length attribute
-				if (attr.getName().equals("length")) {
-					hasLength = true;
-				}
-				// check for type attribute
-				if (attr.getName().equals("type")) {
-					hasType = true;
-				}
-			}
-
-			if (!hasURL) {
-				throw new RSSpectException(
-						"enclosure elements MUST contain the url attribute.");
-			}
-
-			if (!hasLength) {
-				throw new RSSpectException(
-						"enclosure elements MUST contain the length attribute.");
-			}
-
-			if (!hasType) {
-				throw new RSSpectException(
-						"enclosure elements MUST contain the type attribute.");
-			}
-
 			this.attributes = new LinkedList<Attribute>();
 			for (Attribute attr : attributes) {
+				// check for unsupported attribute.
 				this.attributes.add(new Attribute(attr.getName(), attr
 						.getValue()));
 			}
 		}
 
-		this.enclosure = enclosure;
-	}
+		if ((this.url = RSSDoc.getAttributeFromGroup(this.attributes, "url")) == null) {
+			throw new RSSpectException(
+					"enclusure elements MUST have a url attribute.");
+		}
 
-	public String getEnclosure() {
-		return enclosure;
+		if ((this.length = RSSDoc.getAttributeFromGroup(this.attributes,
+				"length")) == null) {
+			throw new RSSpectException(
+					"enclusure elements MUST have a length attribute.");
+		}
+
+		if ((this.type = RSSDoc.getAttributeFromGroup(this.attributes, "type")) == null) {
+			throw new RSSpectException(
+					"enclusure elements MUST have a type attribute.");
+		}
+
 	}
 
 	/**
 	 * 
-	 * @return the attributes for this element.
+	 * @return the cloud attribute list.
 	 */
 	public List<Attribute> getAttributes() {
-		if (attributes == null) {
-			return null;
-		} else {
-			List<Attribute> attrsCopy = new LinkedList<Attribute>();
+
+		List<Attribute> attrsCopy = new LinkedList<Attribute>();
+		if (this.attributes != null) {
 			for (Attribute attr : this.attributes) {
 				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
 			}
-			return attrsCopy;
 		}
+		return (this.attributes == null) ? null : attrsCopy;
 	}
 
+	public Attribute getUrl() {
+		return (url == null) ? null : new Attribute(url.getName(), url
+				.getValue());
+	}
+
+	public Attribute getLength() {
+		return (length == null) ? null : new Attribute(length.getName(), length
+				.getValue());
+	}
+
+	public Attribute getType() {
+		return (type == null) ? null : new Attribute(type.getName(), type
+				.getValue());
+	}
 }

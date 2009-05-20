@@ -427,9 +427,9 @@ public final class RSSDoc {
 	 * @return an immutable Enclosure object.
 	 * @throws RSSpectException
 	 */
-	public static Enclosure buildEnclosure(List<Attribute> attributes,
-			String enclosure) throws RSSpectException {
-		return new Enclosure(attributes, enclosure);
+	public static Enclosure buildEnclosure(List<Attribute> attributes)
+			throws RSSpectException {
+		return new Enclosure(attributes);
 	}
 
 	/**
