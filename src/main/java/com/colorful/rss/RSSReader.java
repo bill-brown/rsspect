@@ -278,8 +278,10 @@ class RSSReader {
 				} else if (elementName.equals("textInput")) {
 					textInput = readTextInput(reader);
 				} else if (elementName.equals("skipHours")) {
+					System.out.println("found skip hours element.");
 					skipHours = readSkipHours(reader);
 				} else if (elementName.equals("skipDays")) {
+					System.out.println("found skip days element.");
 					skipDays = readSkipDays(reader);
 				} else if (elementName.equals("item")) {
 					items = readItem(reader, items);
@@ -514,11 +516,84 @@ class RSSReader {
 	}
 
 	SkipDays readSkipDays(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildSkipDays(reader.getElementText());
+
+		List<Day> days = null;
+		String elementName = null;
+
+		while (reader.hasNext()) {
+			boolean breakOut = false;
+			switch (reader.next()) {
+
+			case XMLStreamConstants.START_ELEMENT:
+				elementName = getElementName(reader);
+				if (elementName.equals("day")) {
+					days = readDay(reader, days);
+				}
+				break;
+
+			case XMLStreamConstants.END_ELEMENT:
+				elementName = getElementName(reader);
+				if (elementName.equals("skipDays")) {
+					breakOut = true;
+				}
+				break;
+			}
+			if (breakOut) {
+				break;
+			}
+		}
+		return RSSDoc.buildSkipDays(days);
+	}
+
+	List<Day> readDay(XMLStreamReader reader, List<Day> days) throws Exception {
+		if (days == null) {
+			days = new LinkedList<Day>();
+		}
+		days.add(RSSDoc.buildDay(reader.getElementText()));
+		return days;
 	}
 
 	SkipHours readSkipHours(XMLStreamReader reader) throws Exception {
-		return RSSDoc.buildSkipHours(reader.getElementText());
+		
+		List<Hour> hours = null;
+		String elementName = null;
+
+		while (reader.hasNext()) {
+			boolean breakOut = false;
+			switch (reader.next()) {
+
+			case XMLStreamConstants.START_ELEMENT:
+				elementName = getElementName(reader);
+				System.out.println("element name: "+elementName);
+				if (elementName.equals("hour")) {
+					System.out.println("adding to hours.");
+					hours = readHour(reader, hours);
+					System.out.println("hours size: "+hours.size());
+				}
+				break;
+
+			case XMLStreamConstants.END_ELEMENT:
+				elementName = getElementName(reader);
+				if (elementName.equals("skipHours")) {
+					breakOut = true;
+				}
+				break;
+			}
+			if (breakOut) {
+				break;
+			}
+		}
+		System.out.println("hours size before final buildout: "+hours.size());
+		return RSSDoc.buildSkipHours(hours);
+	}
+
+	List<Hour> readHour(XMLStreamReader reader, List<Hour> hours)
+			throws Exception {
+		if (hours == null) {
+			hours = new LinkedList<Hour>();
+		}
+		hours.add(RSSDoc.buildHour(reader.getElementText()));
+		return hours;
 	}
 
 	Source readSource(XMLStreamReader reader) throws Exception {

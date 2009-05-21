@@ -44,7 +44,7 @@ private final RSSDateConstruct lastBuildDate;
      * @return the date timestamp for this element.
      */
     protected Date getDateTime(){
-    	return (lastBuildDate == null) ? null : lastBuildDate.getDateTime();
+    	return lastBuildDate.getDateTime();
     }
     
     /**
@@ -53,6 +53,6 @@ private final RSSDateConstruct lastBuildDate;
      * 	for example 2006-04-28T12:50:43.337-05:00
      */
     public String getText() {
-    	return (lastBuildDate == null) ? null : lastBuildDate.getText();
+    	return lastBuildDate.getText();
     }
 }

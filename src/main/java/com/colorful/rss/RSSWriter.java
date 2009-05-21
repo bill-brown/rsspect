@@ -421,15 +421,31 @@ class RSSWriter {
 	void writeSkipDays(XMLStreamWriter writer, SkipDays skipDays)
 			throws Exception {
 		writer.writeStartElement("skipDays");
-		writer.writeCharacters(skipDays.getSkipDays());
+		writeDays(writer,skipDays.getSkipDays());
 		writer.writeEndElement();
 	}
 
 	void writeSkipHours(XMLStreamWriter writer, SkipHours skipHours)
 			throws Exception {
 		writer.writeStartElement("skipHours");
-		writer.writeCharacters(skipHours.getSkipHours());
+		writeHours(writer,skipHours.getSkipHours());
 		writer.writeEndElement();
+	}
+	
+	void writeDays(XMLStreamWriter writer, List<Day> skipDays) throws Exception {
+		for (Day day : skipDays) {
+			writer.writeStartElement("day");
+			writer.writeCharacters(day.getDay());
+			writer.writeEndElement();
+		}
+	}
+	
+	void writeHours(XMLStreamWriter writer, List<Hour> skipHours) throws Exception {
+		for (Hour hour : skipHours) {
+			writer.writeStartElement("hour");
+			writer.writeCharacters(hour.getHour());
+			writer.writeEndElement();
+		}
 	}
 
 	void writeSource(XMLStreamWriter writer, Source source) throws Exception {

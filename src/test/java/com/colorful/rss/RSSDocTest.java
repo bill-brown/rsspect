@@ -44,8 +44,14 @@ public class RSSDocTest {
 			+ "<channel>"
 			+ "<category>music</category>"
 			+ "<category>news</category>"
+			+ "<rating>funky</rating>"
+			+ "<managingEditor>Bill Brown</managingEditor>"
 			+ "<cloud domain=\"rpc.sys.com\" port=\"80\" path=\"/RPC2\" registerProcedure=\"pingMe\" protocol=\"soap\"/>"
 			+ "<docs>http://www.colorfulsoftware.com</docs>"
+			+ "<skipDays><day>Monday</day><day>Tuesday</day><day>Wednesday</day></skipDays>"
+			+ "<skipHours><hour>0</hour><hour>12</hour><hour>23</hour></skipHours>"
+			+ "<ttl>60</ttl>"
+			+ "<webMaster>Bill Brown</webMaster>"
 			+ "<title>NYT &gt; Home Page</title>"
 			+ "<link>http://www.nytimes.com/pages/index.html?partner=rss</link>"
 			+ "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml\"/>"
@@ -61,6 +67,12 @@ public class RSSDocTest {
 			+ "<width>144</width>"
 			+ "<description>this is the coolest image</description>"
 			+ "</image>"
+			+ "<textInput>"
+			+ "<title>Submit Data</title>"
+			+ "<description>a typical textarea input</description>"
+			+ "<name>textArea</name>"
+			+ "<link>http://www.earthbeats.net</link>"
+			+ "</textInput>"
 
 			+ "<item>"
 			+ "<title>Ford Has Loss of $1.4 Billion in Quarter, but Beats Forecast</title>"
@@ -75,6 +87,7 @@ public class RSSDocTest {
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/nyt_org_all\">Ford Motor Co|F|NYSE</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Subprime Mortgage Crisis</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Company Reports</category>"
+			+ "<source url=\"http://www.tomalak.org/links2.xml\">Tomalak's Realm</source>"
 			+ "</item>"
 
 			+ "<item>"
@@ -94,6 +107,7 @@ public class RSSDocTest {
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Iraq War (2003- )</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Bombs and Explosives</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Terrorism</category>"
+			+ "<source url=\"http://www.tomalak.org/links2.xml\">Tomalak's Realm</source>"
 			+ "</item>"
 
 			+ "<item>"
@@ -105,8 +119,9 @@ public class RSSDocTest {
 			+ "<guid isPermaLink=\"false\">http://thecaucus.blogs.nytimes.com/2009/04/24/congress-reaches-tentative-deal-on-the-budget/index.html</guid>"
 			+ "<description>The negotiated plan seems certain to include a procedural maneuver in an effort to avoid filibusters on health care reform.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By CARL HULSE</dc:creator>"
-			+ "<pubDate>Fri, 24 Apr 2009 17:28:46 GMT</pubDate>" + "</item>"
-			+ "</channel>" + "</rss>";
+			+ "<pubDate>Fri, 24 Apr 2009 17:28:46 GMT</pubDate>"
+			+ "<source url=\"http://www.tomalak.org/links2.xml\">Tomalak's Realm</source>"
+			+ "</item>" + "</channel>" + "</rss>";
 
 	private String expectedRSS2 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
 
@@ -206,6 +221,15 @@ public class RSSDocTest {
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
 			assertNotNull(rss1.getExtensions());
+			Channel channel = rss1.getChannel();
+			assertNotNull(channel.getCategories());
+			assertNotNull(channel.getRating());
+			assertNotNull(channel.getManagingEditor());
+			assertNotNull(channel.getCloud());
+			assertNotNull(channel.getSkipDays());
+			assertNotNull(channel.getSkipHours());
+			assertNotNull(channel.getTtl());
+			assertNotNull(channel.getWebMaster());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -270,6 +294,30 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
+
+		try {
+			RSS rss = RSSDoc.buildRSS(null, null, null);
+			assertNotNull(rss);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"rss elements MUST contain a channel element.");
+		}
+
+		try {
+			Channel channel = RSSDoc.buildChannel(RSSDoc
+					.buildTitle("this is a title"), RSSDoc
+					.buildLink("http://www.minoritydirectory.net"), RSSDoc
+					.buildDescription("this is a description"), null, null,
+					null, null, null, null, null, null, null, null, null, null,
+					null, null, null, null, null, null);
+			RSS rss = RSSDoc.buildRSS(channel, null, null);
+			assertNotNull(rss);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"RSS elements must contain a version attribute.");
+		}
 	}
 
 	@Test
@@ -277,6 +325,7 @@ public class RSSDocTest {
 		try {
 			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
 			String rss1Str = RSSDoc.readRSSToString(rss1);
+			System.out.println(rss1Str);
 			assertNotNull(rss1Str);
 			rss1 = RSSDoc.readRSSToBean(rss1Str);
 
@@ -335,6 +384,7 @@ public class RSSDocTest {
 				RSSDoc.buildChannel(null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"channel elements MUST contain a title element.");
@@ -345,6 +395,7 @@ public class RSSDocTest {
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null, null,
 						null);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"channel elements MUST contain a link element.");
@@ -356,6 +407,7 @@ public class RSSDocTest {
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null, null,
 						null);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"channel elements MUST contain a description element.");
@@ -400,6 +452,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildCloud(null);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(
 						r.getMessage(),
@@ -409,6 +462,7 @@ public class RSSDocTest {
 			List<Attribute> attrs = new LinkedList<Attribute>();
 			try {
 				RSSDoc.buildCloud(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a domain attribute.");
@@ -417,6 +471,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildCloud(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a port attribute.");
@@ -425,6 +480,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildCloud(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a path attribute.");
@@ -433,6 +489,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildCloud(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a registerProcedure attribute.");
@@ -442,6 +499,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildCloud(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a protocol attribute.");
@@ -450,6 +508,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildCloud(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"the cloud's protocol attribute must be 'xml-rpc' or 'soap', case-sensitive.");
@@ -533,6 +592,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildEnclosure(null);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(
 						r.getMessage(),
@@ -542,6 +602,7 @@ public class RSSDocTest {
 			List<Attribute> attrs = new LinkedList<Attribute>();
 			try {
 				RSSDoc.buildEnclosure(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"enclusure elements MUST have a url attribute.");
@@ -552,6 +613,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildEnclosure(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"enclusure elements MUST have a length attribute.");
@@ -560,6 +622,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildEnclosure(attrs);
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"enclusure elements MUST have a type attribute.");
@@ -602,6 +665,7 @@ public class RSSDocTest {
 					"100");
 			try {
 				RSSDoc.buildHeight("401");
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"height cannot be greater than 400px.");
@@ -609,6 +673,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildHeight("abc");
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"invalid number format for height.");
@@ -627,6 +692,7 @@ public class RSSDocTest {
 		Link link = null;
 		try {
 			RSSDoc.buildImage(url, title, link, null, null, null);
+			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"image elements MUST contain a url element.");
@@ -635,6 +701,7 @@ public class RSSDocTest {
 		try {
 			url = RSSDoc.buildURL("http://www.earthbeats.net");
 			RSSDoc.buildImage(url, title, link, null, null, null);
+			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"image elements MUST contain a title element.");
@@ -643,6 +710,7 @@ public class RSSDocTest {
 		try {
 			title = RSSDoc.buildTitle("this is a title");
 			RSSDoc.buildImage(url, title, link, null, null, null);
+			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"image elements MUST contain a link element.");
@@ -671,7 +739,37 @@ public class RSSDocTest {
 				assertNotNull(item.getTitle());
 				assertNotNull(item.getDescription());
 				assertNotNull(item.getAuthor());
+				assertNotNull(item.getSource());
 			}
+
+			try {
+				Item item = RSSDoc.buildItem(null, null, RSSDoc
+						.buildDescription("something cool"), null, null, null,
+						null, null, null, null, null);
+				assertNotNull(item.getDescription());
+				assertNull(item.getTitle());
+			} catch (RSSpectException r) {
+				fail("should not fail here.");
+			}
+
+			try {
+				Item item = RSSDoc.buildItem(RSSDoc.buildTitle("try me"), null,
+						null, null, null, null, null, null, null, null, null);
+				assertNotNull(item.getTitle());
+				assertNull(item.getDescription());
+			} catch (RSSpectException r) {
+				fail("should not fail here.");
+			}
+
+			try {
+				RSSDoc.buildItem(null, null, null, null, null, null, null,
+						null, null, null, null);
+				fail("we should have thrown an exception above.");
+			} catch (RSSpectException r) {
+				assertEquals(r.getMessage(),
+						"item elements MUST contain either a title or description element.");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
@@ -685,17 +783,70 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildLastBuildDate() {
-		// fail("Not yet implemented");
+		LastBuildDate lastBuildDate = RSSDoc.buildLastBuildDate(null);
+		assertNotNull(lastBuildDate);
+		assertNull(lastBuildDate.getDateTime());
+		assertNull(lastBuildDate.getText());
 	}
 
 	@Test
 	public void testBuildLink() {
-		// fail("Not yet implemented");
+		try {
+			Link link = RSSDoc.buildLink(null);
+			assertNotNull(link);
+			assertNull(link.getLink());
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
+
+		try {
+			Link link = RSSDoc.buildLink("");
+			assertNotNull(link);
+			assertNotNull(link.getLink());
+			assertTrue(link.getLink().length() == 0);
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
+
+		try {
+			Link link = RSSDoc.buildLink(" ");
+			assertNotNull(link);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(
+					r.getMessage(),
+					"link elements must start with a valid "
+							+ "Uniform Resource Identifer (URI) Schemes.  "
+							+ "See http://www.iana.org. Yours started with: ' '");
+		}
+
+		try {
+			Link link = RSSDoc.buildLink("abcScheme://testMe");
+			assertNotNull(link);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(
+					r.getMessage(),
+					"link elements must start with a valid "
+							+ "Uniform Resource Identifer (URI) Schemes.  "
+							+ "See http://www.iana.org. Yours started with: 'abcScheme://testMe'");
+		}
 	}
 
 	@Test
 	public void testBuildManagingEditor() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			ManagingEditor me = rss1.getChannel().getManagingEditor();
+			assertNotNull(me);
+			assertNotNull(me.getManagingEditor());
+			assertEquals(me.getManagingEditor(), "Bill Brown");
+
+		} catch (Exception e) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
@@ -705,7 +856,10 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildPubDate() {
-		// fail("Not yet implemented");
+		PubDate pubDate = RSSDoc.buildPubDate(null);
+		assertNotNull(pubDate);
+		assertNull(pubDate.getDateTime());
+		assertNull(pubDate.getText());
 	}
 
 	@Test
@@ -715,22 +869,195 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildSkipDays() {
-		// fail("Not yet implemented");
+		try {
+			SkipDays skipDays = RSSDoc.buildSkipDays(null);
+			assertNotNull(skipDays);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"skipDays elements should contain at least one <day> sub element.");
+		}
+
+		try {
+			SkipDays skipDays = RSSDoc.buildSkipDays(new LinkedList<Day>());
+			assertNotNull(skipDays);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"skipDays elements should contain at least one <day> sub element.");
+		}
+
+		try {
+			List<Day> days = new LinkedList<Day>();
+			days.add(RSSDoc.buildDay("yes"));
+			SkipDays skipDays = RSSDoc.buildSkipDays(days);
+			assertNotNull(skipDays);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(
+					r.getMessage(),
+					"day elements must have a value of Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday.");
+		}
+
+		try {
+			List<Day> days = new LinkedList<Day>();
+			days.add(RSSDoc.buildDay("Thursday"));
+			days.add(RSSDoc.buildDay("Friday"));
+			days.add(RSSDoc.buildDay("Saturday"));
+			days.add(RSSDoc.buildDay("Sunday"));
+			SkipDays skipDays = RSSDoc.buildSkipDays(days);
+			assertNotNull(skipDays);
+			assertNotNull(skipDays.getSkipDays());
+		} catch (Exception e) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
 	public void testBuildSkipHours() {
-		// fail("Not yet implemented");
+		try {
+			SkipHours skipHours = RSSDoc.buildSkipHours(null);
+			assertNotNull(skipHours);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"skipHours elements should contain at least one <hour> sub element.");
+		}
+
+		try {
+			SkipHours skipHours = RSSDoc.buildSkipHours(new LinkedList<Hour>());
+			assertNotNull(skipHours);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"skipHours elements should contain at least one <hour> sub element.");
+		}
+
+		try {
+			List<Hour> hours = new LinkedList<Hour>();
+			hours.add(RSSDoc.buildHour("24"));
+			SkipHours skipHours = RSSDoc.buildSkipHours(hours);
+			assertNotNull(skipHours);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"hour elements must be between 0 and 23 inclusive.");
+		}
+
+		try {
+			List<Hour> hours = new LinkedList<Hour>();
+			hours.add(RSSDoc.buildHour("cat"));
+			SkipHours skipHours = RSSDoc.buildSkipHours(hours);
+			assertNotNull(skipHours);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "invalid number format for hour.");
+		}
+
+		try {
+			List<Hour> hours = new LinkedList<Hour>();
+			hours.add(RSSDoc.buildHour("23"));
+			SkipHours skipHours = RSSDoc.buildSkipHours(hours);
+			assertNotNull(skipHours);
+			assertNotNull(skipHours.getSkipHours());
+		} catch (Exception e) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
 	public void testBuildSource() {
-		// fail("Not yet implemented");
+		try {
+			Source source = RSSDoc.buildSource(null, "somewhere cool");
+			assertNotNull(source);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"source elements MUST contain a url attribute.");
+		}
+
+		try {
+			Source source = RSSDoc.buildSource(RSSDoc.buildAttribute("cat",
+					"dog"), "somewhere cool");
+			assertNotNull(source);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"source elements MUST contain a url attribute.");
+		}
+
+		try {
+			Source source = RSSDoc.buildSource(RSSDoc.buildAttribute("url",
+					"http://www.earthbeats.net"), "somewhere cool");
+			assertNotNull(source);
+			assertNotNull(source.getUrl());
+			assertNotNull(source.getUrl().getName());
+			assertEquals(source.getUrl().getName(), "url");
+			assertNotNull(source.getUrl().getValue());
+			assertEquals(source.getUrl().getValue(),
+					"http://www.earthbeats.net");
+			assertNotNull(source.getSource());
+			assertEquals(source.getSource(), "somewhere cool");
+		} catch (Exception e) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
 	public void testBuildTextInput() {
-		// fail("Not yet implemented");
+		Title title = null;
+		Description description = null;
+		Name name = null;
+		Link link = null;
+		try {
+			RSSDoc.buildTextInput(title, description, name, link);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"textInput elements MUST contain a title element.");
+		}
+
+		try {
+			title = RSSDoc.buildTitle("Submit");
+			RSSDoc.buildTextInput(title, description, name, link);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"textInput elements MUST contain a description element.");
+		}
+
+		try {
+			description = RSSDoc.buildDescription("regular textarea");
+			RSSDoc.buildTextInput(title, description, name, link);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"textInput elements MUST contain a name element.");
+		}
+
+		try {
+			name = RSSDoc.buildName("textArea");
+			RSSDoc.buildTextInput(title, description, name, link);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"textInput elements MUST contain a link element.");
+		}
+
+		try {
+			link = RSSDoc.buildLink("http://www.earthbeats.net");
+			TextInput textInput = RSSDoc.buildTextInput(title, description,
+					name, link);
+			assertNotNull(textInput);
+			assertEquals(textInput.getTitle().getTitle(), "Submit");
+			assertEquals(textInput.getDescription().getDescription(),
+					"regular textarea");
+			assertEquals(textInput.getName().getName(), "textArea");
+			assertEquals(textInput.getLink().getLink(),
+					"http://www.earthbeats.net");
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
@@ -745,7 +1072,46 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildURL() {
-		// fail("Not yet implemented");
+		try {
+			URL url = RSSDoc.buildURL(null);
+			assertNotNull(url);
+			assertNull(url.getUrl());
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
+
+		try {
+			URL url = RSSDoc.buildURL("");
+			assertNotNull(url);
+			assertNotNull(url.getUrl());
+			assertTrue(url.getUrl().length() == 0);
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
+
+		try {
+			URL url = RSSDoc.buildURL(" ");
+			assertNotNull(url);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(
+					r.getMessage(),
+					"link elements must start with a valid "
+							+ "Uniform Resource Identifer (URI) Schemes.  "
+							+ "See http://www.iana.org. Yours started with: ' '");
+		}
+
+		try {
+			URL url = RSSDoc.buildURL("abcScheme://testMe");
+			assertNotNull(url);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(
+					r.getMessage(),
+					"link elements must start with a valid "
+							+ "Uniform Resource Identifer (URI) Schemes.  "
+							+ "See http://www.iana.org. Yours started with: 'abcScheme://testMe'");
+		}
 	}
 
 	@Test
@@ -766,6 +1132,7 @@ public class RSSDocTest {
 					"144");
 			try {
 				RSSDoc.buildWidth("145");
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"width cannot be greater than 144px.");
@@ -773,6 +1140,7 @@ public class RSSDocTest {
 
 			try {
 				RSSDoc.buildWidth("abc");
+				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(), "invalid number format for width.");
 			}

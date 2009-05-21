@@ -18,11 +18,23 @@
 package com.colorful.rss;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A hint for aggregators telling them which hours they can skip. More info <a
  * href
  * ="http://cyber.law.harvard.edu/rss/skipHoursDays.html#skiphours">here</a>.
+ * 
+ * skipHours
+ * 
+ * An XML element that contains up to 24 <hour> sub-elements whose value is a
+ * number between 0 and 23, representing a time in GMT, when aggregators, if
+ * they support the feature, may not read the channel on hours listed in the
+ * skipHours element.
+ * 
+ * 
+ * The hour beginning at midnight is hour zero.
  * 
  * @author Bill Brown
  * 
@@ -34,14 +46,29 @@ public class SkipHours implements Serializable {
 	 */
 	private static final long serialVersionUID = -7435503230975016475L;
 
-	private final String skipHours;
+	private final List<Hour> skipHours;
 
-	SkipHours(String skipHours) {
-		this.skipHours = skipHours;
+	SkipHours(List<Hour> skipHours) throws RSSpectException {
+		if (skipHours == null || skipHours.size() == 0) {
+			throw new RSSpectException(
+					"skipHours elements should contain at least one <hour> sub element.");
+		}
+		this.skipHours = new LinkedList<Hour>();
+		for (Hour hour : skipHours) {
+			this.skipHours.add(new Hour(hour.getHour()));
+		}
 	}
 
-	public String getSkipHours() {
-		return skipHours;
+	public List<Hour> getSkipHours() {
+		try {
+			List<Hour> skipHoursCopy = new LinkedList<Hour>();
+			for (Hour hour : this.skipHours) {
+				skipHoursCopy.add(new Hour(hour.getHour()));
+			}
+			return skipHoursCopy;
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
-
 }

@@ -585,21 +585,33 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param skipDays
+	 * @throws RSSpectException
 	 * @return an immutable SkipDays object.
 	 */
-	public static SkipDays buildSkipDays(String skipDays) {
+	public static SkipDays buildSkipDays(List<Day> skipDays)
+			throws RSSpectException {
 		return new SkipDays(skipDays);
 	}
 
 	/**
 	 * 
 	 * @param skipHours
+	 * @throws RSSpectException
 	 * @return an immutable SkipHours object.
 	 */
-	public static SkipHours buildSkipHours(String skipHours) {
+	public static SkipHours buildSkipHours(List<Hour> skipHours)
+			throws RSSpectException {
 		return new SkipHours(skipHours);
 	}
 
+	public static Day buildDay(String day)throws RSSpectException {
+		return new Day(day);
+	}
+	
+	public static Hour buildHour(String hour)throws RSSpectException {
+		return new Hour(hour);
+	}
+	
 	/**
 	 * 
 	 * @param url

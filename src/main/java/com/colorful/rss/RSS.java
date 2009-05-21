@@ -67,23 +67,21 @@ public class RSS implements Serializable {
 			throw new RSSpectException(
 					"rss elements MUST contain a channel element.");
 		}
-		try {
-			this.channel = new Channel(channel.getTitle(), channel.getLink(),
-					channel.getDescription(), channel.getLanguage(), channel
-							.getCopyright(), channel.getManagingEditor(),
-					channel.getWebMaster(), channel.getPubDate(), channel
-							.getLastBuildDate(), channel.getCategories(),
-					channel.getGenerator(), channel.getDocs(), channel
-							.getCloud(), channel.getTtl(), channel.getImage(),
-					channel.getRating(), channel.getTextInput(), channel
-							.getSkipHours(), channel.getSkipDays(), channel
-							.getExtensions(), channel.getItems());
-		} catch (RSSpectException e) {
-			throw e;
-		}
+
+		this.channel = new Channel(channel.getTitle(), channel.getLink(),
+				channel.getDescription(), channel.getLanguage(), channel
+						.getCopyright(), channel.getManagingEditor(), channel
+						.getWebMaster(), channel.getPubDate(), channel
+						.getLastBuildDate(), channel.getCategories(), channel
+						.getGenerator(), channel.getDocs(), channel.getCloud(),
+				channel.getTtl(), channel.getImage(), channel.getRating(),
+				channel.getTextInput(), channel.getSkipHours(), channel
+						.getSkipDays(), channel.getExtensions(), channel
+						.getItems());
 
 		if (attributes == null) {
-			throw new RSSpectException("RSS elements must contain a version attribute.");
+			throw new RSSpectException(
+					"RSS elements must contain a version attribute.");
 		} else {
 			this.attributes = new LinkedList<Attribute>();
 
@@ -106,15 +104,14 @@ public class RSS implements Serializable {
 
 	public Channel getChannel() {
 		try {
-			return (channel == null) ? null : new Channel(channel.getTitle(),
-					channel.getLink(), channel.getDescription(), channel
-							.getLanguage(), channel.getCopyright(), channel
-							.getManagingEditor(), channel.getWebMaster(),
-					channel.getPubDate(), channel.getLastBuildDate(), channel
-							.getCategories(), channel.getGenerator(), channel
-							.getDocs(), channel.getCloud(), channel.getTtl(),
-					channel.getImage(), channel.getRating(), channel
-							.getTextInput(), channel.getSkipHours(), channel
+			return new Channel(channel.getTitle(), channel.getLink(), channel
+					.getDescription(), channel.getLanguage(), channel
+					.getCopyright(), channel.getManagingEditor(), channel
+					.getWebMaster(), channel.getPubDate(), channel
+					.getLastBuildDate(), channel.getCategories(), channel
+					.getGenerator(), channel.getDocs(), channel.getCloud(),
+					channel.getTtl(), channel.getImage(), channel.getRating(),
+					channel.getTextInput(), channel.getSkipHours(), channel
 							.getSkipDays(), channel.getExtensions(), channel
 							.getItems());
 		} catch (Exception e) {
@@ -130,12 +127,10 @@ public class RSS implements Serializable {
 	public List<Attribute> getAttributes() {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
-		if (this.attributes != null) {
-			for (Attribute attr : this.attributes) {
-				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
-			}
+		for (Attribute attr : this.attributes) {
+			attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
 		}
-		return (this.attributes == null) ? null : attrsCopy;
+		return attrsCopy;
 	}
 
 	/**

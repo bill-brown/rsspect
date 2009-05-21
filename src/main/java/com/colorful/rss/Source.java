@@ -52,7 +52,7 @@ public class Source implements Serializable {
 
 	Source(Attribute url, String source) throws RSSpectException {
 		// make sure the url attribute is present
-		if (url == null) {
+		if (url == null || !url.getName().equals("url")) {
 			throw new RSSpectException(
 					"source elements MUST contain a url attribute.");
 		}

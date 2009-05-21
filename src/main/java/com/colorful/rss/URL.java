@@ -29,16 +29,18 @@ public class URL implements Serializable {
 	private final String url;
 
 	URL(String url) throws RSSpectException {
-		if (url != null) {
+		if (url != null && url.length() > 0) {
 			String urlLocal = url.trim();
-			if (URIScheme
-					.contains(urlLocal.substring(0, urlLocal.indexOf(":")))) {
+			if (urlLocal.length() > 0
+					&& URIScheme.contains(urlLocal.substring(0, urlLocal
+							.indexOf(":")))) {
 				this.url = url;
 			} else {
 				throw new RSSpectException(
 						"link elements must start with a valid "
 								+ "Uniform Resource Identifer (URI) Schemes.  "
-								+ "See www.iana.org.");
+								+ "See http://www.iana.org. Yours started with: '"
+								+ url + "'");
 			}
 		} else {
 			this.url = url;

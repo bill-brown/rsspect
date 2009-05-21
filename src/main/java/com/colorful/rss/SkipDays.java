@@ -18,30 +18,50 @@
 package com.colorful.rss;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A hint for aggregators telling them which days they can skip. More info <a
  * href
  * ="http://cyber.law.harvard.edu/rss/skipHoursDays.html#skipdays">Ffhere</a>s.
  * 
+ * An XML element that contains up to seven <day> sub-elements whose value is
+ * Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday. Aggregators
+ * may not read the channel during days listed in the skipDays element.
+ * 
  * @author Bill Brown
  * 
  */
 public class SkipDays implements Serializable {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -2480844569809695010L;
 
-	private final String skipDays;
+	private final List<Day> skipDays;
 
-	SkipDays(String skipDays) {
-		this.skipDays = skipDays;
+	SkipDays(List<Day> skipDays) throws RSSpectException {
+		if (skipDays == null || skipDays.size() == 0) {
+			throw new RSSpectException(
+					"skipDays elements should contain at least one <day> sub element.");
+		}
+		this.skipDays = new LinkedList<Day>();
+		for (Day day : skipDays) {
+			this.skipDays.add(new Day(day.getDay()));
+		}
 	}
 
-	public String getSkipDays() {
-		return skipDays;
+	public List<Day> getSkipDays() {
+		try {
+			List<Day> skipDaysCopy = new LinkedList<Day>();
+			for (Day day : this.skipDays) {
+				skipDaysCopy.add(new Day(day.getDay()));
+			}
+			return skipDaysCopy;
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 }

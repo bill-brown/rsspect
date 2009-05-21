@@ -285,12 +285,23 @@ public class Channel implements Serializable {
 	}
 
 	public SkipHours getSkipHours() {
-		return (skipHours == null) ? null : new SkipHours(skipHours
-				.getSkipHours());
+		try {
+			return (skipHours == null) ? null : new SkipHours(skipHours
+					.getSkipHours());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public SkipDays getSkipDays() {
-		return (skipDays == null) ? null : new SkipDays(skipDays.getSkipDays());
+		try {
+			return (skipDays == null) ? null : new SkipDays(skipDays
+					.getSkipDays());
+		} catch (Exception e) {
+			// we should never get here.
+			return null;
+		}
 	}
 
 	public List<Item> getItems() {
