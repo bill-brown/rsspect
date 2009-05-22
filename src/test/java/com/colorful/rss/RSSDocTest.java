@@ -42,6 +42,7 @@ public class RSSDocTest {
 			+ "<rss xmlns:pheedo=\"http://www.pheedo.com/namespace/pheedo\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:media=\"http://search.yahoo.com/mrss/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:nyt=\"http://www.nytimes.com/namespaces/rss/2.0\" version=\"2.0\">"
 			+ "<fakeExt xmlns=\"http://www.fake.extension.org/fakeness\" />"
 			+ "<channel>"
+			+ "<pubDate>Fri, 24 Apr 2009 17:29:13 GMT</pubDate>"
 			+ "<category>music</category>"
 			+ "<category>news</category>"
 			+ "<rating>funky</rating>"
@@ -167,6 +168,19 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
 		}
+
+		try {
+			RSSDoc.writeRSSDoc(new FileOutputStream("out1.xml"), null,
+					RSSDoc.encoding, RSSDoc.xml_version);
+			RSS rss2 = RSSDoc.readRSSToBean(new File("out1.xml"));
+			assertNotNull(rss2);
+			assertNotNull(rss2.getAttributes());
+			assertNotNull(rss2.getChannel());
+			assertNull(rss2.getExtensions());
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(), "error writing rss feed: null");
+		}
 	}
 
 	@Test
@@ -179,7 +193,6 @@ public class RSSDocTest {
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			// fail("could not write output file with file output stream.");
 			XMLStreamWriter writer = new IndentingXMLStreamWriter(
 					XMLOutputFactory.newInstance().createXMLStreamWriter(
 							new FileOutputStream("out2.xml"), RSSDoc.encoding));
@@ -187,6 +200,32 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+			RSSDoc.writeRSSDoc(new File("out2.xml"), rss1, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("could not write output file with file output stream.");
+		}
+
+		try {
+			RSSDoc.writeRSSDoc(new File("out2.xml"), null, null, null);
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(), "error writing rss feed: null");
+		}
+
+		try {
+			XMLStreamWriter writer = new IndentingXMLStreamWriter(
+					XMLOutputFactory.newInstance().createXMLStreamWriter(
+							new FileOutputStream("out2.xml"), RSSDoc.encoding));
+			RSSDoc.writeRSSDoc(writer, null, null, null);
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(), "error writing rss feed: null");
 		}
 	}
 
@@ -210,6 +249,50 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = RSSDoc.readRSSToString(rss1,
+					"javanet.staxutils.IndentingXMLStreamWriter");
+			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getAttributes());
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getExtensions());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = RSSDoc.readRSSToString(rss1, "Bunky");
+			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getAttributes());
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getExtensions());
+
+		} catch (Exception e) {
+			fail("should not get here." + e.getLocalizedMessage());
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = RSSDoc.readRSSToString(null,
+					"javanet.staxutils.IndentingXMLStreamWriter");
+			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getAttributes());
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getExtensions());
+
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			System.out.println("message = '" + e.getMessage() + "'");
+			assertEquals(e.getMessage(), "error reading rss feed: null");
 		}
 	}
 
@@ -235,6 +318,16 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean("");
+			fail("should not get here.");
+		} catch (RSSpectException e) {
+			System.out.println("message = '" + e.getMessage() + "'");
+			assertEquals(e.getMessage(),
+					"error reading rss feed: ParseError at [row,col]:[1,1]\n"
+							+ "Message: Premature end of file.");
+		}
 	}
 
 	@Test
@@ -250,6 +343,16 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(new File("out1.xml"));
+			fail("should not get here.");
+		} catch (RSSpectException e) {
+			System.out.println("message = '" + e.getMessage() + "'");
+			assertEquals(e.getMessage(),
+					"error reading rss feed: ParseError at [row,col]:[1,1]\n"
+							+ "Message: Premature end of file.");
+		}
 	}
 
 	@Test
@@ -264,6 +367,29 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+					"http://www.earthbeats.net/drops.xml"));
+			fail("should not get here.");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			System.out.println("message = '" + e.getMessage() + "'");
+			assertEquals(e.getMessage(),
+					"error reading rss feed: rss elements MUST contain a channel element.");
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+					"http://www.fakesite.test"));
+			fail("should not get here.");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			System.out.println("message = '" + e.getMessage() + "'");
+			assertEquals(
+					e.getMessage(),
+					"error reading rss feed: java.net.UnknownHostException: www.fakesite.test: www.fakesite.test");
 		}
 	}
 
@@ -325,7 +451,6 @@ public class RSSDocTest {
 		try {
 			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
 			String rss1Str = RSSDoc.readRSSToString(rss1);
-			System.out.println(rss1Str);
 			assertNotNull(rss1Str);
 			rss1 = RSSDoc.readRSSToBean(rss1Str);
 

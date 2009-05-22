@@ -19,10 +19,10 @@ package com.colorful.rss;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +30,6 @@ import java.util.Properties;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -86,7 +85,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param output
-	 *            the target output for the rss document.
+	 *            the target output stream for the rss document.
 	 * @param rss
 	 *            the rss object containing the content of the feed
 	 * @param encoding
@@ -97,15 +96,20 @@ public final class RSSDoc {
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public static void writeRSSDoc(OutputStream output, RSS rss,
-			String encoding, String version) throws Exception {
-		writeRSSDoc(XMLOutputFactory.newInstance().createXMLStreamWriter(
-				output, encoding), rss, encoding, version);
+			String encoding, String version) throws RSSpectException {
+		try {
+			writeRSSOutput(rss, XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(output, encoding), encoding, version);
+		} catch (Exception e) {
+			throw new RSSpectException("error writing rss feed: "
+					+ e.getMessage());
+		}
 	}
 
 	/**
 	 * 
-	 * @param output
-	 *            the target output for the document.
+	 * @param file
+	 *            the target output file for the document.
 	 * @param rss
 	 *            the rss object containing the content of the feed
 	 * @param encoding
@@ -115,10 +119,16 @@ public final class RSSDoc {
 	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
-	public static void writeRSSDoc(Writer output, RSS rss, String encoding,
-			String version) throws Exception {
-		writeRSSDoc(XMLOutputFactory.newInstance()
-				.createXMLStreamWriter(output), rss, encoding, version);
+	public static void writeRSSDoc(File file, RSS rss, String encoding,
+			String version) throws RSSpectException {
+		try {
+			writeRSSOutput(rss, XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(new FileWriter(file)), encoding,
+					version);
+		} catch (Exception e) {
+			throw new RSSpectException("error writing rss feed: "
+					+ e.getMessage());
+		}
 	}
 
 	/**
@@ -145,12 +155,12 @@ public final class RSSDoc {
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public static void writeRSSDoc(XMLStreamWriter output, RSS rss,
-			String encoding, String version) throws Exception {
-
+			String encoding, String version) throws RSSpectException {
 		try {
 			writeRSSOutput(rss, output, encoding, version);
 		} catch (Exception e) {
-			throw new Exception("error creating the feed document.", e);
+			throw new RSSpectException("error writing rss feed: "
+					+ e.getMessage());
 		}
 	}
 
@@ -177,10 +187,10 @@ public final class RSSDoc {
 	 *             thrown if the feed cannot be returned as a String
 	 */
 	public static String readRSSToString(RSS rss, String xmlStreamWriter)
-			throws Exception {
-
-		StringWriter theString = new StringWriter();
+			throws RSSpectException {
 		try {
+			StringWriter theString = new StringWriter();
+
 			Class<?> cls = Class.forName(xmlStreamWriter);
 			Constructor<?> ct = cls
 					.getConstructor(new Class[] { XMLStreamWriter.class });
@@ -190,10 +200,11 @@ public final class RSSDoc {
 
 			writeRSSOutput(rss, writer, encoding, xml_version);
 
+			return theString.toString();
+
 		} catch (Exception e) {
 			return readRSSToString(rss);
 		}
-		return theString.toString();
 	}
 
 	/**
@@ -206,20 +217,21 @@ public final class RSSDoc {
 	 * @throws Exception
 	 *             thrown if the feed cannot be returned as a String
 	 */
-	public static String readRSSToString(RSS rss) throws Exception {
-
-		StringWriter theString = new StringWriter();
+	public static String readRSSToString(RSS rss) throws RSSpectException {
 		try {
+			StringWriter theString = new StringWriter();
+
 			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 			XMLStreamWriter writer = outputFactory
 					.createXMLStreamWriter(theString);
 
 			writeRSSOutput(rss, writer, encoding, xml_version);
 
+			return theString.toString();
 		} catch (Exception e) {
-			throw new Exception("error creating xml file.", e);
+			throw new RSSpectException("error reading rss feed: "
+					+ e.getMessage());
 		}
-		return theString.toString();
 	}
 
 	/**
@@ -231,11 +243,16 @@ public final class RSSDoc {
 	 * @throws Exception
 	 *             if the string cannot be parsed into a RSS element.
 	 */
-	public static RSS readRSSToBean(String xmlString) throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-		XMLStreamReader reader = inputFactory
-				.createXMLStreamReader(new java.io.StringReader(xmlString));
-		return new RSSReader().readRSS(reader);
+	public static RSS readRSSToBean(String xmlString) throws RSSpectException {
+		try {
+			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+			XMLStreamReader reader = inputFactory
+					.createXMLStreamReader(new java.io.StringReader(xmlString));
+			return new RSSReader().readRSS(reader);
+		} catch (Exception e) {
+			throw new RSSpectException("error reading rss feed: "
+					+ e.getMessage());
+		}
 	}
 
 	/**
@@ -247,11 +264,16 @@ public final class RSSDoc {
 	 * @throws Exception
 	 *             if the file cannot be parsed into a RSS element.
 	 */
-	public static RSS readRSSToBean(File file) throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-		XMLStreamReader reader = inputFactory
-				.createXMLStreamReader(new FileInputStream(file));
-		return new RSSReader().readRSS(reader);
+	public static RSS readRSSToBean(File file) throws RSSpectException {
+		try {
+			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+			XMLStreamReader reader = inputFactory
+					.createXMLStreamReader(new FileInputStream(file));
+			return new RSSReader().readRSS(reader);
+		} catch (Exception e) {
+			throw new RSSpectException("error reading rss feed: "
+					+ e.getMessage());
+		}
 	}
 
 	/**
@@ -263,8 +285,16 @@ public final class RSSDoc {
 	 * @throws Exception
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
-	public static RSS readRSSToBean(java.net.URL url) throws Exception {
-		return readRSSToBean(url.openStream());
+	public static RSS readRSSToBean(java.net.URL url) throws RSSpectException {
+		try {
+			return readRSSToBean(url.openStream());
+		} catch (RSSpectException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RSSpectException("error reading rss feed: "
+					+ e.toString() + ": " + e.getMessage());
+		}
+
 	}
 
 	/**
@@ -276,11 +306,17 @@ public final class RSSDoc {
 	 * @throws Exception
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
-	public static RSS readRSSToBean(InputStream inputStream) throws Exception {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-		XMLStreamReader reader = inputFactory
-				.createXMLStreamReader(inputStream);
-		return new RSSReader().readRSS(reader);
+	public static RSS readRSSToBean(InputStream inputStream)
+			throws RSSpectException {
+		try {
+			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+			XMLStreamReader reader = inputFactory
+					.createXMLStreamReader(inputStream);
+			return new RSSReader().readRSS(reader);
+		} catch (Exception e) {
+			throw new RSSpectException("error reading rss feed: "
+					+ e.getMessage());
+		}
 	}
 
 	/**
@@ -604,14 +640,14 @@ public final class RSSDoc {
 		return new SkipHours(skipHours);
 	}
 
-	public static Day buildDay(String day)throws RSSpectException {
+	public static Day buildDay(String day) throws RSSpectException {
 		return new Day(day);
 	}
-	
-	public static Hour buildHour(String hour)throws RSSpectException {
+
+	public static Hour buildHour(String hour) throws RSSpectException {
 		return new Hour(hour);
 	}
-	
+
 	/**
 	 * 
 	 * @param url
@@ -688,11 +724,8 @@ public final class RSSDoc {
 
 	// used to write feed output for several feed writing methods.
 	private static void writeRSSOutput(RSS rss, XMLStreamWriter writer,
-			String encoding, String version) throws XMLStreamException,
-			Exception {
+			String encoding, String version) throws Exception {
 
-		// rebuild the feed with the updated attributes
-		// and atomsphere generator element
 		Channel channel = rss.getChannel();
 
 		rss = RSSDoc.buildRSS(RSSDoc.buildChannel(channel.getTitle(), channel

@@ -50,7 +50,8 @@ class RSSReader {
 		String elementName = null;
 
 		while (reader.hasNext()) {
-			switch (reader.next()) {
+			int next = reader.next();
+			switch (next) {
 
 			case XMLStreamConstants.START_DOCUMENT:
 				RSSDoc.encoding = reader.getEncoding();
@@ -278,10 +279,8 @@ class RSSReader {
 				} else if (elementName.equals("textInput")) {
 					textInput = readTextInput(reader);
 				} else if (elementName.equals("skipHours")) {
-					System.out.println("found skip hours element.");
 					skipHours = readSkipHours(reader);
 				} else if (elementName.equals("skipDays")) {
-					System.out.println("found skip days element.");
 					skipDays = readSkipDays(reader);
 				} else if (elementName.equals("item")) {
 					items = readItem(reader, items);
@@ -564,11 +563,8 @@ class RSSReader {
 
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
-				System.out.println("element name: "+elementName);
 				if (elementName.equals("hour")) {
-					System.out.println("adding to hours.");
 					hours = readHour(reader, hours);
-					System.out.println("hours size: "+hours.size());
 				}
 				break;
 
@@ -583,7 +579,6 @@ class RSSReader {
 				break;
 			}
 		}
-		System.out.println("hours size before final buildout: "+hours.size());
 		return RSSDoc.buildSkipHours(hours);
 	}
 
