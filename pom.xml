@@ -11,7 +11,7 @@
 	<packaging>jar</packaging>
 	<name>RSSpect</name>
 	<url>http://www.colorfulsoftware.com/projects/rsspect</url>
-	<version>1.0.0.0-SNAPSHOT</version>
+	<version>0.5.0.0-SNAPSHOT</version>
 	<description>RSSpect - An RSS 2.0 Feed Library written in Java</description>
 	<scm>
 		<connection>scm:svn:https://billbrown.homelinux.net/repo/rsspect/trunk</connection>
