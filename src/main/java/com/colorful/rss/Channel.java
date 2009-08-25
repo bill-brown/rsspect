@@ -341,4 +341,50 @@ public class Channel implements Serializable {
 		}
 		return extsCopy;
 	}
+
+	public Category getCategory(String catName) {
+		if (this.categories != null) {
+			for (Category category : this.categories) {
+				if (category.getCategory() != null
+						&& category.getCategory().equals(catName)) {
+					return new Category(category.getDomain(), category
+							.getCategory());
+				}
+			}
+		}
+		return null;
+	}
+
+	public Item getItem(String titleOrDescription) throws RSSpectException {
+		if (this.items != null) {
+			for (Item item : this.items) {
+				if ((item.getTitle() != null
+						&& item.getTitle().getTitle() != null && item
+						.getTitle().getTitle().equals(titleOrDescription))
+						|| (item.getDescription() != null && item
+								.getDescription().getDescription().equals(
+										titleOrDescription))) {
+					return new Item(item.getTitle(), item.getLink(), item
+							.getDescription(), item.getAuthor(), item
+							.getCategories(), item.getComments(), item
+							.getEnclosure(), item.getGuid(), item.getPubDate(),
+							item.getSource(), item.getExtensions());
+				}
+			}
+		}
+		return null;
+	}
+
+	public Extension getExtension(String extName) {
+		if (this.extensions != null) {
+			for (Extension extension : this.extensions) {
+				if (extension.getElementName() != null
+						&& extension.getElementName().equals(extName)) {
+					return new Extension(extension.getElementName(), extension
+							.getAttributes(), extension.getContent());
+				}
+			}
+		}
+		return null;
+	}
 }

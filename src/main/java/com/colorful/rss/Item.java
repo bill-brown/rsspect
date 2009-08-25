@@ -205,4 +205,29 @@ public class Item implements Serializable {
 		return extsCopy;
 	}
 
+	public Category getCategory(String catName) {
+		if (this.categories != null) {
+			for (Category category : this.categories) {
+				if (category.getCategory() != null
+						&& category.getCategory().equals(catName)) {
+					return new Category(category.getDomain(), category
+							.getCategory());
+				}
+			}
+		}
+		return null;
+	}
+
+	public Extension getExtension(String extName) {
+		if (this.extensions != null) {
+			for (Extension extension : this.extensions) {
+				if (extension.getElementName() != null
+						&& extension.getElementName().equals(extName)) {
+					return new Extension(extension.getElementName(), extension
+							.getAttributes(), extension.getContent());
+				}
+			}
+		}
+		return null;
+	}
 }

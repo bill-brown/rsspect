@@ -35,7 +35,6 @@ import java.util.List;
  */
 public class SkipDays implements Serializable {
 
-	
 	private static final long serialVersionUID = -2480844569809695010L;
 
 	private final List<Day> skipDays;
@@ -62,6 +61,17 @@ public class SkipDays implements Serializable {
 			// we should never get here.
 			return null;
 		}
+	}
+
+	public Day getSkipDay(String skipDay) throws RSSpectException {
+		if (this.skipDays != null) {
+			for (Day day : this.skipDays) {
+				if (day.getDay() != null && day.getDay().equals(skipDay)) {
+					return new Day(skipDay);
+				}
+			}
+		}
+		return null;
 	}
 
 }

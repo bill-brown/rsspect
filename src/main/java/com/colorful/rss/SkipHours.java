@@ -71,4 +71,15 @@ public class SkipHours implements Serializable {
 			return null;
 		}
 	}
+	
+	public Hour getSkipHour(String skipHour) throws RSSpectException {
+		if (this.skipHours != null) {
+			for (Hour hour : this.skipHours) {
+				if (hour.getHour() != null && hour.getHour().equals(skipHour)) {
+					return new Hour(skipHour);
+				}
+			}
+		}
+		return null;
+	}
 }
