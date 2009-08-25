@@ -17,10 +17,13 @@
  */
 package com.colorful.rss;
 
+import java.io.Serializable;
 
-public class Attribute {
+
+public class Attribute implements Serializable {
     
-    private final String name;
+	private static final long serialVersionUID = -3880416791234118400L;
+	private final String name;
     private final String value;
     
     //use the factory method in the RSSDoc.
