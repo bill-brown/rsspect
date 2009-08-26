@@ -97,6 +97,10 @@
 				<artifactId>maven-license-plugin</artifactId>
 				<configuration>
 					<header>src/main/resources/licenseHeader.txt</header>
+					<excludes>
+                    <exclude>target/**</exclude>
+                    <exclude>src/test/**</exclude>
+                </excludes>
 					<properties>
 						<year>2009</year>
 						<name>William R. Brown</name>

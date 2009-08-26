@@ -345,7 +345,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(new File("out1.xml"));
+			rss1 = RSSDoc.readRSSToBean(new File("src/test/resources/out1.xml"));
 			fail("should not get here.");
 		} catch (RSSpectException e) {
 			System.out.println("message = '" + e.getMessage() + "'");
