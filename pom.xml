@@ -18,6 +18,7 @@
 	</licenses>
 	<scm>
 		<url>http://www.colorfulsoftware.com/projects/rsspect/scm</url>
+		<developerConnection>${settings.localRepository}/rsspect</developerConnection>
 	</scm>
 	<build>
 		<resources>
@@ -133,7 +134,7 @@
 			<uniqueVersion>true</uniqueVersion>
 			<id>com.colorfulsoftware</id>
 			<name>Colorful Software Maven Repository</name>
-			<url>file:///home/bill/.m2/repository</url>
+			<url>${settings.localRepository}</url>
 			<layout>default</layout>
 		</repository>
 	</distributionManagement>
