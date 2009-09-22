@@ -18,6 +18,7 @@
 	</licenses>
 	<scm>
 		<url>http://www.colorfulsoftware.com/svn</url>
+		<connection>scm:svn:http://www.colorfulsoftware.com/scm/rsspect</connection>
 		<developerConnection>${settings.developerConnection}rsspect</developerConnection>
 	</scm>
 	<build>
