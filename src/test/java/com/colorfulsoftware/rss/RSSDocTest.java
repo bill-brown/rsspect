@@ -432,7 +432,7 @@ public class RSSDocTest {
 				assertEquals(
 						e.getMessage(),
 						"error reading rss feed: java.net.UnknownHostException: www.someunknownnonworkingurl.nogood: www.someunknownnonworkingurl.nogood");
-			} catch (Exception e) {
+			} catch (Exception ex) {
 				// for some reason hosts behind Comcast ISP choke on this :(
 			}
 		}
