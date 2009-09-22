@@ -26,8 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /* add the stax-utils dependency in the root pom to run this example.
-import javanet.staxutils.IndentingXMLStreamWriter;
-*/
+ import javanet.staxutils.IndentingXMLStreamWriter;
+ */
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
@@ -217,31 +217,31 @@ public class RSSDocTest {
 
 	@Test
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
-		/* add the stax-utils dependency in the root pom to run this example.
+		/*
+		 * add the stax-utils dependency in the root pom to run this example.
+		 * try { rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+		 * "http://feeds.nytimes.com/nyt/rss/HomePage")); XMLStreamWriter writer
+		 * = new IndentingXMLStreamWriter(
+		 * XMLOutputFactory.newInstance().createXMLStreamWriter( new
+		 * FileOutputStream("target/out2.xml"), RSSDoc.encoding));
+		 * RSSDoc.writeRSSDoc(writer, rss1, null, null); } catch (Exception e) {
+		 * e.printStackTrace();
+		 * fail("could not write output file with file output stream."); }
+		 */
+
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			XMLStreamWriter writer = new IndentingXMLStreamWriter(
-					XMLOutputFactory.newInstance().createXMLStreamWriter(
-							new FileOutputStream("target/out2.xml"), RSSDoc.encoding));
+			XMLStreamWriter writer = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(
+							new FileOutputStream("target/out2.xml"),
+							RSSDoc.encoding);
 			RSSDoc.writeRSSDoc(writer, rss1, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
 		}
-		*/
-		
-		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(
-							new FileOutputStream("target/out2.xml"), RSSDoc.encoding);
-			RSSDoc.writeRSSDoc(writer, rss1, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("could not write output file with file output stream.");
-		}
-		
+
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
@@ -258,17 +258,15 @@ public class RSSDocTest {
 			assertEquals(e.getMessage(), "error writing rss feed: null");
 		}
 
-		/* add the stax-utils dependency in the root pom to run this example.
-		try {
-			XMLStreamWriter writer = new IndentingXMLStreamWriter(
-					XMLOutputFactory.newInstance().createXMLStreamWriter(
-							new FileOutputStream("target/out2.xml"), RSSDoc.encoding));
-			RSSDoc.writeRSSDoc(writer, null, null, null);
-		} catch (Exception e) {
-			assertTrue(e instanceof RSSpectException);
-			assertEquals(e.getMessage(), "error writing rss feed: null");
-		}
-		*/
+		/*
+		 * add the stax-utils dependency in the root pom to run this example.
+		 * try { XMLStreamWriter writer = new IndentingXMLStreamWriter(
+		 * XMLOutputFactory.newInstance().createXMLStreamWriter( new
+		 * FileOutputStream("target/out2.xml"), RSSDoc.encoding));
+		 * RSSDoc.writeRSSDoc(writer, null, null, null); } catch (Exception e) {
+		 * assertTrue(e instanceof RSSpectException);
+		 * assertEquals(e.getMessage(), "error writing rss feed: null"); }
+		 */
 	}
 
 	@Test
@@ -387,7 +385,8 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(new File("src/test/resources/out1.xml"));
+			rss1 = RSSDoc
+					.readRSSToBean(new File("src/test/resources/out1.xml"));
 			fail("should not get here.");
 		} catch (RSSpectException e) {
 			System.out.println("message = '" + e.getMessage() + "'");
@@ -424,14 +423,14 @@ public class RSSDocTest {
 
 		try {
 			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
-					"http://www.fakesite.test"));
+					"http://www.someunknownnonworkingurl.nogood"));
 			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			System.out.println("message = '" + e.getMessage() + "'");
 			assertEquals(
 					e.getMessage(),
-					"error reading rss feed: java.net.UnknownHostException: www.fakesite.test: www.fakesite.test");
+					"error reading rss feed: java.net.UnknownHostException: www.someunknownnonworkingurl.nogood: www.someunknownnonworkingurl.nogood");
 		}
 	}
 
