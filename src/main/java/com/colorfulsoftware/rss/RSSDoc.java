@@ -477,9 +477,10 @@ public final class RSSDoc {
 	 * @param content
 	 *            the content of the extension element.
 	 * @return an immutable Extension object.
+	 * @throws RSSpectException
 	 */
 	public static Extension buildExtension(String elementName,
-			List<Attribute> attributes, String content) {
+			List<Attribute> attributes, String content) throws RSSpectException {
 		return new Extension(elementName, attributes, content);
 	}
 

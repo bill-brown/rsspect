@@ -199,8 +199,13 @@ public class Item implements Serializable {
 		}
 		List<Extension> extsCopy = new LinkedList<Extension>();
 		for (Extension extension : this.extensions) {
-			extsCopy.add(new Extension(extension.getElementName(), extension
-					.getAttributes(), extension.getContent()));
+			try {
+				extsCopy.add(new Extension(extension.getElementName(),
+						extension.getAttributes(), extension.getContent()));
+			} catch (Exception e) {
+				// we should never get here.
+				return null;
+			}
 		}
 		return extsCopy;
 	}
@@ -221,10 +226,15 @@ public class Item implements Serializable {
 	public Extension getExtension(String extName) {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {
-				if (extension.getElementName() != null
-						&& extension.getElementName().equals(extName)) {
-					return new Extension(extension.getElementName(), extension
-							.getAttributes(), extension.getContent());
+				if (extension.getElementName().equals(extName)) {
+					try {
+						return new Extension(extension.getElementName(),
+								extension.getAttributes(), extension
+										.getContent());
+					} catch (Exception e) {
+						// we should never get here.
+						return null;
+					}
 				}
 			}
 		}

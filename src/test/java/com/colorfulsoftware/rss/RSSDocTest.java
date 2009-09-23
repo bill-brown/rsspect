@@ -155,6 +155,12 @@ public class RSSDocTest {
 
 	private String expectedRSS3 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><item><title>simplest feed</title><comments>these are comments.  they contain </comments><description><b xmlns=\"http://www.w3.org/1999/xhtml\">html</b></description></item></channel></rss>";
 
+	private String expectedRSS4 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><category domain=\"http://www.colorfulsoftware.com\">Funky</category></channel></rss>";
+
+	private String expectedRSS5 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><item><title>first title</title></item><item><description>first description</description></item></channel></rss>";
+
+	private String expectedRSS6 = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.colorfulsoftware.com/news.xml\"/></channel></rss>";
+
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -601,6 +607,17 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS4);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getChannel().getCategory("Funky"));
+			assertNull(rss1.getChannel().getCategory("Bunky"));
+		} catch (RSSpectException r) {
+			System.out.println("error: " + r.getMessage());
+			fail("should just work.");
+		}
 	}
 
 	@Test
@@ -812,7 +829,17 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildExtension() {
-		// fail("Not yet implemented");
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS6);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			Extension extOne = rss1.getChannel().getExtension("atom:link");
+			assertNotNull(extOne);
+			assertNull(rss1.getChannel().getExtension("Bunky"));
+		} catch (Exception r) {
+			System.out.println("error: " + r.getMessage());
+			fail("should just work.");
+		}
 	}
 
 	@Test
@@ -946,6 +973,20 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
+		}
+
+		try {
+			rss1 = RSSDoc.readRSSToBean(expectedRSS5);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			Item itmTitle = rss1.getChannel().getItem("first title");
+			assertNotNull(itmTitle);
+			Item itmDesc = rss1.getChannel().getItem("first description");
+			assertNotNull(itmDesc);
+			assertNull(rss1.getChannel().getItem("Bunky"));
+		} catch (Exception r) {
+			System.out.println("error: " + r.getMessage());
+			fail("should just work.");
 		}
 	}
 

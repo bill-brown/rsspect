@@ -183,7 +183,7 @@ public class Channel implements Serializable {
 
 	public Link getLink() {
 		try {
-			return (link == null) ? null : new Link(link.getLink());
+			return new Link(link.getLink());
 		} catch (Exception e) {
 			// we should never get here.
 			return null;
@@ -191,8 +191,7 @@ public class Channel implements Serializable {
 	}
 
 	public Description getDescription() {
-		return (description == null) ? null : new Description(description
-				.getDescription());
+		return new Description(description.getDescription());
 	}
 
 	public Language getLanguage() {
@@ -305,24 +304,24 @@ public class Channel implements Serializable {
 	}
 
 	public List<Item> getItems() {
-		try {
-			if (items == null) {
-				return null;
-			} else {
-				List<Item> itemsCopy = new LinkedList<Item>();
-				for (Item item : this.items) {
+		if (items == null) {
+			return null;
+		} else {
+			List<Item> itemsCopy = new LinkedList<Item>();
+			for (Item item : this.items) {
+				try {
 					itemsCopy.add(new Item(item.getTitle(), item.getLink(),
 							item.getDescription(), item.getAuthor(), item
 									.getCategories(), item.getComments(), item
 									.getEnclosure(), item.getGuid(), item
 									.getPubDate(), item.getSource(), item
 									.getExtensions()));
+				} catch (Exception e) {
+					// we should never get here.
+					return null;
 				}
-				return itemsCopy;
 			}
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
+			return itemsCopy;
 		}
 	}
 
@@ -336,8 +335,13 @@ public class Channel implements Serializable {
 		}
 		List<Extension> extsCopy = new LinkedList<Extension>();
 		for (Extension extension : this.extensions) {
-			extsCopy.add(new Extension(extension.getElementName(), extension
-					.getAttributes(), extension.getContent()));
+			try {
+				extsCopy.add(new Extension(extension.getElementName(),
+						extension.getAttributes(), extension.getContent()));
+			} catch (Exception e) {
+				// we should never get here.
+				return null;
+			}
 		}
 		return extsCopy;
 	}
@@ -378,10 +382,15 @@ public class Channel implements Serializable {
 	public Extension getExtension(String extName) {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {
-				if (extension.getElementName() != null
-						&& extension.getElementName().equals(extName)) {
-					return new Extension(extension.getElementName(), extension
-							.getAttributes(), extension.getContent());
+				if (extension.getElementName().equals(extName)) {
+					try {
+						return new Extension(extension.getElementName(),
+								extension.getAttributes(), extension
+										.getContent());
+					} catch (Exception e) {
+						// we should never get here.
+						return null;
+					}
 				}
 			}
 		}

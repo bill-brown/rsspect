@@ -37,10 +37,16 @@ public class Extension implements Serializable {
 	private final List<Attribute> attributes;
 	private final String content;
 
-	// use the factory method in the FeedDoc.
-	Extension(String elementName, List<Attribute> attributes, String content) {
+	Extension(String elementName, List<Attribute> attributes, String content)
+			throws RSSpectException {
 
+		// spec doesn't require it but elementName should be present
+		if (elementName == null) {
+			throw new RSSpectException(
+					"channel elements SHOULD contain a title element.");
+		}
 		this.elementName = elementName;
+
 		this.content = content;
 
 		if (attributes == null) {
