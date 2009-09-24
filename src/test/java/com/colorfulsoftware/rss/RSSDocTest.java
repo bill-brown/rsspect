@@ -835,10 +835,16 @@ public class RSSDocTest {
 			assertNotNull(rss1.getChannel());
 			Extension extOne = rss1.getChannel().getExtension("atom:link");
 			assertNotNull(extOne);
+			assertNotNull(extOne.getAttribute("type"));
+			assertEquals(extOne.getAttribute("type").getValue(),
+					"application/rss+xml");
+			assertNull(extOne.getAttribute("Bunky"));
 			assertNull(rss1.getChannel().getExtension("Bunky"));
-		} catch (Exception r) {
-			System.out.println("error: " + r.getMessage());
-			fail("should just work.");
+			RSSDoc.buildExtension(null, null, "Bunky");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"channel elements SHOULD contain a title element.");
 		}
 	}
 
