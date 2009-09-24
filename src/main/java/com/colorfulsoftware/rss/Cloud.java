@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 William R. Brown <info@colorfulsoftware.com>
+ * Copyright (C) 2009 William R. Brown <wbrown@colorfulsoftware.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -80,36 +80,32 @@ public class Cloud implements Serializable {
 			}
 		}
 
-		if ((this.domain = RSSDoc.getAttributeFromGroup(this.attributes,
-				"domain")) == null) {
+		if ((this.domain = getAttribute("domain")) == null) {
 			throw new RSSpectException(
 					"cloud elements MUST have a domain attribute.");
 		}
 
-		if ((this.port = RSSDoc.getAttributeFromGroup(this.attributes, "port")) == null) {
+		if ((this.port = getAttribute("port")) == null) {
 			throw new RSSpectException(
 					"cloud elements MUST have a port attribute.");
 		}
 
-		if ((this.path = RSSDoc.getAttributeFromGroup(this.attributes, "path")) == null) {
+		if ((this.path = getAttribute("path")) == null) {
 			throw new RSSpectException(
 					"cloud elements MUST have a path attribute.");
 		}
 
-		if ((this.registerProcedure = RSSDoc.getAttributeFromGroup(
-				this.attributes, "registerProcedure")) == null) {
+		if ((this.registerProcedure = getAttribute("registerProcedure")) == null) {
 			throw new RSSpectException(
 					"cloud elements MUST have a registerProcedure attribute.");
 		}
 
-		if ((this.protocol = RSSDoc.getAttributeFromGroup(this.attributes,
-				"protocol")) == null) {
+		if ((this.protocol = getAttribute("protocol")) == null) {
 			throw new RSSpectException(
 					"cloud elements MUST have a protocol attribute.");
 		}
-		if (!this.protocol.equals(RSSDoc.buildAttribute("protocol", "xml-rpc"))
-				&& !this.protocol.equals(RSSDoc.buildAttribute("protocol",
-						"soap"))) {
+		if (!getAttribute("protocol").getValue().equals("xml-rpc")
+				&& !getAttribute("protocol").getValue().equals("soap")) {
 			throw new RSSpectException(
 					"the cloud's protocol attribute must be 'xml-rpc' or 'soap', case-sensitive.");
 		}
@@ -154,7 +150,7 @@ public class Cloud implements Serializable {
 		return (protocol == null) ? null : new Attribute(protocol.getName(),
 				protocol.getValue());
 	}
-	
+
 	public Attribute getAttribute(String attrName) {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {

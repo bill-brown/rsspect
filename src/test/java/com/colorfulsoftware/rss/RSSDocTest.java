@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 William R. Brown <info@colorfulsoftware.com>
+ * Copyright (C) 2009 William R. Brown <wbrown@colorfulsoftware.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -161,6 +161,11 @@ public class RSSDocTest {
 
 	private String expectedRSS6 = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.colorfulsoftware.com/news.xml\"/></channel></rss>";
 
+	private String expectedRSS7 = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel><atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.colorfulsoftware.com/news.xml\"/></rss>";
+
+	private String expectedRSS8 = "<rss version=\"2.0\" xmlns:media=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel><media:credit>Khalid Mohammed/Associated<media:subEle>test</media:subEle> Press</media:credit></rss>";
+	
+	
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -169,9 +174,11 @@ public class RSSDocTest {
 	}
 
 	private RSS rss1;
+	private RSSDoc rssDoc;
 
 	@Before
 	public void setUp() throws Exception {
+		rssDoc = new RSSDoc("UTF-8","1.0");
 	}
 
 	@After
@@ -188,11 +195,11 @@ public class RSSDocTest {
 	@Test
 	public void testWriteRSSDocOutputStreamRSSStringString() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			RSSDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), rss1,
-					RSSDoc.encoding, RSSDoc.xml_version);
-			RSS rss2 = RSSDoc.readRSSToBean(new File("target/out1.xml"));
+			rssDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), rss1,
+					rssDoc.getEncoding(), rssDoc.getXmlVersion());
+			RSS rss2 = rssDoc.readRSSToBean(new File("target/out1.xml"));
 			assertNotNull(rss2);
 			assertNotNull(rss2.getAttributes());
 			assertNotNull(rss2.getChannel());
@@ -203,9 +210,9 @@ public class RSSDocTest {
 		}
 
 		try {
-			RSSDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), null,
-					RSSDoc.encoding, RSSDoc.xml_version);
-			RSS rss2 = RSSDoc.readRSSToBean(new File("target/out1.xml"));
+			rssDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), null,
+					rssDoc.getEncoding(), rssDoc.getXmlVersion());
+			RSS rss2 = rssDoc.readRSSToBean(new File("target/out1.xml"));
 			assertNotNull(rss2);
 			assertNotNull(rss2.getAttributes());
 			assertNotNull(rss2.getChannel());
@@ -225,40 +232,55 @@ public class RSSDocTest {
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
 		/*
 		 * add the stax-utils dependency in the root pom to run this example.
-		 * try { rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+		 * try { rss1 = rssDoc.readRSSToBean(new java.net.URL(
 		 * "http://feeds.nytimes.com/nyt/rss/HomePage")); XMLStreamWriter writer
 		 * = new IndentingXMLStreamWriter(
 		 * XMLOutputFactory.newInstance().createXMLStreamWriter( new
-		 * FileOutputStream("target/out2.xml"), RSSDoc.encoding));
-		 * RSSDoc.writeRSSDoc(writer, rss1, null, null); } catch (Exception e) {
+		 * FileOutputStream("target/out2.xml"), rssDoc.encoding));
+		 * rssDoc.writeRSSDoc(writer, rss1, null, null); } catch (Exception e) {
 		 * e.printStackTrace();
 		 * fail("could not write output file with file output stream."); }
 		 */
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
 			XMLStreamWriter writer = XMLOutputFactory.newInstance()
 					.createXMLStreamWriter(
 							new FileOutputStream("target/out2.xml"),
-							RSSDoc.encoding);
-			RSSDoc.writeRSSDoc(writer, rss1, null, null);
+							rssDoc.getEncoding());
+			rssDoc.writeRSSDoc(writer, rss1, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
 		}
-
+		
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			RSSDoc.writeRSSDoc(new File("target/out2.xml"), rss1, null, null);
+			XMLStreamWriter writer = XMLOutputFactory.newInstance()
+					.createXMLStreamWriter(
+							new FileOutputStream("target/out2.xml"),
+							rssDoc.getEncoding());
+			rssDoc.writeRSSDoc(writer, null, null, null);
+			fail("we should fail before this.");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(), "error writing rss feed: null");
+			
+		}
+
+		try {
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
+					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+			rssDoc.writeRSSDoc(new File("target/out2.xml"), rss1, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
 		}
 
 		try {
-			RSSDoc.writeRSSDoc(new File("target/out2.xml"), null, null, null);
+			rssDoc.writeRSSDoc(new File("target/out2.xml"), null, null, null);
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "error writing rss feed: null");
@@ -268,8 +290,8 @@ public class RSSDocTest {
 		 * add the stax-utils dependency in the root pom to run this example.
 		 * try { XMLStreamWriter writer = new IndentingXMLStreamWriter(
 		 * XMLOutputFactory.newInstance().createXMLStreamWriter( new
-		 * FileOutputStream("target/out2.xml"), RSSDoc.encoding));
-		 * RSSDoc.writeRSSDoc(writer, null, null, null); } catch (Exception e) {
+		 * FileOutputStream("target/out2.xml"), rssDoc.encoding));
+		 * rssDoc.writeRSSDoc(writer, null, null, null); } catch (Exception e) {
 		 * assertTrue(e instanceof RSSpectException);
 		 * assertEquals(e.getMessage(), "error writing rss feed: null"); }
 		 */
@@ -283,10 +305,10 @@ public class RSSDocTest {
 	@Test
 	public void testReadRSSToStringRSS() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = RSSDoc.readRSSToString(rss1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(rss1);
 			assertNotNull(rss1Str);
-			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			rss1 = rssDoc.readRSSToBean(rss1Str);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
@@ -298,10 +320,10 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = RSSDoc.readRSSToString(rss1,
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(rss1,
 					"javanet.staxutils.IndentingXMLStreamWriter");
-			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			rss1 = rssDoc.readRSSToBean(rss1Str);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
@@ -313,9 +335,9 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = RSSDoc.readRSSToString(rss1, "Bunky");
-			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(rss1, "Bunky");
+			rss1 = rssDoc.readRSSToBean(rss1Str);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
@@ -326,10 +348,10 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = RSSDoc.readRSSToString(null,
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(null,
 					"javanet.staxutils.IndentingXMLStreamWriter");
-			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			rss1 = rssDoc.readRSSToBean(rss1Str);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
@@ -345,7 +367,7 @@ public class RSSDocTest {
 	@Test
 	public void testReadRSSToBeanString() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
@@ -366,7 +388,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean("");
+			rss1 = rssDoc.readRSSToBean("");
 			fail("should not get here.");
 		} catch (RSSpectException e) {
 			System.out.println("message = '" + e.getMessage() + "'");
@@ -379,7 +401,7 @@ public class RSSDocTest {
 	@Test
 	public void testReadRSSToBeanFile() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(new File(
+			rss1 = rssDoc.readRSSToBean(new File(
 					"src/test/resources/nyTimes.rss.xml"));
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
@@ -391,7 +413,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc
+			rss1 = rssDoc
 					.readRSSToBean(new File("src/test/resources/out1.xml"));
 			fail("should not get here.");
 		} catch (RSSpectException e) {
@@ -405,7 +427,7 @@ public class RSSDocTest {
 	@Test
 	public void testReadRSSToBeanURL() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
@@ -417,7 +439,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://www.earthbeats.net/drops.xml"));
 			fail("should not get here.");
 		} catch (Exception e) {
@@ -428,7 +450,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://www.someunknownnonworkingurl.nogood"));
 			fail("should not get here.");
 		} catch (Exception e) {
@@ -450,7 +472,7 @@ public class RSSDocTest {
 	@Test
 	public void testReadRSSToBeanInputStream() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(new java.net.URL(
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage").openStream());
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
@@ -466,7 +488,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildRSS() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS2);
+			rss1 = rssDoc.readRSSToBean(expectedRSS2);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 
@@ -476,7 +498,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			RSS rss = RSSDoc.buildRSS(null, null, null);
+			RSS rss = rssDoc.buildRSS(null, null, null);
 			assertNotNull(rss);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -485,28 +507,45 @@ public class RSSDocTest {
 		}
 
 		try {
-			Channel channel = RSSDoc.buildChannel(RSSDoc
-					.buildTitle("this is a title"), RSSDoc
-					.buildLink("http://www.minoritydirectory.net"), RSSDoc
+			Channel channel = rssDoc.buildChannel(rssDoc
+					.buildTitle("this is a title"), rssDoc
+					.buildLink("http://www.minoritydirectory.net"), rssDoc
 					.buildDescription("this is a description"), null, null,
 					null, null, null, null, null, null, null, null, null, null,
 					null, null, null, null, null, null);
-			RSS rss = RSSDoc.buildRSS(channel, null, null);
+			RSS rss = rssDoc.buildRSS(channel, null, null);
 			assertNotNull(rss);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"RSS elements must contain a version attribute.");
 		}
+
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS7);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getAttribute("version"));
+			assertNull(rss1.getAttribute("bunk"));
+			Extension extOne = rss1.getExtension("atom:link");
+			assertNotNull(extOne);
+			assertNotNull(extOne.getAttribute("type"));
+			assertEquals(extOne.getAttribute("type").getValue(),
+					"application/rss+xml");
+			assertNull(extOne.getAttribute("Bunky"));
+			assertNull(rss1.getExtension("quePasa?"));
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
 	}
 
 	@Test
 	public void testBuildAttribute() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = RSSDoc.readRSSToString(rss1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(rss1);
 			assertNotNull(rss1Str);
-			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			rss1 = rssDoc.readRSSToBean(rss1Str);
 
 			assertNotNull(rss1);
 			assertNotNull(rss1.getExtensions());
@@ -517,20 +556,20 @@ public class RSSDocTest {
 				assertNotNull(attr.getValue());
 
 				if (attr.getName().equals("xmlns:pheedo")) {
-					assertTrue(attr.equals(RSSDoc.buildAttribute(
+					assertTrue(attr.equals(rssDoc.buildAttribute(
 							"xmlns:pheedo",
 							"http://www.pheedo.com/namespace/pheedo")));
 				}
 
 				if (attr.getName().equals("xmlns:dc")) {
-					assertTrue(attr.equals(RSSDoc.buildAttribute("xmlns:dc",
+					assertTrue(attr.equals(rssDoc.buildAttribute("xmlns:dc",
 							"http://purl.org/dc/elements/1.1/")));
 				}
 
-				assertFalse(attr.equals(RSSDoc.buildAttribute("xmlns:pheedo",
+				assertFalse(attr.equals(rssDoc.buildAttribute("xmlns:pheedo",
 						"http://www.pheedo.com/namespace/bobo")));
 
-				assertFalse(attr.equals(RSSDoc.buildAttribute("dude", null)));
+				assertFalse(attr.equals(rssDoc.buildAttribute("dude", null)));
 
 				assertFalse(attr
 						.equals("xmlns:pheedo=\"http://www.pheedo.com/namespace/bobo\""));
@@ -548,19 +587,29 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildCategory() {
-		// fail("Not yet implemented");
+		try {
+			Category cat = rssDoc.buildCategory(null, "");
+			assertNotNull(cat);
+			assertEquals(cat.getCategory(), "");
+			assertEquals(cat.getDomain(), null);
+			cat = rssDoc.buildCategory(null, null);
+			fail("should not fail here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"Category elements SHOULD contain text data.  Empty strings are allowed.");
+		}
 	}
 
 	@Test
 	public void testBuildChannel() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS2);
-			String rss1Str = RSSDoc.readRSSToString(rss1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS2);
+			String rss1Str = rssDoc.readRSSToString(rss1);
 			assertNotNull(rss1Str);
-			rss1 = RSSDoc.readRSSToBean(rss1Str);
+			rss1 = rssDoc.readRSSToBean(rss1Str);
 
 			try {
-				RSSDoc.buildChannel(null, null, null, null, null, null, null,
+				rssDoc.buildChannel(null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null);
 				fail("we should have thrown an exception above.");
@@ -570,7 +619,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildChannel(RSSDoc.buildTitle("this is a title"), null,
+				rssDoc.buildChannel(rssDoc.buildTitle("this is a title"), null,
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null, null,
 						null);
@@ -581,8 +630,8 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildChannel(RSSDoc.buildTitle("this is a title"),
-						RSSDoc.buildLink("http://www.minoritydirectory.net"),
+				rssDoc.buildChannel(rssDoc.buildTitle("this is a title"),
+						rssDoc.buildLink("http://www.minoritydirectory.net"),
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null, null,
 						null);
@@ -593,9 +642,9 @@ public class RSSDocTest {
 			}
 
 			try {
-				assertNotNull(RSSDoc.buildChannel(RSSDoc
-						.buildTitle("this is a title"), RSSDoc
-						.buildLink("http://www.minoritydirectory.net"), RSSDoc
+				assertNotNull(rssDoc.buildChannel(rssDoc
+						.buildTitle("this is a title"), rssDoc
+						.buildLink("http://www.minoritydirectory.net"), rssDoc
 						.buildDescription("this is a description"), null, null,
 						null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null));
@@ -609,7 +658,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS4);
+			rss1 = rssDoc.readRSSToBean(expectedRSS4);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			assertNotNull(rss1.getChannel().getCategory("Funky"));
@@ -623,12 +672,16 @@ public class RSSDocTest {
 	@Test
 	public void testBuildCloud() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			Cloud cloud = rss1.getChannel().getCloud();
 			assertNotNull(cloud);
 			assertNotNull(cloud.getAttributes());
+			assertNotNull(cloud.getAttribute("port"));
+			assertNull(cloud.getAttribute("bunk"));
+			Attribute attribute = cloud.getAttribute("port");
+			assertEquals(attribute.getValue(), "80");
 			assertNotNull(cloud.getDomain());
 			assertNotNull(cloud.getPath());
 			assertNotNull(cloud.getPort());
@@ -641,7 +694,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildCloud(null);
+				rssDoc.buildCloud(null);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(
@@ -651,53 +704,53 @@ public class RSSDocTest {
 
 			List<Attribute> attrs = new LinkedList<Attribute>();
 			try {
-				RSSDoc.buildCloud(attrs);
+				rssDoc.buildCloud(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a domain attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("domain", "domain"));
+			attrs.add(rssDoc.buildAttribute("domain", "domain"));
 
 			try {
-				RSSDoc.buildCloud(attrs);
+				rssDoc.buildCloud(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a port attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("port", "port"));
+			attrs.add(rssDoc.buildAttribute("port", "port"));
 
 			try {
-				RSSDoc.buildCloud(attrs);
+				rssDoc.buildCloud(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a path attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("path", "path"));
+			attrs.add(rssDoc.buildAttribute("path", "path"));
 
 			try {
-				RSSDoc.buildCloud(attrs);
+				rssDoc.buildCloud(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a registerProcedure attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("registerProcedure",
+			attrs.add(rssDoc.buildAttribute("registerProcedure",
 					"registerProcedure"));
 
 			try {
-				RSSDoc.buildCloud(attrs);
+				rssDoc.buildCloud(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"cloud elements MUST have a protocol attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("protocol", "protocol"));
+			attrs.add(rssDoc.buildAttribute("protocol", "protocol"));
 
 			try {
-				RSSDoc.buildCloud(attrs);
+				rssDoc.buildCloud(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
@@ -705,13 +758,13 @@ public class RSSDocTest {
 			}
 
 			attrs = new LinkedList<Attribute>();
-			attrs.add(RSSDoc.buildAttribute("domain", "domain"));
-			attrs.add(RSSDoc.buildAttribute("port", "port"));
-			attrs.add(RSSDoc.buildAttribute("path", "path"));
-			attrs.add(RSSDoc.buildAttribute("registerProcedure",
+			attrs.add(rssDoc.buildAttribute("domain", "domain"));
+			attrs.add(rssDoc.buildAttribute("port", "port"));
+			attrs.add(rssDoc.buildAttribute("path", "path"));
+			attrs.add(rssDoc.buildAttribute("registerProcedure",
 					"registerProcedure"));
-			attrs.add(RSSDoc.buildAttribute("protocol", "soap"));
-			assertNotNull(RSSDoc.buildCloud(attrs));
+			attrs.add(rssDoc.buildAttribute("protocol", "soap"));
+			assertNotNull(rssDoc.buildCloud(attrs));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -722,7 +775,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildComments() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS3);
+			rss1 = rssDoc.readRSSToBean(expectedRSS3);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 
@@ -758,7 +811,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildEnclosure() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			List<Item> items = rss1.getChannel().getItems();
@@ -768,6 +821,10 @@ public class RSSDocTest {
 
 				assertNotNull(item.getEnclosure());
 				Enclosure enclosure = item.getEnclosure();
+				assertNotNull(enclosure.getAttribute("type"));
+				assertNull(enclosure.getAttribute("bunk"));
+				Attribute attribute = enclosure.getAttribute("type");
+				assertEquals(attribute.getValue(), "audio/flac");
 				assertNotNull(enclosure.getAttributes());
 				assertNotNull(enclosure.getUrl());
 				assertNotNull(enclosure.getLength());
@@ -781,7 +838,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildEnclosure(null);
+				rssDoc.buildEnclosure(null);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(
@@ -791,35 +848,35 @@ public class RSSDocTest {
 
 			List<Attribute> attrs = new LinkedList<Attribute>();
 			try {
-				RSSDoc.buildEnclosure(attrs);
+				rssDoc.buildEnclosure(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"enclusure elements MUST have a url attribute.");
 			}
 			attrs
-					.add(RSSDoc.buildAttribute("url",
+					.add(rssDoc.buildAttribute("url",
 							"http://www.earthbeats.net"));
 
 			try {
-				RSSDoc.buildEnclosure(attrs);
+				rssDoc.buildEnclosure(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"enclusure elements MUST have a length attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("length", "1234567"));
+			attrs.add(rssDoc.buildAttribute("length", "1234567"));
 
 			try {
-				RSSDoc.buildEnclosure(attrs);
+				rssDoc.buildEnclosure(attrs);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
 						"enclusure elements MUST have a type attribute.");
 			}
-			attrs.add(RSSDoc.buildAttribute("type", "media/flac"));
+			attrs.add(rssDoc.buildAttribute("type", "media/flac"));
 
-			assertNotNull(RSSDoc.buildEnclosure(attrs));
+			assertNotNull(rssDoc.buildEnclosure(attrs));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -830,7 +887,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildExtension() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS6);
+			rss1 = rssDoc.readRSSToBean(expectedRSS6);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			Extension extOne = rss1.getChannel().getExtension("atom:link");
@@ -840,8 +897,17 @@ public class RSSDocTest {
 					"application/rss+xml");
 			assertNull(extOne.getAttribute("Bunky"));
 			assertNull(rss1.getChannel().getExtension("Bunky"));
-			RSSDoc.buildExtension(null, null, "Bunky");
+			rssDoc.buildExtension(null, null, "Bunky");
 			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"channel elements SHOULD contain a title element.");
+		}
+		
+		try {
+			//for testing extention element sub elements. 
+			rss1 = rssDoc.readRSSToBean(expectedRSS8);
+			assertNotNull(rss1);
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"channel elements SHOULD contain a title element.");
@@ -861,7 +927,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildHeight() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			assertNotNull(rss1.getChannel().getImage());
@@ -870,7 +936,7 @@ public class RSSDocTest {
 			assertEquals(rss1.getChannel().getImage().getHeight().getHeight(),
 					"100");
 			try {
-				RSSDoc.buildHeight("401");
+				rssDoc.buildHeight("401");
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
@@ -878,7 +944,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildHeight("abc");
+				rssDoc.buildHeight("abc");
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
@@ -897,7 +963,7 @@ public class RSSDocTest {
 		Title title = null;
 		Link link = null;
 		try {
-			RSSDoc.buildImage(url, title, link, null, null, null);
+			rssDoc.buildImage(url, title, link, null, null, null);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
@@ -905,8 +971,8 @@ public class RSSDocTest {
 		}
 
 		try {
-			url = RSSDoc.buildURL("http://www.earthbeats.net");
-			RSSDoc.buildImage(url, title, link, null, null, null);
+			url = rssDoc.buildURL("http://www.earthbeats.net");
+			rssDoc.buildImage(url, title, link, null, null, null);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
@@ -914,16 +980,16 @@ public class RSSDocTest {
 		}
 
 		try {
-			title = RSSDoc.buildTitle("this is a title");
-			RSSDoc.buildImage(url, title, link, null, null, null);
+			title = rssDoc.buildTitle("this is a title");
+			rssDoc.buildImage(url, title, link, null, null, null);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"image elements MUST contain a link element.");
 		}
 		try {
-			link = RSSDoc.buildLink("http://www.earthbeats.net");
-			Image image = RSSDoc.buildImage(url, title, link, null, null, null);
+			link = rssDoc.buildLink("http://www.earthbeats.net");
+			Image image = rssDoc.buildImage(url, title, link, null, null, null);
 			assertNotNull(image);
 			assertEquals(image.getUrl().getUrl(), "http://www.earthbeats.net");
 			assertEquals(image.getTitle().getTitle(), "this is a title");
@@ -936,7 +1002,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildItem() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			List<Item> items = rss1.getChannel().getItems();
@@ -946,10 +1012,27 @@ public class RSSDocTest {
 				assertNotNull(item.getDescription());
 				assertNotNull(item.getAuthor());
 				assertNotNull(item.getSource());
+				Extension extOne = item.getExtension("media:content");
+				assertNull(item.getExtension("thingy:majig"));
+				if (extOne != null) {
+					assertNotNull(extOne.getAttribute("url"));
+					assertNull(extOne.getAttribute("Bunky"));
+				}
+				Category cat = item.getCategory("Subprime Mortgage Crisis");
+				Category cat2 = item.getCategory("");
+				Category cat3 = item.getCategory(null);
+				assertNull(cat2);
+				assertNull(cat3);
+				if (cat != null) {
+					assertNotNull(cat.getDomain());
+					assertEquals(cat.getCategory(), "Subprime Mortgage Crisis");
+					assertEquals(cat.getDomain().getValue(),
+							"http://www.nytimes.com/namespaces/keywords/des");
+				}
 			}
 
 			try {
-				Item item = RSSDoc.buildItem(null, null, RSSDoc
+				Item item = rssDoc.buildItem(null, null, rssDoc
 						.buildDescription("something cool"), null, null, null,
 						null, null, null, null, null);
 				assertNotNull(item.getDescription());
@@ -959,7 +1042,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				Item item = RSSDoc.buildItem(RSSDoc.buildTitle("try me"), null,
+				Item item = rssDoc.buildItem(rssDoc.buildTitle("try me"), null,
 						null, null, null, null, null, null, null, null, null);
 				assertNotNull(item.getTitle());
 				assertNull(item.getDescription());
@@ -968,7 +1051,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildItem(null, null, null, null, null, null, null,
+				rssDoc.buildItem(null, null, null, null, null, null, null,
 						null, null, null, null);
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
@@ -982,7 +1065,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS5);
+			rss1 = rssDoc.readRSSToBean(expectedRSS5);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			Item itmTitle = rss1.getChannel().getItem("first title");
@@ -1003,7 +1086,7 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildLastBuildDate() {
-		LastBuildDate lastBuildDate = RSSDoc.buildLastBuildDate(null);
+		LastBuildDate lastBuildDate = rssDoc.buildLastBuildDate(null);
 		assertNotNull(lastBuildDate);
 		assertNull(lastBuildDate.getDateTime());
 		assertNull(lastBuildDate.getText());
@@ -1012,7 +1095,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildLink() {
 		try {
-			Link link = RSSDoc.buildLink(null);
+			Link link = rssDoc.buildLink(null);
 			assertNotNull(link);
 			assertNull(link.getLink());
 		} catch (RSSpectException r) {
@@ -1020,7 +1103,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			Link link = RSSDoc.buildLink("");
+			Link link = rssDoc.buildLink("");
 			assertNotNull(link);
 			assertNotNull(link.getLink());
 			assertTrue(link.getLink().length() == 0);
@@ -1029,7 +1112,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			Link link = RSSDoc.buildLink(" ");
+			Link link = rssDoc.buildLink(" ");
 			assertNotNull(link);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1041,7 +1124,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			Link link = RSSDoc.buildLink("abcScheme://testMe");
+			Link link = rssDoc.buildLink("abcScheme://testMe");
 			assertNotNull(link);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1056,7 +1139,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildManagingEditor() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			ManagingEditor me = rss1.getChannel().getManagingEditor();
@@ -1076,7 +1159,7 @@ public class RSSDocTest {
 
 	@Test
 	public void testBuildPubDate() {
-		PubDate pubDate = RSSDoc.buildPubDate(null);
+		PubDate pubDate = rssDoc.buildPubDate(null);
 		assertNotNull(pubDate);
 		assertNull(pubDate.getDateTime());
 		assertNull(pubDate.getText());
@@ -1090,7 +1173,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildSkipDays() {
 		try {
-			SkipDays skipDays = RSSDoc.buildSkipDays(null);
+			SkipDays skipDays = rssDoc.buildSkipDays(null);
 			assertNotNull(skipDays);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1099,7 +1182,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			SkipDays skipDays = RSSDoc.buildSkipDays(new LinkedList<Day>());
+			SkipDays skipDays = rssDoc.buildSkipDays(new LinkedList<Day>());
 			assertNotNull(skipDays);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1109,8 +1192,8 @@ public class RSSDocTest {
 
 		try {
 			List<Day> days = new LinkedList<Day>();
-			days.add(RSSDoc.buildDay("yes"));
-			SkipDays skipDays = RSSDoc.buildSkipDays(days);
+			days.add(rssDoc.buildDay("yes"));
+			SkipDays skipDays = rssDoc.buildSkipDays(days);
 			assertNotNull(skipDays);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1121,11 +1204,11 @@ public class RSSDocTest {
 
 		try {
 			List<Day> days = new LinkedList<Day>();
-			days.add(RSSDoc.buildDay("Thursday"));
-			days.add(RSSDoc.buildDay("Friday"));
-			days.add(RSSDoc.buildDay("Saturday"));
-			days.add(RSSDoc.buildDay("Sunday"));
-			SkipDays skipDays = RSSDoc.buildSkipDays(days);
+			days.add(rssDoc.buildDay("Thursday"));
+			days.add(rssDoc.buildDay("Friday"));
+			days.add(rssDoc.buildDay("Saturday"));
+			days.add(rssDoc.buildDay("Sunday"));
+			SkipDays skipDays = rssDoc.buildSkipDays(days);
 			assertNotNull(skipDays);
 			assertNotNull(skipDays.getSkipDays());
 		} catch (Exception e) {
@@ -1136,7 +1219,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildSkipHours() {
 		try {
-			SkipHours skipHours = RSSDoc.buildSkipHours(null);
+			SkipHours skipHours = rssDoc.buildSkipHours(null);
 			assertNotNull(skipHours);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1145,7 +1228,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			SkipHours skipHours = RSSDoc.buildSkipHours(new LinkedList<Hour>());
+			SkipHours skipHours = rssDoc.buildSkipHours(new LinkedList<Hour>());
 			assertNotNull(skipHours);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1155,8 +1238,8 @@ public class RSSDocTest {
 
 		try {
 			List<Hour> hours = new LinkedList<Hour>();
-			hours.add(RSSDoc.buildHour("24"));
-			SkipHours skipHours = RSSDoc.buildSkipHours(hours);
+			hours.add(rssDoc.buildHour("24"));
+			SkipHours skipHours = rssDoc.buildSkipHours(hours);
 			assertNotNull(skipHours);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1166,8 +1249,8 @@ public class RSSDocTest {
 
 		try {
 			List<Hour> hours = new LinkedList<Hour>();
-			hours.add(RSSDoc.buildHour("cat"));
-			SkipHours skipHours = RSSDoc.buildSkipHours(hours);
+			hours.add(rssDoc.buildHour("cat"));
+			SkipHours skipHours = rssDoc.buildSkipHours(hours);
 			assertNotNull(skipHours);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1176,8 +1259,8 @@ public class RSSDocTest {
 
 		try {
 			List<Hour> hours = new LinkedList<Hour>();
-			hours.add(RSSDoc.buildHour("23"));
-			SkipHours skipHours = RSSDoc.buildSkipHours(hours);
+			hours.add(rssDoc.buildHour("23"));
+			SkipHours skipHours = rssDoc.buildSkipHours(hours);
 			assertNotNull(skipHours);
 			assertNotNull(skipHours.getSkipHours());
 		} catch (Exception e) {
@@ -1188,7 +1271,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildSource() {
 		try {
-			Source source = RSSDoc.buildSource(null, "somewhere cool");
+			Source source = rssDoc.buildSource(null, "somewhere cool");
 			assertNotNull(source);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1197,7 +1280,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			Source source = RSSDoc.buildSource(RSSDoc.buildAttribute("cat",
+			Source source = rssDoc.buildSource(rssDoc.buildAttribute("cat",
 					"dog"), "somewhere cool");
 			assertNotNull(source);
 			fail("we should have thrown an exception above.");
@@ -1207,7 +1290,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			Source source = RSSDoc.buildSource(RSSDoc.buildAttribute("url",
+			Source source = rssDoc.buildSource(rssDoc.buildAttribute("url",
 					"http://www.earthbeats.net"), "somewhere cool");
 			assertNotNull(source);
 			assertNotNull(source.getUrl());
@@ -1230,7 +1313,7 @@ public class RSSDocTest {
 		Name name = null;
 		Link link = null;
 		try {
-			RSSDoc.buildTextInput(title, description, name, link);
+			rssDoc.buildTextInput(title, description, name, link);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
@@ -1238,8 +1321,8 @@ public class RSSDocTest {
 		}
 
 		try {
-			title = RSSDoc.buildTitle("Submit");
-			RSSDoc.buildTextInput(title, description, name, link);
+			title = rssDoc.buildTitle("Submit");
+			rssDoc.buildTextInput(title, description, name, link);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
@@ -1247,8 +1330,8 @@ public class RSSDocTest {
 		}
 
 		try {
-			description = RSSDoc.buildDescription("regular textarea");
-			RSSDoc.buildTextInput(title, description, name, link);
+			description = rssDoc.buildDescription("regular textarea");
+			rssDoc.buildTextInput(title, description, name, link);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
@@ -1256,8 +1339,8 @@ public class RSSDocTest {
 		}
 
 		try {
-			name = RSSDoc.buildName("textArea");
-			RSSDoc.buildTextInput(title, description, name, link);
+			name = rssDoc.buildName("textArea");
+			rssDoc.buildTextInput(title, description, name, link);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
@@ -1265,8 +1348,8 @@ public class RSSDocTest {
 		}
 
 		try {
-			link = RSSDoc.buildLink("http://www.earthbeats.net");
-			TextInput textInput = RSSDoc.buildTextInput(title, description,
+			link = rssDoc.buildLink("http://www.earthbeats.net");
+			TextInput textInput = rssDoc.buildTextInput(title, description,
 					name, link);
 			assertNotNull(textInput);
 			assertEquals(textInput.getTitle().getTitle(), "Submit");
@@ -1293,7 +1376,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildURL() {
 		try {
-			URL url = RSSDoc.buildURL(null);
+			URL url = rssDoc.buildURL(null);
 			assertNotNull(url);
 			assertNull(url.getUrl());
 		} catch (RSSpectException r) {
@@ -1301,7 +1384,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			URL url = RSSDoc.buildURL("");
+			URL url = rssDoc.buildURL("");
 			assertNotNull(url);
 			assertNotNull(url.getUrl());
 			assertTrue(url.getUrl().length() == 0);
@@ -1310,7 +1393,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			URL url = RSSDoc.buildURL(" ");
+			URL url = rssDoc.buildURL(" ");
 			assertNotNull(url);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1322,7 +1405,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			URL url = RSSDoc.buildURL("abcScheme://testMe");
+			URL url = rssDoc.buildURL("abcScheme://testMe");
 			assertNotNull(url);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -1342,7 +1425,7 @@ public class RSSDocTest {
 	@Test
 	public void testBuildWidth() {
 		try {
-			rss1 = RSSDoc.readRSSToBean(expectedRSS1);
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			assertNotNull(rss1.getChannel().getImage());
@@ -1351,7 +1434,7 @@ public class RSSDocTest {
 			assertEquals(rss1.getChannel().getImage().getWidth().getWidth(),
 					"144");
 			try {
-				RSSDoc.buildWidth("145");
+				rssDoc.buildWidth("145");
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
@@ -1359,7 +1442,7 @@ public class RSSDocTest {
 			}
 
 			try {
-				RSSDoc.buildWidth("abc");
+				rssDoc.buildWidth("abc");
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(), "invalid number format for width.");

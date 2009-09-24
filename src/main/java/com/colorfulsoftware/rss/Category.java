@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 William R. Brown <info@colorfulsoftware.com>
+ * Copyright (C) 2009 William R. Brown <wbrown@colorfulsoftware.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -62,9 +62,14 @@ public class Category implements Serializable {
 
 	private final Attribute domain;
 
-	Category(Attribute domain, String category) {
+	Category(Attribute domain, String category) throws RSSpectException {
 		this.domain = (domain == null) ? null : new Attribute(domain.getName(),
 				domain.getValue());
+		// spec doesn't require it but category should be present
+		if (category == null) {
+			throw new RSSpectException(
+					"Category elements SHOULD contain text data.  Empty strings are allowed.");
+		}
 		this.category = category;
 	}
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 William R. Brown <info@colorfulsoftware.com>
+ * Copyright (C) 2009 William R. Brown <wbrown@colorfulsoftware.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -228,8 +228,13 @@ public class Channel implements Serializable {
 		} else {
 			List<Category> catsCopy = new LinkedList<Category>();
 			for (Category category : this.categories) {
-				catsCopy.add(new Category(category.getDomain(), category
-						.getCategory()));
+				try {
+					catsCopy.add(new Category(category.getDomain(), category
+							.getCategory()));
+				} catch (Exception e) {
+					// we should never get here.
+					return null;
+				}
 			}
 			return catsCopy;
 		}
@@ -346,13 +351,18 @@ public class Channel implements Serializable {
 		return extsCopy;
 	}
 
-	public Category getCategory(String catName) {
+	public Category getCategory(String catValue) {
 		if (this.categories != null) {
 			for (Category category : this.categories) {
 				if (category.getCategory() != null
-						&& category.getCategory().equals(catName)) {
-					return new Category(category.getDomain(), category
-							.getCategory());
+						&& category.getCategory().equals(catValue)) {
+					try {
+						return new Category(category.getDomain(), category
+								.getCategory());
+					} catch (Exception e) {
+						// we should never get here.
+						return null;
+					}
 				}
 			}
 		}

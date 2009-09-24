@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 William R. Brown <info@colorfulsoftware.com>
+ * Copyright (C) 2009 William R. Brown <wbrown@colorfulsoftware.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,18 +69,17 @@ public class Enclosure implements Serializable {
 			}
 		}
 
-		if ((this.url = RSSDoc.getAttributeFromGroup(this.attributes, "url")) == null) {
+		if ((this.url = getAttribute("url")) == null) {
 			throw new RSSpectException(
 					"enclusure elements MUST have a url attribute.");
 		}
 
-		if ((this.length = RSSDoc.getAttributeFromGroup(this.attributes,
-				"length")) == null) {
+		if ((this.length = getAttribute("length")) == null) {
 			throw new RSSpectException(
 					"enclusure elements MUST have a length attribute.");
 		}
 
-		if ((this.type = RSSDoc.getAttributeFromGroup(this.attributes, "type")) == null) {
+		if ((this.type = getAttribute("type")) == null) {
 			throw new RSSpectException(
 					"enclusure elements MUST have a type attribute.");
 		}
