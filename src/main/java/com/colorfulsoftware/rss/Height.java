@@ -48,6 +48,9 @@ public class Height implements Serializable {
 		this.height = height;
 	}
 
+	/**
+	 * @return the height.
+	 */
 	public String getHeight() {
 		return height;
 	}

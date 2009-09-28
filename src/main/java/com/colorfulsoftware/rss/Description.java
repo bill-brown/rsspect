@@ -41,6 +41,9 @@ public class Description implements Serializable {
 		this.description = (description == null)?"":description;
 	}
 
+	/**
+	 * @return the description (can be the empty string).
+	 */
 	public String getDescription() {
 		return description;
 	}

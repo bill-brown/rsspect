@@ -101,21 +101,35 @@ public class Enclosure implements Serializable {
 		return (this.attributes == null) ? null : attrsCopy;
 	}
 
+	/**
+	 * @return the url attribute
+	 */
 	public Attribute getUrl() {
 		return (url == null) ? null : new Attribute(url.getName(), url
 				.getValue());
 	}
 
+	/**
+	 * @return the length attribute.
+	 */
 	public Attribute getLength() {
 		return (length == null) ? null : new Attribute(length.getName(), length
 				.getValue());
 	}
 
+	/**
+	 * @return the type attribute.
+	 */
 	public Attribute getType() {
 		return (type == null) ? null : new Attribute(type.getName(), type
 				.getValue());
 	}
 
+	/**
+	 * @param attrName
+	 *            the name of the attribute to get.
+	 * @return the Attribute object if attrName matches or null if not found.
+	 */
 	public Attribute getAttribute(String attrName) {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {

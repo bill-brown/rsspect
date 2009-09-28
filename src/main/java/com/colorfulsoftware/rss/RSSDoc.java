@@ -57,6 +57,9 @@ public final class RSSDoc {
 	private String libUri;
 	private String libVersion;
 
+	/**
+	 * 
+	 */
 	public RSSDoc(){
 		try {
 			Properties props = new Properties();
@@ -69,6 +72,10 @@ public final class RSSDoc {
 		}
 	}
 	
+	/**
+	 * @param encoding the xml encoding eg. UTF-8
+	 * @param xmlVersion the xml document version eg. 1.0
+	 */
 	public RSSDoc(String encoding, String xmlVersion){
 		this();
 		this.encoding = encoding;
@@ -94,7 +101,7 @@ public final class RSSDoc {
 	 *            the file encoding (default is UTF-8)
 	 * @param version
 	 *            the xml version (default is 1.0)
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public void writeRSSDoc(OutputStream output, RSS rss, String encoding,
@@ -118,7 +125,7 @@ public final class RSSDoc {
 	 *            the file encoding (default is UTF-8)
 	 * @param version
 	 *            the xml version (default is 1.0)
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public void writeRSSDoc(File file, RSS rss, String encoding, String version)
@@ -153,7 +160,7 @@ public final class RSSDoc {
 	 *            the file encoding (default is UTF-8)
 	 * @param version
 	 *            the xml version (default is 1.0)
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public void writeRSSDoc(XMLStreamWriter output, RSS rss, String encoding,
@@ -185,7 +192,7 @@ public final class RSSDoc {
 	 * @param xmlStreamWriter
 	 *            the fully qualified XMLStreamWriter class name.
 	 * @return an rss feed document string.
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             thrown if the feed cannot be returned as a String
 	 */
 	public String readRSSToString(RSS rss, String xmlStreamWriter)
@@ -216,7 +223,7 @@ public final class RSSDoc {
 	 * @param rss
 	 *            the rss object to be converted to an rss string.
 	 * @return an rss feed document string.
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             thrown if the feed cannot be returned as a String
 	 */
 	public String readRSSToString(RSS rss) throws RSSpectException {
@@ -242,7 +249,7 @@ public final class RSSDoc {
 	 * @param xmlString
 	 *            the xml string to be transformed into a RSS element.
 	 * @return the RSS element
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             if the string cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(String xmlString) throws RSSpectException {
@@ -263,7 +270,7 @@ public final class RSSDoc {
 	 * @param file
 	 *            the file object representing an rss feed.
 	 * @return the RSS element.
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             if the file cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(File file) throws RSSpectException {
@@ -284,7 +291,7 @@ public final class RSSDoc {
 	 * @param url
 	 *            the Internet network location of an rss file.
 	 * @return the RSS element.
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(java.net.URL url) throws RSSpectException {
@@ -305,7 +312,7 @@ public final class RSSDoc {
 	 * @param inputStream
 	 *            the input stream containing an rss file.
 	 * @return the RSS element.
-	 * @throws Exception
+	 * @throws RSSpectException
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(InputStream inputStream) throws RSSpectException {
@@ -329,7 +336,7 @@ public final class RSSDoc {
 	 * @param extensions
 	 *            additional extensions (optional)
 	 * @return an immutable RSS object.
-	 * @throws RSSpectException.
+	 * @throws RSSpectException
 	 */
 	public RSS buildRSS(Channel channel, List<Attribute> attributes,
 			List<Extension> extensions) throws RSSpectException {
@@ -364,6 +371,7 @@ public final class RSSDoc {
 	 * @param category
 	 *            the category text
 	 * @return an immutable Category object.
+	 * @throws RSSpectException 
 	 */
 	public Category buildCategory(Attribute domain, String category)
 			throws RSSpectException {
@@ -413,8 +421,9 @@ public final class RSSDoc {
 
 	/**
 	 * 
-	 * @param cloud
+	 * @param attributes 
 	 * @return an immutable Cloud object.
+	 * @throws RSSpectException 
 	 */
 	public Cloud buildCloud(List<Attribute> attributes) throws RSSpectException {
 		return new Cloud(attributes);
@@ -460,7 +469,6 @@ public final class RSSDoc {
 	 * 
 	 * @param attributes
 	 *            should contain url, length and type
-	 * @param enclosure
 	 * @return an immutable Enclosure object.
 	 * @throws RSSpectException
 	 */
@@ -640,10 +648,20 @@ public final class RSSDoc {
 		return new SkipHours(skipHours);
 	}
 
+	/**
+	 * @param day
+	 * @return a Day object.
+	 * @throws RSSpectException
+	 */
 	public Day buildDay(String day) throws RSSpectException {
 		return new Day(day);
 	}
 
+	/**
+	 * @param hour
+	 * @return an Hour object.
+	 * @throws RSSpectException
+	 */
 	public Hour buildHour(String hour) throws RSSpectException {
 		return new Hour(hour);
 	}
@@ -745,10 +763,16 @@ public final class RSSDoc {
 		writer.close();
 	}
 
+	/**
+	 * @return the xml encoding of the document eg. UTF-8
+	 */
 	public String getEncoding() {
 		return encoding;
 	}
 
+	/**
+	 * @return the xml document version of the document eg. 1.0
+	 */
 	public String getXmlVersion() {
 		return xmlVersion;
 	}

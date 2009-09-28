@@ -67,7 +67,6 @@ class RSSReader {
 				} else if (elementName.equals("channel")) {
 					channel = readChannel(reader);
 				} else {// extension
-					System.out.println("found extension in rss: "+elementName);
 					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
@@ -149,17 +148,14 @@ class RSSReader {
 		StringBuffer extText = new StringBuffer();
 		List<Attribute> attributes = getAttributes(reader);
 
-		String elementNamePrev = null;
+		String elementNameOrig = elementName;
+		System.out.println("element orig: "+elementNameOrig);
 		boolean breakOut = false;
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
-				System.out.println("ext start elementName: " + elementName);
-				if (elementNamePrev == null) {
-					elementNamePrev = elementName;
-				}
-				if (!elementName.equals(elementNamePrev)) {
+				if (!elementName.equals(elementNameOrig)) {
 					List<Extension> subExtn = readExtension(reader, null,
 							elementName);
 					Extension extn = subExtn.get(0);
@@ -183,8 +179,8 @@ class RSSReader {
 
 			case XMLStreamConstants.END_ELEMENT:
 				String elementNameEnd = getElementName(reader);
-				System.out.println("ext start elementName: " + elementName);
-				if (elementNameEnd.equals(elementName)) {
+				System.out.println("end element: "+elementNameEnd);
+				if (elementNameEnd.equals(elementNameOrig)) {
 					breakOut = true;
 				}
 				break;
@@ -291,7 +287,6 @@ class RSSReader {
 				} else if (elementName.equals("item")) {
 					items = readItem(reader, items);
 				} else {// extension
-					System.out.println("found extension in channel: "+elementName);
 					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
@@ -368,7 +363,6 @@ class RSSReader {
 
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
-				System.out.println("start element in image: "+elementName);
 				// call each feed elements read method depending on the name
 				if (elementName.equals("url")) {
 					url = readURL(reader);
@@ -387,7 +381,6 @@ class RSSReader {
 
 			case XMLStreamConstants.END_ELEMENT:
 				elementName = getElementName(reader);
-				System.out.println("end element in image: "+elementName);
 				if (elementName.equals("image")) {
 					breakOut = true;
 				}

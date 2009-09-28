@@ -177,10 +177,16 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the title.
+	 */
 	public Title getTitle() {
 		return new Title(title.getTitle());
 	}
 
+	/**
+	 * @return the link element.
+	 */
 	public Link getLink() {
 		try {
 			return new Link(link.getLink());
@@ -190,38 +196,62 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the description element.
+	 */
 	public Description getDescription() {
 		return new Description(description.getDescription());
 	}
 
+	/**
+	 * @return the language element.
+	 */
 	public Language getLanguage() {
 		return (language == null) ? null : new Language(language.getLanguage());
 	}
 
+	/**
+	 * @return the copyright element
+	 */
 	public Copyright getCopyright() {
 		return (copyright == null) ? null : new Copyright(copyright
 				.getCopyright());
 	}
 
+	/**
+	 * @return the managing editor element.
+	 */
 	public ManagingEditor getManagingEditor() {
 		return (managingEditor == null) ? null : new ManagingEditor(
 				managingEditor.getManagingEditor());
 	}
 
+	/**
+	 * @return the webmaster element.
+	 */
 	public WebMaster getWebMaster() {
 		return (webMaster == null) ? null : new WebMaster(webMaster
 				.getWebMaster());
 	}
 
+	/**
+	 * @return the pubDate element.
+	 */
 	public PubDate getPubDate() {
 		return (pubDate == null) ? null : new PubDate(pubDate.getDateTime());
 	}
 
+	/**
+	 * @return the last build date element.
+	 */
 	public LastBuildDate getLastBuildDate() {
 		return (lastBuildDate == null) ? null : new LastBuildDate(lastBuildDate
 				.getDateTime());
 	}
 
+	/**
+	 * @return the list of categories.
+	 */
 	public List<Category> getCategories() {
 		if (categories == null) {
 			return null;
@@ -240,15 +270,24 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the generator element.
+	 */
 	public Generator getGenerator() {
 		return (generator == null) ? null : new Generator(generator
 				.getGenerator());
 	}
 
+	/**
+	 * @return the docs element.
+	 */
 	public Docs getDocs() {
 		return (docs == null) ? null : new Docs(docs.getDocs());
 	}
 
+	/**
+	 * @return the cloud element.
+	 */
 	public Cloud getCloud() {
 		try {
 			return (cloud == null) ? null : new Cloud(cloud.getAttributes());
@@ -258,10 +297,16 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the ttl element.
+	 */
 	public TTL getTtl() {
 		return (ttl == null) ? null : new TTL(ttl.getTtl());
 	}
 
+	/**
+	 * @return the image element.
+	 */
 	public Image getImage() {
 		try {
 			return (image == null) ? null : new Image(image.getUrl(), image
@@ -273,10 +318,16 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the rating element.
+	 */
 	public Rating getRating() {
 		return (rating == null) ? null : new Rating(rating.getRating());
 	}
 
+	/**
+	 * @return the textInput element.
+	 */
 	public TextInput getTextInput() {
 		try {
 			return (textInput == null) ? null : new TextInput(textInput
@@ -288,6 +339,9 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the skipHours element.
+	 */
 	public SkipHours getSkipHours() {
 		try {
 			return (skipHours == null) ? null : new SkipHours(skipHours
@@ -298,6 +352,9 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the skipDays element.
+	 */
 	public SkipDays getSkipDays() {
 		try {
 			return (skipDays == null) ? null : new SkipDays(skipDays
@@ -308,6 +365,9 @@ public class Channel implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the list of items.
+	 */
 	public List<Item> getItems() {
 		if (items == null) {
 			return null;
@@ -351,6 +411,10 @@ public class Channel implements Serializable {
 		return extsCopy;
 	}
 
+	/**
+	 * @param catValue
+	 * @return the category name matching this item or null if not found.
+	 */
 	public Category getCategory(String catValue) {
 		if (this.categories != null) {
 			for (Category category : this.categories) {
@@ -369,6 +433,12 @@ public class Channel implements Serializable {
 		return null;
 	}
 
+	/**
+	 * @param titleOrDescription
+	 * @return the item with this title or description. returns null if not
+	 *         found.
+	 * @throws RSSpectException
+	 */
 	public Item getItem(String titleOrDescription) throws RSSpectException {
 		if (this.items != null) {
 			for (Item item : this.items) {
@@ -389,6 +459,10 @@ public class Channel implements Serializable {
 		return null;
 	}
 
+	/**
+	 * @param extName
+	 * @return the extension matching the element or null if not found.
+	 */
 	public Extension getExtension(String extName) {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {

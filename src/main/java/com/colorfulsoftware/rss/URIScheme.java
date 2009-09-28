@@ -35,9 +35,9 @@ class URIScheme implements Serializable {
 	 */
 	private static final long serialVersionUID = -3125832208350819540L;
 
-	private static Map<String, String> uriScheme = new HashMap<String, String>();
+	private Map<String, String> uriScheme = new HashMap<String, String>();
 
-	static {
+	URIScheme() {
 		uriScheme.put("aaa", null);
 		uriScheme.put("aaas", null);
 		uriScheme.put("acap", null);
@@ -115,7 +115,7 @@ class URIScheme implements Serializable {
 		uriScheme.put("wais", null);
 	}
 
-	public static boolean contains(String scheme) {
+	public boolean contains(String scheme) {
 		return uriScheme.containsKey(scheme);
 	}
 }

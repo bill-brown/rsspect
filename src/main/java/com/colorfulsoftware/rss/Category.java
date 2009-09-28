@@ -73,10 +73,16 @@ public class Category implements Serializable {
 		this.category = category;
 	}
 
+	/**
+	 * @return the category.
+	 */
 	public String getCategory() {
 		return category;
 	}
 
+	/**
+	 * @return the domain url for the category.
+	 */
 	public Attribute getDomain() {
 		return (domain == null) ? null : new Attribute(domain.getName(), domain
 				.getValue());

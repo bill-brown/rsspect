@@ -49,6 +49,9 @@ public class Comments implements Serializable {
 		this.comments = comments;
 	}
 
+	/**
+	 * @return the comments.
+	 */
 	public String getComments() {
 		return comments;
 	}

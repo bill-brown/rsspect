@@ -20,6 +20,11 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 
+/**
+ * This class contains the attribute definition for elements.
+ * @author Bill Brown
+ * 
+ */
 public class Attribute implements Serializable {
     
 	private static final long serialVersionUID = -3880416791234118400L;

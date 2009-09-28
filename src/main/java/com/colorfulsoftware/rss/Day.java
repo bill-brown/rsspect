@@ -19,6 +19,12 @@ package com.colorfulsoftware.rss;
 
 import java.io.Serializable;
 
+/**
+ * This class represents the day sub element of the skipDays element.
+ * 
+ * @author Bill Brown
+ * 
+ */
 public class Day implements Serializable {
 
 	private static final long serialVersionUID = 1428375851718959215L;
@@ -37,6 +43,10 @@ public class Day implements Serializable {
 
 	}
 
+	/**
+	 * @return the day of week; Monday, Tuesday, Wednesday, Thursday, Friday,
+	 *         Saturday or Sunday.
+	 */
 	public String getDay() {
 		return day;
 	}

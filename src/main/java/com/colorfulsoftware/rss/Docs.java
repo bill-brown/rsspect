@@ -29,9 +29,6 @@ import java.io.Serializable;
  */
 public class Docs implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1840987541596737383L;
 
 	private final String docs;
@@ -40,6 +37,9 @@ public class Docs implements Serializable {
 		this.docs = docs;
 	}
 
+	/**
+	 * @return the documentation information.
+	 */
 	public String getDocs() {
 		return docs;
 	}

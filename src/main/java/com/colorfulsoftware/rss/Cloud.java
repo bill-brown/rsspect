@@ -126,31 +126,51 @@ public class Cloud implements Serializable {
 		return (this.attributes == null) ? null : attrsCopy;
 	}
 
+	/**
+	 * @return the domain attribute.
+	 */
 	public Attribute getDomain() {
 		return (domain == null) ? null : new Attribute(domain.getName(), domain
 				.getValue());
 	}
 
+	/**
+	 * @return the port attribute
+	 */
 	public Attribute getPort() {
 		return (port == null) ? null : new Attribute(port.getName(), port
 				.getValue());
 	}
 
+	/**
+	 * @return the path attribute
+	 */
 	public Attribute getPath() {
 		return (path == null) ? null : new Attribute(path.getName(), path
 				.getValue());
 	}
 
+	/**
+	 * @return the registerProcedure attribute.
+	 */
 	public Attribute getRegisterProcedure() {
 		return (registerProcedure == null) ? null : new Attribute(
 				registerProcedure.getName(), registerProcedure.getValue());
 	}
 
+	/**
+	 * @return the protocol attribute.
+	 */
 	public Attribute getProtocol() {
 		return (protocol == null) ? null : new Attribute(protocol.getName(),
 				protocol.getValue());
 	}
 
+	/**
+	 * @param attrName
+	 *            the name of the attribute to get.
+	 * @return the Attribute object if attrName matches or null if not found.
+	 */
 	public Attribute getAttribute(String attrName) {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {

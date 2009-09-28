@@ -32,7 +32,7 @@ public class URL implements Serializable {
 		if (url != null && url.length() > 0) {
 			String urlLocal = url.trim();
 			if (urlLocal.length() > 0
-					&& URIScheme.contains(urlLocal.substring(0, urlLocal
+					&& new URIScheme().contains(urlLocal.substring(0, urlLocal
 							.indexOf(":")))) {
 				this.url = url;
 			} else {

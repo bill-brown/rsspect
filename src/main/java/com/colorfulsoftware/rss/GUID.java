@@ -65,10 +65,16 @@ public class GUID implements Serializable {
 		this.guid = guid;
 	}
 
+	/**
+	 * @return the guid.
+	 */
 	public String getGuid() {
 		return guid;
 	}
 
+	/**
+	 * @return the isPermaLink attribute.
+	 */
 	public Attribute getIsPermaLink() {
 		return (isPermaLink == null) ? null : new Attribute(isPermaLink
 				.getName(), isPermaLink.getValue());

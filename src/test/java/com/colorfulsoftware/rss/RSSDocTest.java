@@ -147,6 +147,7 @@ public class RSSDocTest {
 			+ "<guid isPermaLink=\"false\">http://thecaucus.blogs.nytimes.com/2009/04/24/congress-reaches-tentative-deal-on-the-budget/index.html</guid>"
 			+ "<description>The negotiated plan seems certain to include a procedural maneuver in an effort to avoid filibusters on health care reform.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=89ed26c949918ac94a090111fd880424&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By CARL HULSE</dc:creator>"
+			+ "<comments>these are test comments.</comments>"
 			+ "<pubDate>Fri, 24 Apr 2009 17:28:46 GMT</pubDate>"
 			+ "<source url=\"http://www.tomalak.org/links2.xml\">Tomalak's Realm</source>"
 			+ "</item>" + "</channel>" + "</rss>";
@@ -164,8 +165,7 @@ public class RSSDocTest {
 	private String expectedRSS7 = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel><atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.colorfulsoftware.com/news.xml\"/></rss>";
 
 	private String expectedRSS8 = "<rss version=\"2.0\" xmlns:media=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel><media:credit>Khalid Mohammed/Associated<media:subEle>test</media:subEle> Press</media:credit></rss>";
-	
-	
+
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -178,7 +178,7 @@ public class RSSDocTest {
 
 	@Before
 	public void setUp() throws Exception {
-		rssDoc = new RSSDoc("UTF-8","1.0");
+		rssDoc = new RSSDoc("UTF-8", "1.0");
 	}
 
 	@After
@@ -254,7 +254,7 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("could not write output file with file output stream.");
 		}
-		
+
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
@@ -267,7 +267,7 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "error writing rss feed: null");
-			
+
 		}
 
 		try {
@@ -359,7 +359,6 @@ public class RSSDocTest {
 
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
-			System.out.println("message = '" + e.getMessage() + "'");
 			assertEquals(e.getMessage(), "error reading rss feed: null");
 		}
 	}
@@ -391,7 +390,6 @@ public class RSSDocTest {
 			rss1 = rssDoc.readRSSToBean("");
 			fail("should not get here.");
 		} catch (RSSpectException e) {
-			System.out.println("message = '" + e.getMessage() + "'");
 			assertEquals(e.getMessage(),
 					"error reading rss feed: ParseError at [row,col]:[1,1]\n"
 							+ "Message: Premature end of file.");
@@ -417,7 +415,6 @@ public class RSSDocTest {
 					.readRSSToBean(new File("src/test/resources/out1.xml"));
 			fail("should not get here.");
 		} catch (RSSpectException e) {
-			System.out.println("message = '" + e.getMessage() + "'");
 			assertEquals(e.getMessage(),
 					"error reading rss feed: ParseError at [row,col]:[1,1]\n"
 							+ "Message: Premature end of file.");
@@ -444,7 +441,6 @@ public class RSSDocTest {
 			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
-			System.out.println("message = '" + e.getMessage() + "'");
 			assertEquals(e.getMessage(),
 					"error reading rss feed: rss elements MUST contain a channel element.");
 		}
@@ -455,7 +451,6 @@ public class RSSDocTest {
 			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
-			System.out.println("message = '" + e.getMessage() + "'");
 			/*
 			 * for some reason hosts behind Comcast (and maybe other) ISPs choke
 			 * on this we would like to test for unknown host here because they
@@ -664,7 +659,6 @@ public class RSSDocTest {
 			assertNotNull(rss1.getChannel().getCategory("Funky"));
 			assertNull(rss1.getChannel().getCategory("Bunky"));
 		} catch (RSSpectException r) {
-			System.out.println("error: " + r.getMessage());
 			fail("should just work.");
 		}
 	}
@@ -903,9 +897,9 @@ public class RSSDocTest {
 			assertEquals(r.getMessage(),
 					"channel elements SHOULD contain a title element.");
 		}
-		
+
 		try {
-			//for testing extention element sub elements. 
+			// for testing extention element sub elements.
 			rss1 = rssDoc.readRSSToBean(expectedRSS8);
 			assertNotNull(rss1);
 		} catch (RSSpectException r) {
@@ -1074,7 +1068,6 @@ public class RSSDocTest {
 			assertNotNull(itmDesc);
 			assertNull(rss1.getChannel().getItem("Bunky"));
 		} catch (Exception r) {
-			System.out.println("error: " + r.getMessage());
 			fail("should just work.");
 		}
 	}
@@ -1214,6 +1207,17 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			fail("should not fail here.");
 		}
+
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			SkipDays sd = rss1.getChannel().getSkipDays();
+			assertNotNull(sd);
+			assertNotNull(sd.getSkipDay("Monday"));
+			assertEquals(sd.getSkipDay("Monday").getDay(), "Monday");
+			assertNull(sd.getSkipDay("Bunky"));
+		} catch (Exception e) {
+			fail("should not fail here.");
+		}
 	}
 
 	@Test
@@ -1263,6 +1267,17 @@ public class RSSDocTest {
 			SkipHours skipHours = rssDoc.buildSkipHours(hours);
 			assertNotNull(skipHours);
 			assertNotNull(skipHours.getSkipHours());
+		} catch (Exception e) {
+			fail("should not fail here.");
+		}
+
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			SkipHours sh = rss1.getChannel().getSkipHours();
+			assertNotNull(sh);
+			assertNotNull(sh.getSkipHour("12"));
+			assertEquals(sh.getSkipHour("12").getHour(), "12");
+			assertNull(sh.getSkipHour("100"));
 		} catch (Exception e) {
 			fail("should not fail here.");
 		}

@@ -64,11 +64,10 @@ public class SkipDays implements Serializable {
 	}
 
 	public Day getSkipDay(String skipDay) throws RSSpectException {
-		if (this.skipDays != null) {
-			for (Day day : this.skipDays) {
-				if (day.getDay() != null && day.getDay().equals(skipDay)) {
-					return new Day(skipDay);
-				}
+		// skipDays should not be null from constructor.
+		for (Day day : this.skipDays) {
+			if (day.getDay().equals(skipDay)) {
+				return new Day(skipDay);
 			}
 		}
 		return null;

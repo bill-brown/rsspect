@@ -51,9 +51,6 @@ import java.io.Serializable;
  */
 public class Image implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -812074455770644390L;
 
 	/* required sub elements */
@@ -99,6 +96,9 @@ public class Image implements Serializable {
 				description.getDescription());
 	}
 
+	/**
+	 * @return the url element.
+	 */
 	public URL getUrl() {
 		try {
 			return new URL(url.getUrl());
@@ -108,10 +108,16 @@ public class Image implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the title element.
+	 */
 	public Title getTitle() {
 		return new Title(title.getTitle());
 	}
 
+	/**
+	 * @return the link element.
+	 */
 	public Link getLink() {
 		try {
 			return new Link(link.getLink());
@@ -121,6 +127,9 @@ public class Image implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the width element.
+	 */
 	public Width getWidth() {
 		try {
 			return (width == null) ? null : new Width(width.getWidth());
@@ -130,6 +139,9 @@ public class Image implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the height element.
+	 */
 	public Height getHeight() {
 		try {
 			return (height == null) ? null : new Height(height.getHeight());
@@ -139,6 +151,9 @@ public class Image implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the description element.
+	 */
 	public Description getDescription() {
 		return (description == null) ? null : new Description(description
 				.getDescription());

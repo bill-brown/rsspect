@@ -34,10 +34,9 @@ class RSSWriter {
 
 		// open the feed element
 		writer.writeStartElement("rss");
-		if (rss.getAttributes() != null) {
-			for (Attribute attr : rss.getAttributes()) {
-				writer.writeAttribute(attr.getName(), attr.getValue());
-			}
+		// the attributes should never be null since the version is required
+		for (Attribute attr : rss.getAttributes()) {
+			writer.writeAttribute(attr.getName(), attr.getValue());
 		}
 
 		// write the extensions
@@ -46,9 +45,8 @@ class RSSWriter {
 		}
 
 		// write the channel
-		if (rss.getChannel() != null) {
-			writeChannel(writer, rss.getChannel());
-		}
+		// the channel should never be null since it is required
+		writeChannel(writer, rss.getChannel());
 
 		writer.writeEndElement();
 	}
@@ -94,9 +92,8 @@ class RSSWriter {
 			writeCategories(writer, channel.getCategories());
 		}
 
-		if (channel.getGenerator() != null) {
-			writeGenerator(writer, channel.getGenerator());
-		}
+		// always write out the rsspect lib version.
+		writeGenerator(writer, new RSSDoc().getRSSpectVersion());
 
 		if (channel.getDocs() != null) {
 			writeDocs(writer, channel.getDocs());
@@ -225,10 +222,9 @@ class RSSWriter {
 
 	void writeCloud(XMLStreamWriter writer, Cloud cloud) throws Exception {
 		writer.writeEmptyElement("cloud");
-		if (cloud.getAttributes() != null) {
-			for (Attribute attr : cloud.getAttributes()) {
-				writer.writeAttribute(attr.getName(), attr.getValue());
-			}
+		// the attributes should never be null since they are required
+		for (Attribute attr : cloud.getAttributes()) {
+			writer.writeAttribute(attr.getName(), attr.getValue());
 		}
 	}
 
@@ -248,8 +244,7 @@ class RSSWriter {
 
 	void writeDescription(XMLStreamWriter writer, Description description)
 			throws Exception {
-		if (description.getDescription() == null
-				|| description.getDescription().trim().equals("")) {
+		if (description.getDescription().trim().equals("")) {
 			writer.writeEmptyElement("description");
 		} else {
 			writer.writeStartElement("description");
@@ -268,10 +263,9 @@ class RSSWriter {
 			throws Exception {
 
 		writer.writeEmptyElement("enclosure");
-		if (enclosure.getAttributes() != null) {
-			for (Attribute attr : enclosure.getAttributes()) {
-				writer.writeAttribute(attr.getName(), attr.getValue());
-			}
+		// the attributes should never be null since they are required
+		for (Attribute attr : enclosure.getAttributes()) {
+			writer.writeAttribute(attr.getName(), attr.getValue());
 		}
 	}
 
@@ -421,17 +415,17 @@ class RSSWriter {
 	void writeSkipDays(XMLStreamWriter writer, SkipDays skipDays)
 			throws Exception {
 		writer.writeStartElement("skipDays");
-		writeDays(writer,skipDays.getSkipDays());
+		writeDays(writer, skipDays.getSkipDays());
 		writer.writeEndElement();
 	}
 
 	void writeSkipHours(XMLStreamWriter writer, SkipHours skipHours)
 			throws Exception {
 		writer.writeStartElement("skipHours");
-		writeHours(writer,skipHours.getSkipHours());
+		writeHours(writer, skipHours.getSkipHours());
 		writer.writeEndElement();
 	}
-	
+
 	void writeDays(XMLStreamWriter writer, List<Day> skipDays) throws Exception {
 		for (Day day : skipDays) {
 			writer.writeStartElement("day");
@@ -439,8 +433,9 @@ class RSSWriter {
 			writer.writeEndElement();
 		}
 	}
-	
-	void writeHours(XMLStreamWriter writer, List<Hour> skipHours) throws Exception {
+
+	void writeHours(XMLStreamWriter writer, List<Hour> skipHours)
+			throws Exception {
 		for (Hour hour : skipHours) {
 			writer.writeStartElement("hour");
 			writer.writeCharacters(hour.getHour());
@@ -451,10 +446,9 @@ class RSSWriter {
 	void writeSource(XMLStreamWriter writer, Source source) throws Exception {
 		writer.writeStartElement("source");
 
-		if (source.getUrl() != null) {
-			writer.writeAttribute(source.getUrl().getName(), source.getUrl()
-					.getValue());
-		}
+		// the attributes should never be null since url is required
+		writer.writeAttribute(source.getUrl().getName(), source.getUrl()
+				.getValue());
 		writer.writeCharacters(source.getSource());
 		writer.writeEndElement();
 	}
@@ -500,98 +494,5 @@ class RSSWriter {
 		writer.writeStartElement("width");
 		writer.writeCharacters(width.getWidth());
 		writer.writeEndElement();
-	}
-
-	void writeXHTML(XMLStreamWriter writer, String text) throws Exception {
-		try {
-
-			if (text.indexOf('<') == -1) {
-				writer.writeCharacters(text);
-			} else {
-				// write up until the
-				// opening of the next element
-				writer.writeCharacters(text.substring(0, text.indexOf('<')));
-				text = text.substring(text.indexOf('<') + 1);
-
-				// get the opening element content
-				String startElement = text.substring(0, text.indexOf('>'))
-						.trim();
-
-				// check for empty element
-				if (startElement.indexOf('/') == startElement.length() - 1) {
-					// check for attributes
-					String[] attributes = startElement.split(" ");
-					if (attributes.length > 1) {
-						// if the name has a prefix, just
-						// write it as part of the local name.
-						writer.writeEmptyElement(attributes[0]);
-						for (int i = 1; i < attributes.length; i++) {
-							if (attributes[i].indexOf("=") != -1) {
-								// we nee to put everything
-								// to the right of the first '=' sign
-								// in the value part because we could have
-								// a query string with multiple '=' signs.
-								String attrName = attributes[i].substring(0,
-										attributes[i].indexOf('='));
-								String attrValue = attributes[i]
-										.substring(attributes[i].indexOf('=') + 1);
-								writer.writeAttribute(attrName, attrValue);
-							}
-						}
-					} else {
-						// if the name has a prefix, just
-						// write it as part of the local name.
-						writer.writeEmptyElement(startElement);
-					}
-					// search for the next element
-					writeXHTML(writer, text.substring(text.indexOf('>') + 1));
-				} else {// this is regular start element
-					// check for attributes
-					String[] attributes = startElement.split(" ");
-					if (attributes.length > 1) {
-						// if the name has a prefix,
-						// just write it as part of the local name.
-						writer.writeStartElement(attributes[0]);
-						for (int i = 1; i < attributes.length; i++) {
-							if (attributes[i].indexOf("=") != -1) {
-								String attrName = attributes[i].substring(0,
-										attributes[i].indexOf('='));
-								String attrValue = attributes[i]
-										.substring(attributes[i].indexOf('=') + 1);
-								writer.writeAttribute(attrName, attrValue);
-							}
-						}
-					} else {
-						// if the name has a prefix,
-						// just write it as part of the local name.
-						writer.writeStartElement(startElement);
-					}
-					// write the characters up until
-					// the beginning of the end element.
-					text = text.substring(text.indexOf('>') + 1);
-
-					if (attributes.length > 1) {
-						writer.writeCharacters(text.substring(0, text
-								.indexOf("</" + attributes[0])));
-						text = text.substring(text
-								.indexOf("</" + attributes[0])
-								+ ("</" + attributes[0] + ">").length());
-					} else {
-						writer.writeCharacters(text.substring(0, text
-								.indexOf("</" + startElement)));
-						text = text.substring(text.indexOf("</" + startElement)
-								+ ("</" + startElement + ">").length());
-					}
-
-					// write the end element
-					writer.writeEndElement();
-
-					writeXHTML(writer, text);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("Content is not valid XHTML", e);
-		}
 	}
 }

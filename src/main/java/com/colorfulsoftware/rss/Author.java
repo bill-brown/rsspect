@@ -51,6 +51,9 @@ public class Author implements Serializable {
 		this.author = author;
 	}
 
+	/**
+	 * @return the author's name. 
+	 */
 	public String getAuthor() {
 		return author;
 	}

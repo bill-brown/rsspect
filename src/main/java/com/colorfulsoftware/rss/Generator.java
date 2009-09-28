@@ -38,6 +38,9 @@ public class Generator implements Serializable {
 		this.generator = generator;
 	}
 
+	/**
+	 * @return the generator of the feed. 
+	 */
 	public String getGenerator() {
 		return generator;
 	}
