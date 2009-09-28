@@ -50,6 +50,9 @@ public class SkipDays implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the list of days to skip.
+	 */
 	public List<Day> getSkipDays() {
 		try {
 			List<Day> skipDaysCopy = new LinkedList<Day>();
@@ -63,11 +66,20 @@ public class SkipDays implements Serializable {
 		}
 	}
 
-	public Day getSkipDay(String skipDay) throws RSSpectException {
+	/**
+	 * @param skipDay
+	 *            the day of the week.
+	 * @return the day object of null if not found.
+	 */
+	public Day getSkipDay(String skipDay) {
 		// skipDays should not be null from constructor.
 		for (Day day : this.skipDays) {
 			if (day.getDay().equals(skipDay)) {
-				return new Day(skipDay);
+				try {
+					return new Day(skipDay);
+				} catch (RSSpectException e) {
+					// we should never get here.
+				}
 			}
 		}
 		return null;

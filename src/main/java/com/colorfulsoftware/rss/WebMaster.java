@@ -39,6 +39,9 @@ public class WebMaster implements Serializable {
 		this.webMaster = webMaster;
 	}
 
+	/**
+	 * @return the web master.
+	 */
 	public String getWebMaster() {
 		return webMaster;
 	}

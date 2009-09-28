@@ -19,6 +19,12 @@ package com.colorfulsoftware.rss;
 
 import java.io.Serializable;
 
+/**
+ * This class models a url element in an rss feed.
+ * 
+ * @author Bill Brown
+ * 
+ */
 public class URL implements Serializable {
 
 	/**
@@ -47,6 +53,9 @@ public class URL implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the url.
+	 */
 	public String getUrl() {
 		return url;
 	}

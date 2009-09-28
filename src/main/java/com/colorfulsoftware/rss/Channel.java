@@ -413,6 +413,7 @@ public class Channel implements Serializable {
 
 	/**
 	 * @param catValue
+	 *            the value of the category.
 	 * @return the category name matching this item or null if not found.
 	 */
 	public Category getCategory(String catValue) {
@@ -435,9 +436,11 @@ public class Channel implements Serializable {
 
 	/**
 	 * @param titleOrDescription
+	 *            the title or description data.
 	 * @return the item with this title or description. returns null if not
 	 *         found.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Item getItem(String titleOrDescription) throws RSSpectException {
 		if (this.items != null) {
@@ -461,6 +464,8 @@ public class Channel implements Serializable {
 
 	/**
 	 * @param extName
+	 *            the element name of the extension. eg. "atom:link" or
+	 *            "someExtension"
 	 * @return the extension matching the element or null if not found.
 	 */
 	public Extension getExtension(String extName) {

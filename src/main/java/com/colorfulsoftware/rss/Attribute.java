@@ -19,49 +19,53 @@ package com.colorfulsoftware.rss;
 
 import java.io.Serializable;
 
-
 /**
  * This class contains the attribute definition for elements.
+ * 
  * @author Bill Brown
  * 
  */
 public class Attribute implements Serializable {
-    
+
 	private static final long serialVersionUID = -3880416791234118400L;
 	private final String name;
-    private final String value;
-    
-    //use the factory method in the RSSDoc.
-    Attribute(String name, String value){
-        this.name = name;
-        this.value = value;
-    }
-    
-    /**
-     * 
-     * @return the name of this attribute
-     */
-    public String getName() {
-        return name;
-    }
+	private final String value;
 
-    /**
-     * 
-     * @return the value of this attribute
-     */
-    public String getValue() {
-        return value;
-    }    
-    
-    @Override
-    public boolean equals(Object obj) {
-    	if(obj instanceof Attribute){   		
-    		Attribute local = (Attribute)obj;
-    		if(local.name != null && local.value != null){
-    			return local.name.equals(this.name)
-    				&& local.value.equals(this.value);
-    		}
-    	}
-    	return false;
-    }
+	// use the factory method in the RSSDoc.
+	Attribute(String name, String value) throws RSSpectException {
+		if (this.name == null) {
+			throw new RSSpectException(
+					"Attributes SHOULD have a name and SHOULD NOT be blank.");
+		}
+		this.name = name;
+		this.value = value;
+	}
+
+	/**
+	 * 
+	 * @return the name of this attribute
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * 
+	 * @return the value of this attribute
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Attribute) {
+			Attribute local = (Attribute) obj;
+			if (local.name != null && local.value != null) {
+				return local.name.equals(this.name)
+						&& local.value.equals(this.value);
+			}
+		}
+		return false;
+	}
 }

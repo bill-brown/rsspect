@@ -50,6 +50,9 @@ public class TTL implements Serializable {
 		this.ttl = ttl;
 	}
 
+	/**
+	 * @return the time to live.
+	 */
 	public String getTtl() {
 		return ttl;
 	}

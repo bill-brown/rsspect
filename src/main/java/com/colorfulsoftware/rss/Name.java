@@ -20,10 +20,10 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * The name of the text object in the text input area. 
+ * The name of the text object in the text input area.
  * 
  * @author Bill Brown
- *
+ * 
  */
 public class Name implements Serializable {
 
@@ -35,6 +35,9 @@ public class Name implements Serializable {
 		this.name = name;
 	}
 
+	/**
+	 * @return the name.
+	 */
 	public String getName() {
 		return name;
 	}

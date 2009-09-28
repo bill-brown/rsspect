@@ -59,6 +59,9 @@ public class SkipHours implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the list of hours to skip.
+	 */
 	public List<Hour> getSkipHours() {
 		try {
 			List<Hour> skipHoursCopy = new LinkedList<Hour>();
@@ -72,11 +75,20 @@ public class SkipHours implements Serializable {
 		}
 	}
 
-	public Hour getSkipHour(String skipHour) throws RSSpectException {
+	/**
+	 * @param skipHour
+	 *            the hour of the day.
+	 * @return the hour object of null if not found.
+	 */
+	public Hour getSkipHour(String skipHour) {
 		// skipDays should not be null from constructor.
 		for (Hour hour : this.skipHours) {
 			if (hour.getHour().equals(skipHour)) {
-				return new Hour(skipHour);
+				try {
+					return new Hour(skipHour);
+				} catch (RSSpectException e) {
+					// we should never get here.
+				}
 			}
 		}
 		return null;

@@ -20,10 +20,10 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Maximum value for width is 144, default value is 88. 
+ * Maximum value for width is 144, default value is 88.
  * 
  * @author Bill Brown
- *
+ * 
  */
 public class Width implements Serializable {
 
@@ -35,19 +35,23 @@ public class Width implements Serializable {
 	private final String width;
 
 	Width(String width) throws RSSpectException {
-		if(width != null) {
+		if (width != null) {
 			try {
-				int localWidth =  Integer.parseInt(width);
-				if(localWidth > 144){
-					throw new RSSpectException("width cannot be greater than 144px.");
+				int localWidth = Integer.parseInt(width);
+				if (localWidth > 144) {
+					throw new RSSpectException(
+							"width cannot be greater than 144px.");
 				}
-			}catch(NumberFormatException n){
+			} catch (NumberFormatException n) {
 				throw new RSSpectException("invalid number format for width.");
 			}
 		}
 		this.width = width;
 	}
 
+	/**
+	 * @return the width.
+	 */
 	public String getWidth() {
 		return width;
 	}

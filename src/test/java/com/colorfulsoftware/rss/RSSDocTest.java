@@ -61,6 +61,12 @@ import com.colorfulsoftware.rss.TextInput;
 import com.colorfulsoftware.rss.Title;
 import com.colorfulsoftware.rss.URL;
 
+/**
+ * The class test the rss library's reading and writing capablity.
+ * 
+ * @author Bill Brown
+ * 
+ */
 public class RSSDocTest {
 
 	// http://nytimes.com feed from 04/24/2009
@@ -176,22 +182,28 @@ public class RSSDocTest {
 	private RSS rss1;
 	private RSSDoc rssDoc;
 
+	/**
+	 * @throws Exception
+	 *             if there is an issue setting up the data.
+	 */
 	@Before
 	public void setUp() throws Exception {
 		rssDoc = new RSSDoc("UTF-8", "1.0");
 	}
 
+	/**
+	 * @throws Exception
+	 *             if there is an issue cleaning up the data.
+	 */
 	@After
 	public void tearDown() throws Exception {
 		new File("target/out1.xml").delete();
 		// new File("out2.xml").delete();
 	}
 
-	@Test
-	public void testGetRSSpectVersion() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests writing an rss feed.
+	 */
 	@Test
 	public void testWriteRSSDocOutputStreamRSSStringString() {
 		try {
@@ -223,11 +235,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testWriteRSSDocWriterRSSStringString() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests writing an rss feed from an xml stream.
+	 */
 	@Test
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
 		/*
@@ -297,11 +307,9 @@ public class RSSDocTest {
 		 */
 	}
 
-	@Test
-	public void testReadRSSToStringRSSString() {
-
-	}
-
+	/**
+	 * tests reading an rss feed.
+	 */
 	@Test
 	public void testReadRSSToStringRSS() {
 		try {
@@ -363,6 +371,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests reeding an rss feed to a string.
+	 */
 	@Test
 	public void testReadRSSToBeanString() {
 		try {
@@ -396,6 +407,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests reading an rss feed from a file.
+	 */
 	@Test
 	public void testReadRSSToBeanFile() {
 		try {
@@ -421,6 +435,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests reading an rss feed from a url.
+	 */
 	@Test
 	public void testReadRSSToBeanURL() {
 		try {
@@ -464,6 +481,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests reading an rss feed from an input stream.
+	 */
 	@Test
 	public void testReadRSSToBeanInputStream() {
 		try {
@@ -480,6 +500,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building an rss feed.
+	 */
 	@Test
 	public void testBuildRSS() {
 		try {
@@ -534,6 +557,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building an rss attribute.
+	 */
 	@Test
 	public void testBuildAttribute() {
 		try {
@@ -575,11 +601,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildAuthor() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building a category.
+	 */
 	@Test
 	public void testBuildCategory() {
 		try {
@@ -595,6 +619,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building a channel
+	 */
 	@Test
 	public void testBuildChannel() {
 		try {
@@ -663,6 +690,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building a cloud.
+	 */
 	@Test
 	public void testBuildCloud() {
 		try {
@@ -766,6 +796,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building comments.
+	 */
 	@Test
 	public void testBuildComments() {
 		try {
@@ -787,21 +820,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildCopyright() {
-		// fail("Not yet implemented");
-	}
-
-	@Test
-	public void testBuildDescription() {
-		// fail("Not yet implemented");
-	}
-
-	@Test
-	public void testBuildDocs() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building an enclosure.
+	 */
 	@Test
 	public void testBuildEnclosure() {
 		try {
@@ -878,6 +899,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building an extension.
+	 */
 	@Test
 	public void testBuildExtension() {
 		try {
@@ -908,16 +932,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildGenerator() {
-		// fail("Not yet implemented");
-	}
-
-	@Test
-	public void testBuildGUID() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building a height object.
+	 */
 	@Test
 	public void testBuildHeight() {
 		try {
@@ -951,6 +968,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests builidng an image object.
+	 */
 	@Test
 	public void testBuildImage() {
 		URL url = null;
@@ -993,6 +1013,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building an item object.
+	 */
 	@Test
 	public void testBuildItem() {
 		try {
@@ -1072,11 +1095,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildLanguage() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building the last build date.
+	 */
 	@Test
 	public void testBuildLastBuildDate() {
 		LastBuildDate lastBuildDate = rssDoc.buildLastBuildDate(null);
@@ -1085,6 +1106,9 @@ public class RSSDocTest {
 		assertNull(lastBuildDate.getText());
 	}
 
+	/**
+	 * tests building a link element.
+	 */
 	@Test
 	public void testBuildLink() {
 		try {
@@ -1129,6 +1153,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building a managing editor.
+	 */
 	@Test
 	public void testBuildManagingEditor() {
 		try {
@@ -1145,11 +1172,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildName() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building a published date.
+	 */
 	@Test
 	public void testBuildPubDate() {
 		PubDate pubDate = rssDoc.buildPubDate(null);
@@ -1158,11 +1183,9 @@ public class RSSDocTest {
 		assertNull(pubDate.getText());
 	}
 
-	@Test
-	public void testBuildRating() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building a skip days object.
+	 */
 	@Test
 	public void testBuildSkipDays() {
 		try {
@@ -1220,6 +1243,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building a skip hours object.
+	 */
 	@Test
 	public void testBuildSkipHours() {
 		try {
@@ -1283,6 +1309,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building a source element.
+	 */
 	@Test
 	public void testBuildSource() {
 		try {
@@ -1321,6 +1350,9 @@ public class RSSDocTest {
 		}
 	}
 
+	/**
+	 * tests building a text input element.
+	 */
 	@Test
 	public void testBuildTextInput() {
 		Title title = null;
@@ -1378,16 +1410,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildTitle() {
-		// fail("Not yet implemented");
-	}
-
-	@Test
-	public void testBuildTTL() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building a url.
+	 */
 	@Test
 	public void testBuildURL() {
 		try {
@@ -1432,11 +1457,9 @@ public class RSSDocTest {
 		}
 	}
 
-	@Test
-	public void testBuildWebMaster() {
-		// fail("Not yet implemented");
-	}
-
+	/**
+	 * tests building a width element.
+	 */
 	@Test
 	public void testBuildWidth() {
 		try {
@@ -1468,10 +1491,4 @@ public class RSSDocTest {
 			fail("should be working. " + e.getLocalizedMessage());
 		}
 	}
-
-	@Test
-	public void testGetAttributeFromGroup() {
-		// fail("Not yet implemented");
-	}
-
 }

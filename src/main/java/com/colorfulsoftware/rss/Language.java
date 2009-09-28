@@ -44,6 +44,9 @@ public class Language implements Serializable {
 		this.language = language;
 	}
 
+	/**
+	 * @return the language.
+	 */
 	public String getLanguage() {
 		return language;
 	}

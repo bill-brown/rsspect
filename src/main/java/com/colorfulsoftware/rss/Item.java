@@ -121,15 +121,24 @@ public class Item implements Serializable {
 
 	}
 
+	/**
+	 * @return the title object.
+	 */
 	public Title getTitle() {
 		return (title == null) ? null : new Title(title.getTitle());
 	}
 
+	/**
+	 * @return the description object.
+	 */
 	public Description getDescription() {
 		return (description == null) ? null : new Description(description
 				.getDescription());
 	}
 
+	/**
+	 * @return the link object.
+	 */
 	public Link getLink() {
 		try {
 			return (link == null) ? null : new Link(link.getLink());
@@ -139,10 +148,16 @@ public class Item implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the author object.
+	 */
 	public Author getAuthor() {
 		return (author == null) ? null : new Author(author.getAuthor());
 	}
 
+	/**
+	 * @return the list of categories.
+	 */
 	public List<Category> getCategories() {
 		if (categories == null) {
 			return null;
@@ -161,10 +176,16 @@ public class Item implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the comments object.
+	 */
 	public Comments getComments() {
 		return (comments == null) ? null : new Comments(comments.getComments());
 	}
 
+	/**
+	 * @return the enclosure object.
+	 */
 	public Enclosure getEnclosure() {
 		try {
 			return (enclosure == null) ? null : new Enclosure(enclosure
@@ -175,15 +196,24 @@ public class Item implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the guid object.
+	 */
 	public GUID getGuid() {
 		return (guid == null) ? null : new GUID(guid.getIsPermaLink(), guid
 				.getGuid());
 	}
 
+	/**
+	 * @return the published date object.
+	 */
 	public PubDate getPubDate() {
 		return (pubDate == null) ? null : new PubDate(pubDate.getDateTime());
 	}
 
+	/**
+	 * @return the source object.
+	 */
 	public Source getSource() {
 		try {
 			return (source == null) ? null : new Source(source.getUrl(), source
@@ -196,7 +226,7 @@ public class Item implements Serializable {
 
 	/**
 	 * 
-	 * @return the extensions for this entry.
+	 * @return the list of extensions for this entry.
 	 */
 	public List<Extension> getExtensions() {
 		if (extensions == null) {
@@ -215,6 +245,10 @@ public class Item implements Serializable {
 		return extsCopy;
 	}
 
+	/**
+	 * @param catValue the value for the category.
+	 * @return the category object if found otherwise null.
+	 */
 	public Category getCategory(String catValue) {
 		if (this.categories != null) {
 			for (Category category : this.categories) {
@@ -233,6 +267,12 @@ public class Item implements Serializable {
 		return null;
 	}
 
+	/**
+	 * @param extName
+	 *            the element name of the extension. eg. "atom:link" or
+	 *            "someExtension"
+	 * @return the extension matching the element or null if not found.
+	 */
 	public Extension getExtension(String extName) {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {

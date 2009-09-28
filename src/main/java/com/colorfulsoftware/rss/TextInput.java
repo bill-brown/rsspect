@@ -87,18 +87,30 @@ public class TextInput implements Serializable {
 		;
 	}
 
+	/**
+	 * @return the title object.
+	 */
 	public Title getTitle() {
 		return new Title(title.getTitle());
 	}
 
+	/**
+	 * @return the description object.
+	 */
 	public Description getDescription() {
 		return new Description(description.getDescription());
 	}
 
+	/**
+	 * @return the name object.
+	 */
 	public Name getName() {
 		return new Name(name.getName());
 	}
 
+	/**
+	 * @return the link object.
+	 */
 	public Link getLink() {
 		try {
 			return new Link(link.getLink());

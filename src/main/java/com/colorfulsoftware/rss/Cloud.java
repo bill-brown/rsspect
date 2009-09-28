@@ -120,7 +120,11 @@ public class Cloud implements Serializable {
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		if (this.attributes != null) {
 			for (Attribute attr : this.attributes) {
+				try {
 				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
+			} catch (RSSpectException e) {
+				// this should not happen.
+			}
 			}
 		}
 		return (this.attributes == null) ? null : attrsCopy;
@@ -130,40 +134,65 @@ public class Cloud implements Serializable {
 	 * @return the domain attribute.
 	 */
 	public Attribute getDomain() {
+		try{
 		return (domain == null) ? null : new Attribute(domain.getName(), domain
 				.getValue());
+	} catch (RSSpectException e) {
+		// this should not happen.
+		return null;
+	}
 	}
 
 	/**
 	 * @return the port attribute
 	 */
 	public Attribute getPort() {
+	try {
 		return (port == null) ? null : new Attribute(port.getName(), port
 				.getValue());
+	} catch (RSSpectException e) {
+		// this should not happen.
+		return null;
+	}
 	}
 
 	/**
 	 * @return the path attribute
 	 */
 	public Attribute getPath() {
+		try {
 		return (path == null) ? null : new Attribute(path.getName(), path
 				.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
 	 * @return the registerProcedure attribute.
 	 */
 	public Attribute getRegisterProcedure() {
+		try {
 		return (registerProcedure == null) ? null : new Attribute(
 				registerProcedure.getName(), registerProcedure.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
 	 * @return the protocol attribute.
 	 */
 	public Attribute getProtocol() {
+		try {
 		return (protocol == null) ? null : new Attribute(protocol.getName(),
 				protocol.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
@@ -174,10 +203,13 @@ public class Cloud implements Serializable {
 	public Attribute getAttribute(String attrName) {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {
-				if (attribute.getName() != null
-						&& attribute.getName().equals(attrName)) {
-					return new Attribute(attribute.getName(), attribute
-							.getValue());
+				if (attribute.getName().equals(attrName)) {
+					try {
+						return new Attribute(attribute.getName(), attribute
+								.getValue());
+					} catch (RSSpectException e) {
+						// this should not happen.
+					}
 				}
 			}
 		}

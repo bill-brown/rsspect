@@ -102,6 +102,9 @@ public class RSS implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the channel object.
+	 */
 	public Channel getChannel() {
 		try {
 			return new Channel(channel.getTitle(), channel.getLink(), channel
@@ -128,7 +131,11 @@ public class RSS implements Serializable {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		for (Attribute attr : this.attributes) {
-			attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
+			try {
+				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
+			} catch (RSSpectException e) {
+				// this should not happen.
+			}
 		}
 		return attrsCopy;
 	}
@@ -153,20 +160,34 @@ public class RSS implements Serializable {
 		}
 		return extsCopy;
 	}
-	
+
+	/**
+	 * @param attrName
+	 *            the name of the attribute to get.
+	 * @return the Attribute object if attrName matches or null if not found.
+	 */
 	public Attribute getAttribute(String attrName) {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {
-				if (attribute.getName() != null
-						&& attribute.getName().equals(attrName)) {
-					return new Attribute(attribute.getName(), attribute
-							.getValue());
+				if (attribute.getName().equals(attrName)) {
+					try {
+						return new Attribute(attribute.getName(), attribute
+								.getValue());
+					} catch (RSSpectException e) {
+						// this should not happen.
+					}
 				}
 			}
 		}
 		return null;
 	}
-	
+
+	/**
+	 * @param extName
+	 *            the element name of the extension. eg. "atom:link" or
+	 *            "someExtension"
+	 * @return the extension matching the element or null if not found.
+	 */
 	public Extension getExtension(String extName) {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {

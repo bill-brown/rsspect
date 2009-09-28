@@ -38,6 +38,9 @@ public class Rating implements Serializable {
 		this.rating = rating;
 	}
 
+	/**
+	 * @return the rating.
+	 */
 	public String getRating() {
 		return rating;
 	}

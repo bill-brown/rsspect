@@ -17,15 +17,25 @@
  */
 package com.colorfulsoftware.rss;
 
+/**
+ * This class is used as an rss feed specification error container.
+ * 
+ * @author Bill Brown.
+ * 
+ */
 public class RSSpectException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2226200267828833784L;
-    
-    public RSSpectException(String message){
-        super(message);
-    }
-    
+
+	/**
+	 * @param message
+	 *            the message for why the rss feed is not valid.
+	 */
+	public RSSpectException(String message) {
+		super(message);
+	}
+
 }

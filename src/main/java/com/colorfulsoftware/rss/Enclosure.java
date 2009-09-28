@@ -95,7 +95,12 @@ public class Enclosure implements Serializable {
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		if (this.attributes != null) {
 			for (Attribute attr : this.attributes) {
-				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
+				try {
+					attrsCopy
+							.add(new Attribute(attr.getName(), attr.getValue()));
+				} catch (RSSpectException e) {
+					// this should not happen.
+				}
 			}
 		}
 		return (this.attributes == null) ? null : attrsCopy;
@@ -105,24 +110,39 @@ public class Enclosure implements Serializable {
 	 * @return the url attribute
 	 */
 	public Attribute getUrl() {
-		return (url == null) ? null : new Attribute(url.getName(), url
-				.getValue());
+		try {
+			return (url == null) ? null : new Attribute(url.getName(), url
+					.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
 	 * @return the length attribute.
 	 */
 	public Attribute getLength() {
-		return (length == null) ? null : new Attribute(length.getName(), length
-				.getValue());
+		try {
+			return (length == null) ? null : new Attribute(length.getName(),
+					length.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
 	 * @return the type attribute.
 	 */
 	public Attribute getType() {
-		return (type == null) ? null : new Attribute(type.getName(), type
-				.getValue());
+		try {
+			return (type == null) ? null : new Attribute(type.getName(), type
+					.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
@@ -133,10 +153,13 @@ public class Enclosure implements Serializable {
 	public Attribute getAttribute(String attrName) {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {
-				if (attribute.getName() != null
-						&& attribute.getName().equals(attrName)) {
-					return new Attribute(attribute.getName(), attribute
-							.getValue());
+				if (attribute.getName().equals(attrName)) {
+					try {
+						return new Attribute(attribute.getName(), attribute
+								.getValue());
+					} catch (RSSpectException e) {
+						// this should not happen.
+					}
 				}
 			}
 		}

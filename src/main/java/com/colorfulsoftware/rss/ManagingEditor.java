@@ -27,9 +27,6 @@ import java.io.Serializable;
  */
 public class ManagingEditor implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6599327589073455199L;
 
 	private final String managingEditor;
@@ -38,6 +35,9 @@ public class ManagingEditor implements Serializable {
 		this.managingEditor = managingEditor;
 	}
 
+	/**
+	 * @return the managing editor.
+	 */
 	public String getManagingEditor() {
 		return managingEditor;
 	}

@@ -40,8 +40,8 @@ public class Link implements Serializable {
 		if (link != null && link.length() > 0) {
 			String linkLocal = link.trim();
 			if (linkLocal.length() > 0
-					&& new URIScheme().contains(linkLocal.substring(0, linkLocal
-							.indexOf(":")))) {
+					&& new URIScheme().contains(linkLocal.substring(0,
+							linkLocal.indexOf(":")))) {
 				this.link = link;
 			} else {
 				throw new RSSpectException(
@@ -55,6 +55,9 @@ public class Link implements Serializable {
 		}
 	}
 
+	/**
+	 * @return the link information.
+	 */
 	public String getLink() {
 		return this.link;
 	}

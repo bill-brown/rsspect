@@ -60,7 +60,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 */
-	public RSSDoc(){
+	public RSSDoc() {
 		try {
 			Properties props = new Properties();
 			props.load(RSSDoc.class.getResourceAsStream("/rsspect.properties"));
@@ -71,12 +71,14 @@ public final class RSSDoc {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * @param encoding the xml encoding eg. UTF-8
-	 * @param xmlVersion the xml document version eg. 1.0
+	 * @param encoding
+	 *            the xml encoding eg. UTF-8
+	 * @param xmlVersion
+	 *            the xml document version eg. 1.0
 	 */
-	public RSSDoc(String encoding, String xmlVersion){
+	public RSSDoc(String encoding, String xmlVersion) {
 		this();
 		this.encoding = encoding;
 		this.xmlVersion = xmlVersion;
@@ -337,6 +339,7 @@ public final class RSSDoc {
 	 *            additional extensions (optional)
 	 * @return an immutable RSS object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public RSS buildRSS(Channel channel, List<Attribute> attributes,
 			List<Extension> extensions) throws RSSpectException {
@@ -352,7 +355,12 @@ public final class RSSDoc {
 	 * @return an immutable Attribute object.
 	 */
 	public Attribute buildAttribute(String name, String value) {
-		return new Attribute(name, value);
+		try {
+			return new Attribute(name, value);
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 
 	/**
@@ -371,7 +379,8 @@ public final class RSSDoc {
 	 * @param category
 	 *            the category text
 	 * @return an immutable Category object.
-	 * @throws RSSpectException 
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Category buildCategory(Attribute domain, String category)
 			throws RSSpectException {
@@ -381,28 +390,50 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param title
+	 *            the title element.
 	 * @param link
+	 *            the link element.
 	 * @param description
+	 *            the description element.
 	 * @param language
+	 *            the language element.
 	 * @param copyright
+	 *            the copyright element.
 	 * @param managingEditor
+	 *            the managingEditor element.
 	 * @param webMaster
+	 *            the webMaster element.
 	 * @param pubDate
+	 *            the pubDate element.
 	 * @param lastBuildDate
+	 *            the lastBuildDate element.
 	 * @param categories
+	 *            the list of categories
 	 * @param generator
+	 *            the generator element.
 	 * @param docs
+	 *            the docs element.
 	 * @param cloud
+	 *            the cloud element.
 	 * @param ttl
+	 *            the ttl element.
 	 * @param image
+	 *            the image element.
 	 * @param rating
+	 *            the rating element.
 	 * @param textInput
+	 *            the textInput element.
 	 * @param skipHours
+	 *            the skipHours element.
 	 * @param skipDays
+	 *            the skipDays element.
 	 * @param items
+	 *            the list of items.
 	 * @param extensions
+	 *            the list of extensions.
 	 * @return an immutable Channel object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Channel buildChannel(Title title, Link link,
 			Description description, Language language, Copyright copyright,
@@ -421,9 +452,11 @@ public final class RSSDoc {
 
 	/**
 	 * 
-	 * @param attributes 
+	 * @param attributes
+	 *            the list of attributes.
 	 * @return an immutable Cloud object.
-	 * @throws RSSpectException 
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Cloud buildCloud(List<Attribute> attributes) throws RSSpectException {
 		return new Cloud(attributes);
@@ -432,6 +465,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param comments
+	 *            the comments.
 	 * @return an immutable Comments object.
 	 */
 	public Comments buildComments(String comments) {
@@ -441,6 +475,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param copyright
+	 *            the copyright.
 	 * @return an immutable Copyright object.
 	 */
 	public Copyright buildCopyright(String copyright) {
@@ -450,6 +485,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param description
+	 *            the description.
 	 * @return an immutable Description object.
 	 */
 	public Description buildDescription(String description) {
@@ -459,6 +495,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param docs
+	 *            the documentation information.
 	 * @return an immutable Docs object.
 	 */
 	public Docs buildDocs(String docs) {
@@ -471,6 +508,7 @@ public final class RSSDoc {
 	 *            should contain url, length and type
 	 * @return an immutable Enclosure object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Enclosure buildEnclosure(List<Attribute> attributes)
 			throws RSSpectException {
@@ -487,6 +525,7 @@ public final class RSSDoc {
 	 *            the content of the extension element.
 	 * @return an immutable Extension object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Extension buildExtension(String elementName,
 			List<Attribute> attributes, String content) throws RSSpectException {
@@ -505,7 +544,9 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param isPermaLink
+	 *            the isPermaLink attributes.
 	 * @param guid
+	 *            the guid data.
 	 * @return an immutable GUID object.
 	 */
 	public GUID buildGUID(Attribute isPermaLink, String guid) {
@@ -518,6 +559,7 @@ public final class RSSDoc {
 	 *            should be a number 400 or less
 	 * @return an immutable Height object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Height buildHeight(String height) throws RSSpectException {
 		return new Height(height);
@@ -526,13 +568,20 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param url
+	 *            the url element.
 	 * @param title
+	 *            the title element.
 	 * @param link
+	 *            the link element.
 	 * @param width
+	 *            the width element.
 	 * @param height
+	 *            the height element.
 	 * @param description
+	 *            the description element.
 	 * @return an immutable Image object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Image buildImage(URL url, Title title, Link link, Width width,
 			Height height, Description description) throws RSSpectException {
@@ -542,18 +591,30 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param title
+	 *            the title element.
 	 * @param link
+	 *            the link element.
 	 * @param description
+	 *            the description element.
 	 * @param author
+	 *            the author element.
 	 * @param categories
+	 *            the list of categories.
 	 * @param comments
+	 *            the comments element.
 	 * @param enclosure
+	 *            the enclosure element.
 	 * @param guid
+	 *            the guid element.
 	 * @param pubDate
+	 *            the published date element.
 	 * @param source
+	 *            the source element.
 	 * @param extensions
+	 *            the list of extensions.
 	 * @return an immutable Item object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Item buildItem(Title title, Link link, Description description,
 			Author author, List<Category> categories, Comments comments,
@@ -566,6 +627,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param language
+	 *            the language.
 	 * @return an immutable Language object.
 	 */
 	public Language buildLanguage(String language) {
@@ -575,6 +637,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param lastBuildDate
+	 *            the last build date.
 	 * @return an immutable LastBuildDate object.
 	 */
 	public LastBuildDate buildLastBuildDate(Date lastBuildDate) {
@@ -584,8 +647,10 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param link
+	 *            the link information.
 	 * @return an immutable Link object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Link buildLink(String link) throws RSSpectException {
 		return new Link(link);
@@ -594,6 +659,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param managingEditor
+	 *            the managing editor.
 	 * @return an immutable ManagingEditor object.
 	 */
 	public ManagingEditor buildManagingEditor(String managingEditor) {
@@ -603,6 +669,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param name
+	 *            the name.
 	 * @return an immutable Name object.
 	 */
 	public Name buildName(String name) {
@@ -612,6 +679,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param pubDate
+	 *            the published date.
 	 * @return an immutable PubDate object.
 	 */
 	public PubDate buildPubDate(Date pubDate) {
@@ -621,6 +689,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param rating
+	 *            the rating information.
 	 * @return an immutable Rating object.
 	 */
 	public Rating buildRating(String rating) {
@@ -630,7 +699,9 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param skipDays
+	 *            the days to skip.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 * @return an immutable SkipDays object.
 	 */
 	public SkipDays buildSkipDays(List<Day> skipDays) throws RSSpectException {
@@ -640,7 +711,9 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param skipHours
+	 *            the hours to skip.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 * @return an immutable SkipHours object.
 	 */
 	public SkipHours buildSkipHours(List<Hour> skipHours)
@@ -650,8 +723,10 @@ public final class RSSDoc {
 
 	/**
 	 * @param day
+	 *            the day of the week.
 	 * @return a Day object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Day buildDay(String day) throws RSSpectException {
 		return new Day(day);
@@ -659,8 +734,10 @@ public final class RSSDoc {
 
 	/**
 	 * @param hour
+	 *            the hour of the day.
 	 * @return an Hour object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Hour buildHour(String hour) throws RSSpectException {
 		return new Hour(hour);
@@ -669,9 +746,12 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param url
+	 *            the url attribute.
 	 * @param source
+	 *            the source information.
 	 * @return an immutable Source object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Source buildSource(Attribute url, String source)
 			throws RSSpectException {
@@ -681,11 +761,16 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param title
+	 *            the title element.
 	 * @param description
+	 *            the description element.
 	 * @param name
+	 *            the name element.
 	 * @param link
+	 *            the link element.
 	 * @return an immutable TextInput object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public TextInput buildTextInput(Title title, Description description,
 			Name name, Link link) throws RSSpectException {
@@ -695,6 +780,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param title
+	 *            the title.
 	 * @return an immutable Title object.
 	 */
 	public Title buildTitle(String title) {
@@ -704,6 +790,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param ttl
+	 *            the time to live.
 	 * @return an immutable TTL object.
 	 */
 	public TTL buildTTL(String ttl) {
@@ -713,8 +800,10 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param url
+	 *            the url.
 	 * @return an immutable URL object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public URL buildURL(String url) throws RSSpectException {
 		return new URL(url);
@@ -723,6 +812,7 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param webMaster
+	 *            the web master.
 	 * @return an immutable WebMaster object.
 	 */
 	public WebMaster buildWebMaster(String webMaster) {
@@ -732,8 +822,10 @@ public final class RSSDoc {
 	/**
 	 * 
 	 * @param width
+	 *            the width.
 	 * @return an immutable Width object.
 	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
 	public Width buildWidth(String width) throws RSSpectException {
 		return new Width(width);
@@ -776,7 +868,7 @@ public final class RSSDoc {
 	public String getXmlVersion() {
 		return xmlVersion;
 	}
-	
+
 	// checks for and returns the Attribute from the String attribute (argument)
 	// in the list of attributes (argument)
 	Attribute getAttributeFromGroup(List<Attribute> attributes,

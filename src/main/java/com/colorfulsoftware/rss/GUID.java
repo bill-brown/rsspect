@@ -57,11 +57,16 @@ public class GUID implements Serializable {
 	private static final long serialVersionUID = 1285259651943559185L;
 
 	private final String guid;
-	private final Attribute isPermaLink;
+	private Attribute isPermaLink;
 
 	GUID(Attribute isPermaLink, String guid) {
-		this.isPermaLink = (isPermaLink == null) ? null : new Attribute(
-				isPermaLink.getName(), isPermaLink.getValue());
+		try {
+			this.isPermaLink = (isPermaLink == null) ? null : new Attribute(
+					isPermaLink.getName(), isPermaLink.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			this.isPermaLink = null;
+		}
 		this.guid = guid;
 	}
 
@@ -76,7 +81,12 @@ public class GUID implements Serializable {
 	 * @return the isPermaLink attribute.
 	 */
 	public Attribute getIsPermaLink() {
-		return (isPermaLink == null) ? null : new Attribute(isPermaLink
-				.getName(), isPermaLink.getValue());
+		try {
+			return (isPermaLink == null) ? null : new Attribute(isPermaLink
+					.getName(), isPermaLink.getValue());
+		} catch (RSSpectException e) {
+			// this should not happen.
+			return null;
+		}
 	}
 }
