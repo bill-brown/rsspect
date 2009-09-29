@@ -33,7 +33,7 @@ public class Attribute implements Serializable {
 
 	// use the factory method in the RSSDoc.
 	Attribute(String name, String value) throws RSSpectException {
-		if (this.name == null) {
+		if (name == null) {
 			throw new RSSpectException(
 					"Attributes SHOULD have a name and SHOULD NOT be blank.");
 		}
