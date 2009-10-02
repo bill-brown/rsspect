@@ -89,78 +89,58 @@ public class Enclosure implements Serializable {
 	/**
 	 * 
 	 * @return the cloud attribute list.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public List<Attribute> getAttributes() {
+	public List<Attribute> getAttributes() throws RSSpectException {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
-		if (this.attributes != null) {
-			for (Attribute attr : this.attributes) {
-				try {
-					attrsCopy
-							.add(new Attribute(attr.getName(), attr.getValue()));
-				} catch (RSSpectException e) {
-					// this should not happen.
-				}
-			}
+		for (Attribute attr : this.attributes) {
+			attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
 		}
-		return (this.attributes == null) ? null : attrsCopy;
+
+		return attrsCopy;
 	}
 
 	/**
 	 * @return the url attribute
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getUrl() {
-		try {
-			return (url == null) ? null : new Attribute(url.getName(), url
-					.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
+	public Attribute getUrl() throws RSSpectException {
+		return new Attribute(url.getName(), url.getValue());
+
 	}
 
 	/**
 	 * @return the length attribute.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getLength() {
-		try {
-			return (length == null) ? null : new Attribute(length.getName(),
-					length.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
+	public Attribute getLength() throws RSSpectException {
+		return new Attribute(length.getName(), length.getValue());
 	}
 
 	/**
 	 * @return the type attribute.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getType() {
-		try {
-			return (type == null) ? null : new Attribute(type.getName(), type
-					.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
+	public Attribute getType() throws RSSpectException {
+		return new Attribute(type.getName(), type.getValue());
 	}
 
 	/**
 	 * @param attrName
 	 *            the name of the attribute to get.
 	 * @return the Attribute object if attrName matches or null if not found.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getAttribute(String attrName) {
-		if (this.attributes != null) {
-			for (Attribute attribute : this.attributes) {
-				if (attribute.getName().equals(attrName)) {
-					try {
-						return new Attribute(attribute.getName(), attribute
-								.getValue());
-					} catch (RSSpectException e) {
-						// this should not happen.
-					}
-				}
+	public Attribute getAttribute(String attrName) throws RSSpectException {
+		for (Attribute attribute : this.attributes) {
+			if (attribute.getName().equals(attrName)) {
+				return new Attribute(attribute.getName(), attribute.getValue());
 			}
 		}
 		return null;

@@ -186,14 +186,11 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the link element.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Link getLink() {
-		try {
-			return new Link(link.getLink());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+	public Link getLink() throws RSSpectException {
+		return new Link(link.getLink());
 	}
 
 	/**
@@ -251,20 +248,17 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the list of categories.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public List<Category> getCategories() {
+	public List<Category> getCategories() throws RSSpectException {
 		if (categories == null) {
 			return null;
 		} else {
 			List<Category> catsCopy = new LinkedList<Category>();
 			for (Category category : this.categories) {
-				try {
-					catsCopy.add(new Category(category.getDomain(), category
-							.getCategory()));
-				} catch (Exception e) {
-					// we should never get here.
-					return null;
-				}
+				catsCopy.add(new Category(category.getDomain(), category
+						.getCategory()));
 			}
 			return catsCopy;
 		}
@@ -287,14 +281,11 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the cloud element.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Cloud getCloud() {
-		try {
-			return (cloud == null) ? null : new Cloud(cloud.getAttributes());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+	public Cloud getCloud() throws RSSpectException {
+		return (cloud == null) ? null : new Cloud(cloud.getAttributes());
 	}
 
 	/**
@@ -306,16 +297,13 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the image element.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Image getImage() {
-		try {
-			return (image == null) ? null : new Image(image.getUrl(), image
-					.getTitle(), image.getLink(), image.getWidth(), image
-					.getHeight(), image.getDescription());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+	public Image getImage() throws RSSpectException {
+		return (image == null) ? null : new Image(image.getUrl(), image
+				.getTitle(), image.getLink(), image.getWidth(), image
+				.getHeight(), image.getDescription());
 	}
 
 	/**
@@ -327,64 +315,50 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the textInput element.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public TextInput getTextInput() {
-		try {
-			return (textInput == null) ? null : new TextInput(textInput
-					.getTitle(), textInput.getDescription(), textInput
-					.getName(), textInput.getLink());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+	public TextInput getTextInput() throws RSSpectException {
+		return (textInput == null) ? null : new TextInput(textInput.getTitle(),
+				textInput.getDescription(), textInput.getName(), textInput
+						.getLink());
 	}
 
 	/**
 	 * @return the skipHours element.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public SkipHours getSkipHours() {
-		try {
-			return (skipHours == null) ? null : new SkipHours(skipHours
-					.getSkipHours());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+	public SkipHours getSkipHours() throws RSSpectException {
+		return (skipHours == null) ? null : new SkipHours(skipHours
+				.getSkipHours());
 	}
 
 	/**
 	 * @return the skipDays element.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public SkipDays getSkipDays() {
-		try {
-			return (skipDays == null) ? null : new SkipDays(skipDays
-					.getSkipDays());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+	public SkipDays getSkipDays() throws RSSpectException {
+		return (skipDays == null) ? null : new SkipDays(skipDays.getSkipDays());
 	}
 
 	/**
 	 * @return the list of items.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public List<Item> getItems() {
+	public List<Item> getItems() throws RSSpectException {
 		if (items == null) {
 			return null;
 		} else {
 			List<Item> itemsCopy = new LinkedList<Item>();
 			for (Item item : this.items) {
-				try {
-					itemsCopy.add(new Item(item.getTitle(), item.getLink(),
-							item.getDescription(), item.getAuthor(), item
-									.getCategories(), item.getComments(), item
-									.getEnclosure(), item.getGuid(), item
-									.getPubDate(), item.getSource(), item
-									.getExtensions()));
-				} catch (Exception e) {
-					// we should never get here.
-					return null;
-				}
+				itemsCopy.add(new Item(item.getTitle(), item.getLink(), item
+						.getDescription(), item.getAuthor(), item
+						.getCategories(), item.getComments(), item
+						.getEnclosure(), item.getGuid(), item.getPubDate(),
+						item.getSource(), item.getExtensions()));
 			}
 			return itemsCopy;
 		}
@@ -393,20 +367,17 @@ public class Channel implements Serializable {
 	/**
 	 * 
 	 * @return the extensions for this entry.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public List<Extension> getExtensions() {
+	public List<Extension> getExtensions() throws RSSpectException {
 		if (extensions == null) {
 			return null;
 		}
 		List<Extension> extsCopy = new LinkedList<Extension>();
 		for (Extension extension : this.extensions) {
-			try {
-				extsCopy.add(new Extension(extension.getElementName(),
-						extension.getAttributes(), extension.getContent()));
-			} catch (Exception e) {
-				// we should never get here.
-				return null;
-			}
+			extsCopy.add(new Extension(extension.getElementName(), extension
+					.getAttributes(), extension.getContent()));
 		}
 		return extsCopy;
 	}
@@ -415,19 +386,16 @@ public class Channel implements Serializable {
 	 * @param catValue
 	 *            the value of the category.
 	 * @return the category name matching this item or null if not found.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Category getCategory(String catValue) {
+	public Category getCategory(String catValue) throws RSSpectException {
 		if (this.categories != null) {
 			for (Category category : this.categories) {
 				if (category.getCategory() != null
 						&& category.getCategory().equals(catValue)) {
-					try {
-						return new Category(category.getDomain(), category
-								.getCategory());
-					} catch (Exception e) {
-						// we should never get here.
-						return null;
-					}
+					return new Category(category.getDomain(), category
+							.getCategory());
 				}
 			}
 		}
@@ -467,19 +435,15 @@ public class Channel implements Serializable {
 	 *            the element name of the extension. eg. "atom:link" or
 	 *            "someExtension"
 	 * @return the extension matching the element or null if not found.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Extension getExtension(String extName) {
+	public Extension getExtension(String extName) throws RSSpectException {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {
 				if (extension.getElementName().equals(extName)) {
-					try {
-						return new Extension(extension.getElementName(),
-								extension.getAttributes(), extension
-										.getContent());
-					} catch (Exception e) {
-						// we should never get here.
-						return null;
-					}
+					return new Extension(extension.getElementName(), extension
+							.getAttributes(), extension.getContent());
 				}
 			}
 		}

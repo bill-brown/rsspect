@@ -114,17 +114,15 @@ public class Cloud implements Serializable {
 	/**
 	 * 
 	 * @return the cloud attribute list.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public List<Attribute> getAttributes() {
+	public List<Attribute> getAttributes() throws RSSpectException {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		if (this.attributes != null) {
 			for (Attribute attr : this.attributes) {
-				try {
 				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
-			} catch (RSSpectException e) {
-				// this should not happen.
-			}
 			}
 		}
 		return (this.attributes == null) ? null : attrsCopy;
@@ -132,84 +130,67 @@ public class Cloud implements Serializable {
 
 	/**
 	 * @return the domain attribute.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getDomain() {
-		try{
+	public Attribute getDomain() throws RSSpectException {
 		return (domain == null) ? null : new Attribute(domain.getName(), domain
 				.getValue());
-	} catch (RSSpectException e) {
-		// this should not happen.
-		return null;
-	}
 	}
 
 	/**
 	 * @return the port attribute
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getPort() {
-	try {
+	public Attribute getPort() throws RSSpectException {
 		return (port == null) ? null : new Attribute(port.getName(), port
 				.getValue());
-	} catch (RSSpectException e) {
-		// this should not happen.
-		return null;
-	}
 	}
 
 	/**
 	 * @return the path attribute
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getPath() {
-		try {
+	public Attribute getPath() throws RSSpectException {
 		return (path == null) ? null : new Attribute(path.getName(), path
 				.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
 	}
 
 	/**
 	 * @return the registerProcedure attribute.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getRegisterProcedure() {
-		try {
+	public Attribute getRegisterProcedure() throws RSSpectException {
 		return (registerProcedure == null) ? null : new Attribute(
 				registerProcedure.getName(), registerProcedure.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
 	}
 
 	/**
 	 * @return the protocol attribute.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getProtocol() {
-		try {
+	public Attribute getProtocol() throws RSSpectException {
 		return (protocol == null) ? null : new Attribute(protocol.getName(),
 				protocol.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
 	}
 
 	/**
 	 * @param attrName
 	 *            the name of the attribute to get.
 	 * @return the Attribute object if attrName matches or null if not found.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute getAttribute(String attrName) {
+	public Attribute getAttribute(String attrName) throws RSSpectException {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {
 				if (attribute.getName().equals(attrName)) {
-					try {
-						return new Attribute(attribute.getName(), attribute
-								.getValue());
-					} catch (RSSpectException e) {
-						// this should not happen.
-					}
+					return new Attribute(attribute.getName(), attribute
+							.getValue());
 				}
 			}
 		}

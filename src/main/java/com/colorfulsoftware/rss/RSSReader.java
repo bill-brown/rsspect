@@ -33,8 +33,11 @@ import javax.xml.stream.XMLStreamReader;
  */
 class RSSReader {
 
-	private RSSDoc rss = new RSSDoc();
+	private RSSDoc rss;
 
+	public RSSReader() throws Exception {
+		rss = new RSSDoc();
+	}
 	/**
 	 * This method transforms an xml stream into a Feed bean
 	 * 
@@ -149,7 +152,6 @@ class RSSReader {
 		List<Attribute> attributes = getAttributes(reader);
 
 		String elementNameOrig = elementName;
-		System.out.println("element orig: "+elementNameOrig);
 		boolean breakOut = false;
 		while (reader.hasNext()) {
 			switch (reader.next()) {
@@ -179,7 +181,6 @@ class RSSReader {
 
 			case XMLStreamConstants.END_ELEMENT:
 				String elementNameEnd = getElementName(reader);
-				System.out.println("end element: "+elementNameEnd);
 				if (elementNameEnd.equals(elementNameOrig)) {
 					breakOut = true;
 				}

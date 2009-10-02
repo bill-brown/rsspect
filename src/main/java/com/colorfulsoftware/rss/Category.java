@@ -19,7 +19,6 @@ package com.colorfulsoftware.rss;
 
 import java.io.Serializable;
 
-
 /**
  * FOR channels: Specify one or more categories that the channel belongs to.
  * Follows the same rules as the <item>-level <a href=
@@ -83,15 +82,12 @@ public class Category implements Serializable {
 
 	/**
 	 * @return the domain url for the category.
+	 * @throws RSSpectException if the data is not valid.
 	 */
-	public Attribute getDomain() {
-		try {
-			return (domain == null) ? null : new Attribute(domain.getName(),
-					domain.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
+	public Attribute getDomain() throws RSSpectException {
+		return (domain == null) ? null : new Attribute(domain.getName(), domain
+				.getValue());
+
 	}
 
 }

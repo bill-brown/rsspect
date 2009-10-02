@@ -58,17 +58,19 @@ public final class RSSDoc {
 	private String libVersion;
 
 	/**
+	 * @throws RSSpectException
+	 *             if the rsspect properties file cant be read.
 	 * 
 	 */
-	public RSSDoc() {
+	public RSSDoc() throws RSSpectException {
 		try {
 			Properties props = new Properties();
 			props.load(RSSDoc.class.getResourceAsStream("/rsspect.properties"));
 			libUri = props.getProperty("uri");
 			libVersion = props.getProperty("version");
 		} catch (Exception e) {
-			// should not happen.
-			e.printStackTrace();
+			throw new RSSpectException("error with rsspect initialization: "
+					+ e.getLocalizedMessage());
 		}
 	}
 
@@ -77,8 +79,10 @@ public final class RSSDoc {
 	 *            the xml encoding eg. UTF-8
 	 * @param xmlVersion
 	 *            the xml document version eg. 1.0
+	 * @throws RSSpectException
+	 *             if the rsspect properties file cant be read.
 	 */
-	public RSSDoc(String encoding, String xmlVersion) {
+	public RSSDoc(String encoding, String xmlVersion) throws RSSpectException {
 		this();
 		this.encoding = encoding;
 		this.xmlVersion = xmlVersion;
@@ -111,9 +115,10 @@ public final class RSSDoc {
 		try {
 			writeRSSOutput(rss, XMLOutputFactory.newInstance()
 					.createXMLStreamWriter(output, encoding), encoding, version);
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error writing rss feed: "
-					+ e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
 
@@ -136,9 +141,10 @@ public final class RSSDoc {
 			writeRSSOutput(rss, XMLOutputFactory.newInstance()
 					.createXMLStreamWriter(new FileWriter(file)), encoding,
 					version);
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error writing rss feed: "
-					+ e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
 
@@ -169,7 +175,7 @@ public final class RSSDoc {
 			String version) throws RSSpectException {
 		try {
 			writeRSSOutput(rss, output, encoding, version);
-		} catch (Exception e) {
+		} catch (RSSpectException e) {
 			throw new RSSpectException("error writing rss feed: "
 					+ e.getMessage());
 		}
@@ -213,6 +219,8 @@ public final class RSSDoc {
 
 			return theString.toString();
 
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
 			return readRSSToString(rss);
 		}
@@ -239,9 +247,10 @@ public final class RSSDoc {
 			writeRSSOutput(rss, writer, encoding, xmlVersion);
 
 			return theString.toString();
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error reading rss feed: "
-					+ e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
 
@@ -260,9 +269,10 @@ public final class RSSDoc {
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(new java.io.StringReader(xmlString));
 			return new RSSReader().readRSS(reader);
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error reading rss feed: "
-					+ e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
 
@@ -281,9 +291,10 @@ public final class RSSDoc {
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(new FileInputStream(file));
 			return new RSSReader().readRSS(reader);
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error reading rss feed: "
-					+ e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
 
@@ -302,8 +313,7 @@ public final class RSSDoc {
 		} catch (RSSpectException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error reading rss feed: "
-					+ e.toString() + ": " + e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 
 	}
@@ -323,9 +333,10 @@ public final class RSSDoc {
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(inputStream);
 			return new RSSReader().readRSS(reader);
+		} catch (RSSpectException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new RSSpectException("error reading rss feed: "
-					+ e.getMessage());
+			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
 
@@ -353,14 +364,12 @@ public final class RSSDoc {
 	 * @param value
 	 *            the attribute value.
 	 * @return an immutable Attribute object.
+	 * @throws RSSpectException
+	 *             if the data is not valid.
 	 */
-	public Attribute buildAttribute(String name, String value) {
-		try {
-			return new Attribute(name, value);
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
+	public Attribute buildAttribute(String name, String value)
+			throws RSSpectException {
+		return new Attribute(name, value);
 	}
 
 	/**
@@ -833,7 +842,7 @@ public final class RSSDoc {
 
 	// used to write feed output for several feed writing methods.
 	private void writeRSSOutput(RSS rss, XMLStreamWriter writer,
-			String encoding, String version) throws Exception {
+			String encoding, String version) throws RSSpectException {
 
 		Channel channel = rss.getChannel();
 
@@ -848,11 +857,17 @@ public final class RSSDoc {
 						.getSkipDays(), channel.getExtensions(), channel
 						.getItems()), rss.getAttributes(), rss.getExtensions());
 
-		// write the xml header.
-		writer.writeStartDocument(encoding, version);
-		new RSSWriter().writeRSS(writer, rss);
-		writer.flush();
-		writer.close();
+		try {
+			// write the xml header.
+			writer.writeStartDocument(encoding, version);
+			new RSSWriter().writeRSS(writer, rss);
+			writer.flush();
+			writer.close();
+		} catch (RSSpectException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RSSpectException(e.getLocalizedMessage());
+		}
 	}
 
 	/**
@@ -872,7 +887,7 @@ public final class RSSDoc {
 	// checks for and returns the Attribute from the String attribute (argument)
 	// in the list of attributes (argument)
 	Attribute getAttributeFromGroup(List<Attribute> attributes,
-			String attributeName) {
+			String attributeName) throws RSSpectException {
 		if (attributes != null) {
 			for (Attribute current : attributes) {
 				if (current.getName().equalsIgnoreCase(attributeName)) {
