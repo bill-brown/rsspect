@@ -38,6 +38,7 @@ class RSSReader {
 	public RSSReader() throws Exception {
 		rss = new RSSDoc();
 	}
+
 	/**
 	 * This method transforms an xml stream into a Feed bean
 	 * 
@@ -68,8 +69,16 @@ class RSSReader {
 				if (elementName.equals("rss")) {
 					attributes = getAttributes(reader);
 				} else if (elementName.equals("channel")) {
+					if (attributes == null) {
+						throw new RSSpectException(
+								"rss documents must contain the version attribute.");
+					}
 					channel = readChannel(reader);
 				} else {// extension
+					if (attributes == null) {
+						throw new RSSpectException(
+								"rss documents must contain the version attribute.");
+					}
 					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
@@ -143,12 +152,11 @@ class RSSReader {
 
 	List<Extension> readExtension(XMLStreamReader reader,
 			List<Extension> extensions, String elementName) throws Exception {
-
 		if (extensions == null) {
 			extensions = new LinkedList<Extension>();
 		}
 
-		StringBuffer extText = new StringBuffer();
+		StringBuilder extText = new StringBuilder();
 		List<Attribute> attributes = getAttributes(reader);
 
 		String elementNameOrig = elementName;
@@ -158,24 +166,7 @@ class RSSReader {
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
 				if (!elementName.equals(elementNameOrig)) {
-					List<Extension> subExtn = readExtension(reader, null,
-							elementName);
-					Extension extn = subExtn.get(0);
-					if (extn != null) {
-						StringBuffer extnStr = new StringBuffer();
-						extnStr.append("<" + extn.getElementName());
-						List<Attribute> extnAttrs = extn.getAttributes();
-						// add the attributes
-						if (extnAttrs != null && extnAttrs.size() > 0) {
-							for (Attribute attr : extnAttrs) {
-								extnStr.append(" " + attr.getName() + "=\""
-										+ attr.getValue() + "\"");
-							}
-						}
-						extnStr.append(">");
-						extnStr.append(extn.getContent());
-						extnStr.append("</" + extn.getElementName() + ">");
-					}
+					extText.append(readEncodedHTML(reader, elementName));
 				}
 				break;
 
@@ -209,7 +200,7 @@ class RSSReader {
 			categories = new LinkedList<Category>();
 		}
 
-		categories.add(rss.buildCategory(rss.getAttributeFromGroup(
+		categories.add(rss.buildCategory(getAttributeFromGroup(
 				getAttributes(reader), "domain"), reader.getElementText()));
 
 		return categories;
@@ -340,7 +331,7 @@ class RSSReader {
 	}
 
 	GUID readGUID(XMLStreamReader reader) throws Exception {
-		return rss.buildGUID(rss.getAttributeFromGroup(getAttributes(reader),
+		return rss.buildGUID(getAttributeFromGroup(getAttributes(reader),
 				"isPermaLink"), reader.getElementText());
 	}
 
@@ -594,7 +585,7 @@ class RSSReader {
 	}
 
 	Source readSource(XMLStreamReader reader) throws Exception {
-		return rss.buildSource(rss.getAttributeFromGroup(getAttributes(reader),
+		return rss.buildSource(getAttributeFromGroup(getAttributes(reader),
 				"url"), reader.getElementText());
 	}
 
@@ -662,10 +653,10 @@ class RSSReader {
 
 	String readEncodedHTML(XMLStreamReader reader, String parentElement)
 			throws XMLStreamException, Exception {
-		StringBuffer xhtml = new StringBuffer();
+		StringBuilder xhtml = new StringBuilder();
 		String elementName = null;
 		boolean breakOut = false;
-		
+		System.out.println("parent element: "+parentElement);
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 
@@ -685,8 +676,8 @@ class RSSReader {
 
 			case XMLStreamConstants.END_ELEMENT:
 				elementName = getElementName(reader);
-				if (elementName.equals(parentElement)
-						&& namespaceURI.equals("")) {
+				System.out.println("end element: "+parentElement);
+				if (elementName.equals(parentElement)) {
 					breakOut = true;
 				} else {
 					xhtml.append("</" + elementName + ">");
@@ -710,9 +701,6 @@ class RSSReader {
 		return xhtml.toString();
 	}
 
-	// set the current namespace to the "empty namespace".
-	private String namespaceURI = "";
-
 	private String getElementName(XMLStreamReader reader) {
 		String elementName = null;
 		String prefix = reader.getPrefix();
@@ -721,9 +709,20 @@ class RSSReader {
 		} else {
 			elementName = reader.getLocalName();
 		}
-		// set the current namespace prefix:
-		namespaceURI = (reader.getNamespaceURI() == null) ? "" : reader
-				.getNamespaceURI();
 		return elementName;
+	}
+
+	// checks for and returns the Attribute from the String attribute (argument)
+	// in the list of attributes (argument)
+	private Attribute getAttributeFromGroup(List<Attribute> attributes,
+			String attributeName) {
+		if (attributes != null) {
+			for (Attribute current : attributes) {
+				if (current.getName().equalsIgnoreCase(attributeName)) {
+					return new Attribute(current);
+				}
+			}
+		}
+		return null;
 	}
 }

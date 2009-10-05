@@ -68,16 +68,7 @@ public class RSS implements Serializable {
 					"rss elements MUST contain a channel element.");
 		}
 
-		this.channel = new Channel(channel.getTitle(), channel.getLink(),
-				channel.getDescription(), channel.getLanguage(), channel
-						.getCopyright(), channel.getManagingEditor(), channel
-						.getWebMaster(), channel.getPubDate(), channel
-						.getLastBuildDate(), channel.getCategories(), channel
-						.getGenerator(), channel.getDocs(), channel.getCloud(),
-				channel.getTtl(), channel.getImage(), channel.getRating(),
-				channel.getTextInput(), channel.getSkipHours(), channel
-						.getSkipDays(), channel.getExtensions(), channel
-						.getItems());
+		this.channel = new Channel(channel);
 
 		if (attributes == null) {
 			throw new RSSpectException(
@@ -86,8 +77,7 @@ public class RSS implements Serializable {
 			this.attributes = new LinkedList<Attribute>();
 
 			for (Attribute attr : attributes) {
-				this.attributes.add(new Attribute(attr.getName(), attr
-						.getValue()));
+				this.attributes.add(new Attribute(attr));
 			}
 		}
 
@@ -96,8 +86,7 @@ public class RSS implements Serializable {
 		} else {
 			this.extensions = new LinkedList<Extension>();
 			for (Extension extension : extensions) {
-				this.extensions.add(new Extension(extension.getElementName(),
-						extension.getAttributes(), extension.getContent()));
+				this.extensions.add(new Extension(extension));
 			}
 		}
 	}
@@ -106,21 +95,7 @@ public class RSS implements Serializable {
 	 * @return the channel object.
 	 */
 	public Channel getChannel() {
-		try {
-			return new Channel(channel.getTitle(), channel.getLink(), channel
-					.getDescription(), channel.getLanguage(), channel
-					.getCopyright(), channel.getManagingEditor(), channel
-					.getWebMaster(), channel.getPubDate(), channel
-					.getLastBuildDate(), channel.getCategories(), channel
-					.getGenerator(), channel.getDocs(), channel.getCloud(),
-					channel.getTtl(), channel.getImage(), channel.getRating(),
-					channel.getTextInput(), channel.getSkipHours(), channel
-							.getSkipDays(), channel.getExtensions(), channel
-							.getItems());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return new Channel(channel);
 	}
 
 	/**
@@ -131,11 +106,8 @@ public class RSS implements Serializable {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		for (Attribute attr : this.attributes) {
-			try {
-				attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
-			} catch (RSSpectException e) {
-				// this should not happen.
-			}
+			attrsCopy.add(new Attribute(attr));
+
 		}
 		return attrsCopy;
 	}
@@ -150,13 +122,7 @@ public class RSS implements Serializable {
 		}
 		List<Extension> extsCopy = new LinkedList<Extension>();
 		for (Extension extension : this.extensions) {
-			try {
-				extsCopy.add(new Extension(extension.getElementName(),
-						extension.getAttributes(), extension.getContent()));
-			} catch (Exception e) {
-				// we should never get here.
-				return null;
-			}
+			extsCopy.add(new Extension(extension));
 		}
 		return extsCopy;
 	}
@@ -170,12 +136,8 @@ public class RSS implements Serializable {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {
 				if (attribute.getName().equals(attrName)) {
-					try {
-						return new Attribute(attribute.getName(), attribute
-								.getValue());
-					} catch (RSSpectException e) {
-						// this should not happen.
-					}
+					return new Attribute(attribute);
+
 				}
 			}
 		}
@@ -192,14 +154,7 @@ public class RSS implements Serializable {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {
 				if (extension.getElementName().equals(extName)) {
-					try {
-						return new Extension(extension.getElementName(),
-								extension.getAttributes(), extension
-										.getContent());
-					} catch (Exception e) {
-						// we should never get here.
-						return null;
-					}
+					return new Extension(extension);
 				}
 			}
 		}

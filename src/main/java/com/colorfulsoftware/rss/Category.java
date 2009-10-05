@@ -53,9 +53,6 @@ import java.io.Serializable;
  */
 public class Category implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3499943299756566396L;
 
 	private final String category;
@@ -63,14 +60,18 @@ public class Category implements Serializable {
 	private final Attribute domain;
 
 	Category(Attribute domain, String category) throws RSSpectException {
-		this.domain = (domain == null) ? null : new Attribute(domain.getName(),
-				domain.getValue());
+		this.domain = (domain == null) ? null : new Attribute(domain);
 		// spec doesn't require it but category should be present
 		if (category == null) {
 			throw new RSSpectException(
 					"Category elements SHOULD contain text data.  Empty strings are allowed.");
 		}
 		this.category = category;
+	}
+
+	Category(Category category) {
+		this.domain = category.getDomain();
+		this.category = category.getCategory();
 	}
 
 	/**
@@ -82,11 +83,9 @@ public class Category implements Serializable {
 
 	/**
 	 * @return the domain url for the category.
-	 * @throws RSSpectException if the data is not valid.
 	 */
-	public Attribute getDomain() throws RSSpectException {
-		return (domain == null) ? null : new Attribute(domain.getName(), domain
-				.getValue());
+	public Attribute getDomain() {
+		return (domain == null) ? null : new Attribute(domain);
 
 	}
 

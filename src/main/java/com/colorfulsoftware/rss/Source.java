@@ -61,16 +61,16 @@ public class Source implements Serializable {
 		this.source = source;
 	}
 
+	Source(Source source) {
+		this.url = source.getUrl();
+		this.source = source.getSource();
+	}
+
 	/**
 	 * @return the url attribute.
 	 */
 	public Attribute getUrl() {
-		try {
-			return new Attribute(url.getName(), url.getValue());
-		} catch (RSSpectException e) {
-			// this should not happen.
-			return null;
-		}
+		return new Attribute(url);
 	}
 
 	/**

@@ -74,7 +74,7 @@ public class Image implements Serializable {
 			throw new RSSpectException(
 					"image elements MUST contain a url element.");
 		}
-		this.url = new URL(url.getUrl());
+		this.url = new URL(url);
 
 		// make sure title is present
 		if (title == null) {
@@ -88,24 +88,27 @@ public class Image implements Serializable {
 			throw new RSSpectException(
 					"image elements MUST contain a link element.");
 		}
-		this.link = new Link(link.getLink());
+		this.link = new Link(link);
 
-		this.width = (width == null) ? null : new Width(width.getWidth());
-		this.height = (height == null) ? null : new Height(height.getHeight());
+		this.width = (width == null) ? null : new Width(width);
+		this.height = (height == null) ? null : new Height(height);
 		this.description = (description == null) ? null : new Description(
 				description.getDescription());
 	}
 
+	Image(Image image) {
+		 this.url = image.getUrl();
+		 this.title = image.getTitle();
+		 this.link = image.getLink();
+		 this.width = image.getWidth();
+		 this.height = image.getHeight();
+		 this.description = image.getDescription();
+	}
 	/**
 	 * @return the url element.
 	 */
 	public URL getUrl() {
-		try {
-			return new URL(url.getUrl());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return new URL(url);
 	}
 
 	/**
@@ -119,36 +122,22 @@ public class Image implements Serializable {
 	 * @return the link element.
 	 */
 	public Link getLink() {
-		try {
-			return new Link(link.getLink());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return new Link(link);
+
 	}
 
 	/**
 	 * @return the width element.
 	 */
 	public Width getWidth() {
-		try {
-			return (width == null) ? null : new Width(width.getWidth());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return (width == null) ? null : new Width(width);
 	}
 
 	/**
 	 * @return the height element.
 	 */
 	public Height getHeight() {
-		try {
-			return (height == null) ? null : new Height(height.getHeight());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return (height == null) ? null : new Height(height);
 	}
 
 	/**

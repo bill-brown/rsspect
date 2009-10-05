@@ -49,6 +49,10 @@ public class Width implements Serializable {
 		this.width = width;
 	}
 
+	Width(Width width) {
+		this.width = width.getWidth();
+	}
+
 	/**
 	 * @return the width.
 	 */

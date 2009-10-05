@@ -54,10 +54,15 @@ public class Extension implements Serializable {
 		} else {
 			this.attributes = new LinkedList<Attribute>();
 			for (Attribute attr : attributes) {
-				this.attributes.add(new Attribute(attr.getName(), attr
-						.getValue()));
+				this.attributes.add(new Attribute(attr));
 			}
 		}
+	}
+	
+	Extension(Extension extension){
+		this.elementName = extension.getElementName();
+		this.attributes = extension.getAttributes();
+		this.content = extension.getContent();
 	}
 
 	/**
@@ -69,12 +74,7 @@ public class Extension implements Serializable {
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		if (this.attributes != null) {
 			for (Attribute attr : this.attributes) {
-				try {
-					attrsCopy
-							.add(new Attribute(attr.getName(), attr.getValue()));
-				} catch (RSSpectException e) {
-					// this should not happen.
-				}
+				attrsCopy.add(new Attribute(attr));
 			}
 		}
 		return (this.attributes == null) ? null : attrsCopy;
@@ -103,12 +103,7 @@ public class Extension implements Serializable {
 		if (this.attributes != null) {
 			for (Attribute attribute : this.attributes) {
 				if (attribute.getName().equals(attrName)) {
-					try {
-						return new Attribute(attribute.getName(), attribute
-								.getValue());
-					} catch (RSSpectException e) {
-						// this should not happen.
-					}
+					return new Attribute(attribute);
 				}
 			}
 		}

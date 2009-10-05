@@ -77,7 +77,7 @@ public class Item implements Serializable {
 		}
 		this.title = (title == null) ? null : new Title(title.getTitle());
 
-		this.link = (link == null) ? null : new Link(link.getLink());
+		this.link = (link == null) ? null : new Link(link);
 
 		this.description = (description == null) ? null : new Description(
 				description.getDescription());
@@ -89,16 +89,14 @@ public class Item implements Serializable {
 		} else {
 			this.categories = new LinkedList<Category>();
 			for (Category category : categories) {
-				this.categories.add(new Category(category.getDomain(), category
-						.getCategory()));
+				this.categories.add(new Category(category));
 			}
 		}
 
 		this.comments = (comments == null) ? null : new Comments(comments
 				.getComments());
 
-		this.enclosure = (enclosure == null) ? null : new Enclosure(enclosure
-				.getAttributes());
+		this.enclosure = (enclosure == null) ? null : new Enclosure(enclosure);
 
 		this.guid = (guid == null) ? null : new GUID(guid.getIsPermaLink(),
 				guid.getGuid());
@@ -106,19 +104,30 @@ public class Item implements Serializable {
 		this.pubDate = (pubDate == null) ? null : new PubDate(pubDate
 				.getDateTime());
 
-		this.source = (source == null) ? null : new Source(source.getUrl(),
-				source.getSource());
+		this.source = (source == null) ? null : new Source(source);
 
 		if (extensions == null) {
 			this.extensions = null;
 		} else {
 			this.extensions = new LinkedList<Extension>();
 			for (Extension extension : extensions) {
-				this.extensions.add(new Extension(extension.getElementName(),
-						extension.getAttributes(), extension.getContent()));
+				this.extensions.add(new Extension(extension));
 			}
 		}
+	}
 
+	Item(Item item) {
+		this.title = item.getTitle();
+		this.description = item.getDescription();
+		this.link = item.getLink();
+		this.author = item.getAuthor();
+		this.categories = item.getCategories();
+		this.comments = item.getComments();
+		this.enclosure = item.getEnclosure();
+		this.guid = item.getGuid();
+		this.pubDate = item.getPubDate();
+		this.source = item.getSource();
+		this.extensions = item.getExtensions();
 	}
 
 	/**
@@ -140,12 +149,7 @@ public class Item implements Serializable {
 	 * @return the link object.
 	 */
 	public Link getLink() {
-		try {
-			return (link == null) ? null : new Link(link.getLink());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return (link == null) ? null : new Link(link);
 	}
 
 	/**
@@ -164,13 +168,7 @@ public class Item implements Serializable {
 		} else {
 			List<Category> catsCopy = new LinkedList<Category>();
 			for (Category category : this.categories) {
-				try {
-					catsCopy.add(new Category(category.getDomain(), category
-							.getCategory()));
-				} catch (Exception e) {
-					// we should never get here.
-					return null;
-				}
+				catsCopy.add(new Category(category));
 			}
 			return catsCopy;
 		}
@@ -187,13 +185,7 @@ public class Item implements Serializable {
 	 * @return the enclosure object.
 	 */
 	public Enclosure getEnclosure() {
-		try {
-			return (enclosure == null) ? null : new Enclosure(enclosure
-					.getAttributes());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return (enclosure == null) ? null : new Enclosure(enclosure);
 	}
 
 	/**
@@ -215,13 +207,7 @@ public class Item implements Serializable {
 	 * @return the source object.
 	 */
 	public Source getSource() {
-		try {
-			return (source == null) ? null : new Source(source.getUrl(), source
-					.getSource());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return (source == null) ? null : new Source(source);
 	}
 
 	/**
@@ -234,19 +220,14 @@ public class Item implements Serializable {
 		}
 		List<Extension> extsCopy = new LinkedList<Extension>();
 		for (Extension extension : this.extensions) {
-			try {
-				extsCopy.add(new Extension(extension.getElementName(),
-						extension.getAttributes(), extension.getContent()));
-			} catch (Exception e) {
-				// we should never get here.
-				return null;
-			}
+			extsCopy.add(new Extension(extension));
 		}
 		return extsCopy;
 	}
 
 	/**
-	 * @param catValue the value for the category.
+	 * @param catValue
+	 *            the value for the category.
 	 * @return the category object if found otherwise null.
 	 */
 	public Category getCategory(String catValue) {
@@ -254,13 +235,7 @@ public class Item implements Serializable {
 			for (Category category : this.categories) {
 				if (category.getCategory() != null
 						&& category.getCategory().equals(catValue)) {
-					try {
-						return new Category(category.getDomain(), category
-								.getCategory());
-					} catch (Exception e) {
-						// we should never get here.
-						return null;
-					}
+					return new Category(category);
 				}
 			}
 		}
@@ -277,14 +252,7 @@ public class Item implements Serializable {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {
 				if (extension.getElementName().equals(extName)) {
-					try {
-						return new Extension(extension.getElementName(),
-								extension.getAttributes(), extension
-										.getContent());
-					} catch (Exception e) {
-						// we should never get here.
-						return null;
-					}
+					return new Extension(extension);
 				}
 			}
 		}

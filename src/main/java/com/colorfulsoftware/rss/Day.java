@@ -43,6 +43,10 @@ public class Day implements Serializable {
 
 	}
 
+	Day(Day day) {
+		this.day = day.getDay();
+	}
+
 	/**
 	 * @return the day of week; Monday, Tuesday, Wednesday, Thursday, Friday,
 	 *         Saturday or Sunday.

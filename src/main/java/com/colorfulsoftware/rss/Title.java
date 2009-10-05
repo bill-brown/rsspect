@@ -32,18 +32,10 @@ import java.io.Serializable;
  */
 public class Title implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8102075738201739128L;
 
 	private final String title;
 
-	/**
-	 * 
-	 * @param text
-	 *            the plain text.
-	 */
 	Title(String title) {
 		this.title = title;
 	}

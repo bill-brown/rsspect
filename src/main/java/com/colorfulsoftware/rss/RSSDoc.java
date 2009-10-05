@@ -107,19 +107,14 @@ public final class RSSDoc {
 	 *            the file encoding (default is UTF-8)
 	 * @param version
 	 *            the xml version (default is 1.0)
-	 * @throws RSSpectException
+	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public void writeRSSDoc(OutputStream output, RSS rss, String encoding,
-			String version) throws RSSpectException {
-		try {
-			writeRSSOutput(rss, XMLOutputFactory.newInstance()
-					.createXMLStreamWriter(output, encoding), encoding, version);
-		} catch (RSSpectException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RSSpectException(e.getLocalizedMessage());
-		}
+			String version) throws Exception {
+		writeRSSOutput(rss, XMLOutputFactory.newInstance()
+				.createXMLStreamWriter(output, encoding), encoding, version);
+
 	}
 
 	/**
@@ -132,20 +127,13 @@ public final class RSSDoc {
 	 *            the file encoding (default is UTF-8)
 	 * @param version
 	 *            the xml version (default is 1.0)
-	 * @throws RSSpectException
+	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public void writeRSSDoc(File file, RSS rss, String encoding, String version)
-			throws RSSpectException {
-		try {
-			writeRSSOutput(rss, XMLOutputFactory.newInstance()
-					.createXMLStreamWriter(new FileWriter(file)), encoding,
-					version);
-		} catch (RSSpectException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RSSpectException(e.getLocalizedMessage());
-		}
+			throws Exception {
+		writeRSSOutput(rss, XMLOutputFactory.newInstance()
+				.createXMLStreamWriter(new FileWriter(file)), encoding, version);
 	}
 
 	/**
@@ -168,17 +156,12 @@ public final class RSSDoc {
 	 *            the file encoding (default is UTF-8)
 	 * @param version
 	 *            the xml version (default is 1.0)
-	 * @throws RSSpectException
+	 * @throws Exception
 	 *             thrown if the feed cannot be written to the output
 	 */
 	public void writeRSSDoc(XMLStreamWriter output, RSS rss, String encoding,
-			String version) throws RSSpectException {
-		try {
-			writeRSSOutput(rss, output, encoding, version);
-		} catch (RSSpectException e) {
-			throw new RSSpectException("error writing rss feed: "
-					+ e.getMessage());
-		}
+			String version) throws Exception {
+		writeRSSOutput(rss, output, encoding, version);
 	}
 
 	/**
@@ -200,11 +183,11 @@ public final class RSSDoc {
 	 * @param xmlStreamWriter
 	 *            the fully qualified XMLStreamWriter class name.
 	 * @return an rss feed document string.
-	 * @throws RSSpectException
+	 * @throws Exception
 	 *             thrown if the feed cannot be returned as a String
 	 */
 	public String readRSSToString(RSS rss, String xmlStreamWriter)
-			throws RSSpectException {
+			throws Exception {
 		try {
 			StringWriter theString = new StringWriter();
 
@@ -219,8 +202,6 @@ public final class RSSDoc {
 
 			return theString.toString();
 
-		} catch (RSSpectException e) {
-			throw e;
 		} catch (Exception e) {
 			return readRSSToString(rss);
 		}
@@ -233,25 +214,18 @@ public final class RSSDoc {
 	 * @param rss
 	 *            the rss object to be converted to an rss string.
 	 * @return an rss feed document string.
-	 * @throws RSSpectException
+	 * @throws Exception
 	 *             thrown if the feed cannot be returned as a String
 	 */
-	public String readRSSToString(RSS rss) throws RSSpectException {
-		try {
-			StringWriter theString = new StringWriter();
+	public String readRSSToString(RSS rss) throws Exception {
+		StringWriter theString = new StringWriter();
 
-			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-			XMLStreamWriter writer = outputFactory
-					.createXMLStreamWriter(theString);
+		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+		XMLStreamWriter writer = outputFactory.createXMLStreamWriter(theString);
 
-			writeRSSOutput(rss, writer, encoding, xmlVersion);
+		writeRSSOutput(rss, writer, encoding, xmlVersion);
 
-			return theString.toString();
-		} catch (RSSpectException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RSSpectException(e.getLocalizedMessage());
-		}
+		return theString.toString();
 	}
 
 	/**
@@ -272,6 +246,7 @@ public final class RSSDoc {
 		} catch (RSSpectException e) {
 			throw e;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
@@ -844,6 +819,10 @@ public final class RSSDoc {
 	private void writeRSSOutput(RSS rss, XMLStreamWriter writer,
 			String encoding, String version) throws RSSpectException {
 
+		if (rss == null) {
+			throw new RSSpectException("The rss feed object cannot be null.");
+		}
+
 		Channel channel = rss.getChannel();
 
 		rss = buildRSS(buildChannel(channel.getTitle(), channel.getLink(),
@@ -882,19 +861,5 @@ public final class RSSDoc {
 	 */
 	public String getXmlVersion() {
 		return xmlVersion;
-	}
-
-	// checks for and returns the Attribute from the String attribute (argument)
-	// in the list of attributes (argument)
-	Attribute getAttributeFromGroup(List<Attribute> attributes,
-			String attributeName) throws RSSpectException {
-		if (attributes != null) {
-			for (Attribute current : attributes) {
-				if (current.getName().equalsIgnoreCase(attributeName)) {
-					return buildAttribute(current.getName(), current.getValue());
-				}
-			}
-		}
-		return null;
 	}
 }

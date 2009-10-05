@@ -55,6 +55,10 @@ public class Link implements Serializable {
 		}
 	}
 
+	Link(Link link) {
+		this.link = link.getLink();
+	}
+
 	/**
 	 * @return the link information.
 	 */

@@ -53,6 +53,10 @@ public class URL implements Serializable {
 		}
 	}
 
+	URL(URL url) {
+		this.url = url.getUrl();
+	}
+
 	/**
 	 * @return the url.
 	 */

@@ -55,24 +55,23 @@ public class SkipHours implements Serializable {
 		}
 		this.skipHours = new LinkedList<Hour>();
 		for (Hour hour : skipHours) {
-			this.skipHours.add(new Hour(hour.getHour()));
+			this.skipHours.add(new Hour(hour));
 		}
+	}
+
+	SkipHours(SkipHours skipHours) {
+		this.skipHours = skipHours.getSkipHours();
 	}
 
 	/**
 	 * @return the list of hours to skip.
 	 */
 	public List<Hour> getSkipHours() {
-		try {
-			List<Hour> skipHoursCopy = new LinkedList<Hour>();
-			for (Hour hour : this.skipHours) {
-				skipHoursCopy.add(new Hour(hour.getHour()));
-			}
-			return skipHoursCopy;
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
+		List<Hour> skipHoursCopy = new LinkedList<Hour>();
+		for (Hour hour : this.skipHours) {
+			skipHoursCopy.add(new Hour(hour));
 		}
+		return skipHoursCopy;
 	}
 
 	/**
@@ -81,14 +80,9 @@ public class SkipHours implements Serializable {
 	 * @return the hour object of null if not found.
 	 */
 	public Hour getSkipHour(String skipHour) {
-		// skipDays should not be null from constructor.
 		for (Hour hour : this.skipHours) {
 			if (hour.getHour().equals(skipHour)) {
-				try {
-					return new Hour(skipHour);
-				} catch (RSSpectException e) {
-					// we should never get here.
-				}
+				return new Hour(hour);
 			}
 		}
 		return null;

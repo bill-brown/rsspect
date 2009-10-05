@@ -46,24 +46,23 @@ public class SkipDays implements Serializable {
 		}
 		this.skipDays = new LinkedList<Day>();
 		for (Day day : skipDays) {
-			this.skipDays.add(new Day(day.getDay()));
+			this.skipDays.add(new Day(day));
 		}
+	}
+
+	SkipDays(SkipDays skipDays) {
+		this.skipDays = skipDays.getSkipDays();
 	}
 
 	/**
 	 * @return the list of days to skip.
 	 */
 	public List<Day> getSkipDays() {
-		try {
-			List<Day> skipDaysCopy = new LinkedList<Day>();
-			for (Day day : this.skipDays) {
-				skipDaysCopy.add(new Day(day.getDay()));
-			}
-			return skipDaysCopy;
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
+		List<Day> skipDaysCopy = new LinkedList<Day>();
+		for (Day day : this.skipDays) {
+			skipDaysCopy.add(new Day(day));
 		}
+		return skipDaysCopy;
 	}
 
 	/**
@@ -72,14 +71,9 @@ public class SkipDays implements Serializable {
 	 * @return the day object of null if not found.
 	 */
 	public Day getSkipDay(String skipDay) {
-		// skipDays should not be null from constructor.
 		for (Day day : this.skipDays) {
 			if (day.getDay().equals(skipDay)) {
-				try {
-					return new Day(skipDay);
-				} catch (RSSpectException e) {
-					// we should never get here.
-				}
+				return new Day(day);
 			}
 		}
 		return null;

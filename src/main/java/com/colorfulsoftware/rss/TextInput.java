@@ -87,6 +87,13 @@ public class TextInput implements Serializable {
 		;
 	}
 
+	TextInput(TextInput textInput) {
+		this.title = textInput.getTitle();
+		this.description = textInput.getDescription();
+		this.name = textInput.getName();
+		this.link = textInput.getLink();
+	}
+
 	/**
 	 * @return the title object.
 	 */
@@ -112,12 +119,8 @@ public class TextInput implements Serializable {
 	 * @return the link object.
 	 */
 	public Link getLink() {
-		try {
-			return new Link(link.getLink());
-		} catch (Exception e) {
-			// we should never get here.
-			return null;
-		}
+		return new Link(link);
+
 	}
 
 }

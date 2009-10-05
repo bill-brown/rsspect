@@ -45,6 +45,10 @@ public class Hour implements Serializable {
 		}
 		this.hour = hour;
 	}
+	
+	Hour(Hour hour){
+		this.hour = hour.getHour();
+	}
 
 	/**
 	 * @return the hour.

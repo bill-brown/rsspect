@@ -64,8 +64,7 @@ public class Enclosure implements Serializable {
 			this.attributes = new LinkedList<Attribute>();
 			for (Attribute attr : attributes) {
 				// check for unsupported attribute.
-				this.attributes.add(new Attribute(attr.getName(), attr
-						.getValue()));
+				this.attributes.add(new Attribute(attr));
 			}
 		}
 
@@ -86,17 +85,22 @@ public class Enclosure implements Serializable {
 
 	}
 
+	Enclosure(Enclosure enclosure) {
+		this.attributes = enclosure.getAttributes();
+		this.url = enclosure.getUrl();
+		this.length = enclosure.getLength();
+		this.type = enclosure.getType();
+	}
+
 	/**
 	 * 
 	 * @return the cloud attribute list.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public List<Attribute> getAttributes() throws RSSpectException {
+	public List<Attribute> getAttributes() {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
 		for (Attribute attr : this.attributes) {
-			attrsCopy.add(new Attribute(attr.getName(), attr.getValue()));
+			attrsCopy.add(new Attribute(attr));
 		}
 
 		return attrsCopy;
@@ -104,43 +108,35 @@ public class Enclosure implements Serializable {
 
 	/**
 	 * @return the url attribute
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Attribute getUrl() throws RSSpectException {
-		return new Attribute(url.getName(), url.getValue());
+	public Attribute getUrl() {
+		return new Attribute(url);
 
 	}
 
 	/**
 	 * @return the length attribute.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Attribute getLength() throws RSSpectException {
-		return new Attribute(length.getName(), length.getValue());
+	public Attribute getLength() {
+		return new Attribute(length);
 	}
 
 	/**
 	 * @return the type attribute.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Attribute getType() throws RSSpectException {
-		return new Attribute(type.getName(), type.getValue());
+	public Attribute getType() {
+		return new Attribute(type);
 	}
 
 	/**
 	 * @param attrName
 	 *            the name of the attribute to get.
 	 * @return the Attribute object if attrName matches or null if not found.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Attribute getAttribute(String attrName) throws RSSpectException {
+	public Attribute getAttribute(String attrName) {
 		for (Attribute attribute : this.attributes) {
 			if (attribute.getName().equals(attrName)) {
-				return new Attribute(attribute.getName(), attribute.getValue());
+				return new Attribute(attribute);
 			}
 		}
 		return null;

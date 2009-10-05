@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Maximum value for height is 400, default value is 31.
  * 
  * @author Bill Brown
- *
+ * 
  */
 public class Height implements Serializable {
 
@@ -35,17 +35,22 @@ public class Height implements Serializable {
 	private final String height;
 
 	Height(String height) throws RSSpectException {
-		if(height != null) {
+		if (height != null) {
 			try {
-				int localHeight =  Integer.parseInt(height);
-				if(localHeight > 400){
-					throw new RSSpectException("height cannot be greater than 400px.");
+				int localHeight = Integer.parseInt(height);
+				if (localHeight > 400) {
+					throw new RSSpectException(
+							"height cannot be greater than 400px.");
 				}
-			}catch(NumberFormatException n){
+			} catch (NumberFormatException n) {
 				throw new RSSpectException("invalid number format for height.");
 			}
 		}
 		this.height = height;
+	}
+
+	Height(Height height) {
+		this.height = height.getHeight();
 	}
 
 	/**

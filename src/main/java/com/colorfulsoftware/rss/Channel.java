@@ -106,7 +106,7 @@ public class Channel implements Serializable {
 			throw new RSSpectException(
 					"channel elements MUST contain a link element.");
 		}
-		this.link = new Link(link.getLink());
+		this.link = new Link(link);
 
 		// make sure description is present
 		if (description == null) {
@@ -132,37 +132,26 @@ public class Channel implements Serializable {
 		} else {
 			this.categories = new LinkedList<Category>();
 			for (Category category : categories) {
-				this.categories.add(new Category(category.getDomain(), category
-						.getCategory()));
+				this.categories.add(new Category(category));
 			}
 		}
 		this.generator = (generator == null) ? null : new Generator(generator
 				.getGenerator());
 		this.docs = (docs == null) ? null : new Docs(docs.getDocs());
-		this.cloud = (cloud == null) ? null : new Cloud(cloud.getAttributes());
+		this.cloud = (cloud == null) ? null : new Cloud(cloud);
 		this.ttl = (ttl == null) ? null : new TTL(ttl.getTtl());
-		this.image = (image == null) ? null : new Image(image.getUrl(), image
-				.getTitle(), image.getLink(), image.getWidth(), image
-				.getHeight(), image.getDescription());
+		this.image = (image == null) ? null : new Image(image);
 		this.rating = (rating == null) ? null : new Rating(rating.getRating());
-		this.textInput = (textInput == null) ? null : new TextInput(textInput
-				.getTitle(), textInput.getDescription(), textInput.getName(),
-				textInput.getLink());
-		this.skipHours = (skipHours == null) ? null : new SkipHours(skipHours
-				.getSkipHours());
-		this.skipDays = (skipDays == null) ? null : new SkipDays(skipDays
-				.getSkipDays());
+		this.textInput = (textInput == null) ? null : new TextInput(textInput);
+		this.skipHours = (skipHours == null) ? null : new SkipHours(skipHours);
+		this.skipDays = (skipDays == null) ? null : new SkipDays(skipDays);
 
 		if (items == null) {
 			this.items = null;
 		} else {
 			this.items = new LinkedList<Item>();
 			for (Item item : items) {
-				this.items.add(new Item(item.getTitle(), item.getLink(), item
-						.getDescription(), item.getAuthor(), item
-						.getCategories(), item.getComments(), item
-						.getEnclosure(), item.getGuid(), item.getPubDate(),
-						item.getSource(), item.getExtensions()));
+				this.items.add(new Item(item));
 			}
 		}
 
@@ -171,10 +160,33 @@ public class Channel implements Serializable {
 		} else {
 			this.extensions = new LinkedList<Extension>();
 			for (Extension extension : extensions) {
-				this.extensions.add(new Extension(extension.getElementName(),
-						extension.getAttributes(), extension.getContent()));
+				this.extensions.add(new Extension(extension));
 			}
 		}
+	}
+	
+	Channel(Channel channel){
+		this.title = channel.getTitle();
+		this.link = channel.getLink();
+		this.description = channel.getDescription();
+		this.language = channel.getLanguage();
+		this.copyright = channel.getCopyright();
+		this.managingEditor = channel.getManagingEditor();
+		this.webMaster = channel.getWebMaster();
+		this.pubDate = channel.getPubDate();
+		this.lastBuildDate = channel.getLastBuildDate();
+		this.categories = channel.getCategories();
+		this.generator = channel.getGenerator();
+		this.docs = channel.getDocs();
+		this.cloud = channel.getCloud();
+		this.ttl = channel.getTtl();
+		this.image = channel.getImage();
+		this.rating = channel.getRating();
+		this.textInput = channel.getTextInput();
+		this.skipHours = channel.getSkipHours();
+		this.skipDays = channel.getSkipDays();
+		this.items = channel.getItems();
+		this.extensions = channel.getExtensions();
 	}
 
 	/**
@@ -186,11 +198,9 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the link element.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Link getLink() throws RSSpectException {
-		return new Link(link.getLink());
+	public Link getLink() {
+		return new Link(link);
 	}
 
 	/**
@@ -248,17 +258,14 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the list of categories.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public List<Category> getCategories() throws RSSpectException {
+	public List<Category> getCategories() {
 		if (categories == null) {
 			return null;
 		} else {
 			List<Category> catsCopy = new LinkedList<Category>();
 			for (Category category : this.categories) {
-				catsCopy.add(new Category(category.getDomain(), category
-						.getCategory()));
+				catsCopy.add(new Category(category));
 			}
 			return catsCopy;
 		}
@@ -281,11 +288,9 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the cloud element.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Cloud getCloud() throws RSSpectException {
-		return (cloud == null) ? null : new Cloud(cloud.getAttributes());
+	public Cloud getCloud() {
+		return (cloud == null) ? null : new Cloud(cloud);
 	}
 
 	/**
@@ -297,13 +302,9 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the image element.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Image getImage() throws RSSpectException {
-		return (image == null) ? null : new Image(image.getUrl(), image
-				.getTitle(), image.getLink(), image.getWidth(), image
-				.getHeight(), image.getDescription());
+	public Image getImage() {
+		return (image == null) ? null : new Image(image);
 	}
 
 	/**
@@ -315,50 +316,35 @@ public class Channel implements Serializable {
 
 	/**
 	 * @return the textInput element.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public TextInput getTextInput() throws RSSpectException {
-		return (textInput == null) ? null : new TextInput(textInput.getTitle(),
-				textInput.getDescription(), textInput.getName(), textInput
-						.getLink());
+	public TextInput getTextInput() {
+		return (textInput == null) ? null : new TextInput(textInput);
 	}
 
 	/**
 	 * @return the skipHours element.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public SkipHours getSkipHours() throws RSSpectException {
-		return (skipHours == null) ? null : new SkipHours(skipHours
-				.getSkipHours());
+	public SkipHours getSkipHours() {
+		return (skipHours == null) ? null : new SkipHours(skipHours);
 	}
 
 	/**
 	 * @return the skipDays element.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public SkipDays getSkipDays() throws RSSpectException {
-		return (skipDays == null) ? null : new SkipDays(skipDays.getSkipDays());
+	public SkipDays getSkipDays() {
+		return (skipDays == null) ? null : new SkipDays(skipDays);
 	}
 
 	/**
 	 * @return the list of items.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public List<Item> getItems() throws RSSpectException {
+	public List<Item> getItems() {
 		if (items == null) {
 			return null;
 		} else {
 			List<Item> itemsCopy = new LinkedList<Item>();
 			for (Item item : this.items) {
-				itemsCopy.add(new Item(item.getTitle(), item.getLink(), item
-						.getDescription(), item.getAuthor(), item
-						.getCategories(), item.getComments(), item
-						.getEnclosure(), item.getGuid(), item.getPubDate(),
-						item.getSource(), item.getExtensions()));
+				itemsCopy.add(new Item(item));
 			}
 			return itemsCopy;
 		}
@@ -367,17 +353,14 @@ public class Channel implements Serializable {
 	/**
 	 * 
 	 * @return the extensions for this entry.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public List<Extension> getExtensions() throws RSSpectException {
+	public List<Extension> getExtensions() {
 		if (extensions == null) {
 			return null;
 		}
 		List<Extension> extsCopy = new LinkedList<Extension>();
 		for (Extension extension : this.extensions) {
-			extsCopy.add(new Extension(extension.getElementName(), extension
-					.getAttributes(), extension.getContent()));
+			extsCopy.add(new Extension(extension));
 		}
 		return extsCopy;
 	}
@@ -386,16 +369,13 @@ public class Channel implements Serializable {
 	 * @param catValue
 	 *            the value of the category.
 	 * @return the category name matching this item or null if not found.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Category getCategory(String catValue) throws RSSpectException {
+	public Category getCategory(String catValue) {
 		if (this.categories != null) {
 			for (Category category : this.categories) {
 				if (category.getCategory() != null
 						&& category.getCategory().equals(catValue)) {
-					return new Category(category.getDomain(), category
-							.getCategory());
+					return new Category(category);
 				}
 			}
 		}
@@ -407,10 +387,8 @@ public class Channel implements Serializable {
 	 *            the title or description data.
 	 * @return the item with this title or description. returns null if not
 	 *         found.
-	 * @throws RSSpectException
-	 *             if the format of the data is not valid.
 	 */
-	public Item getItem(String titleOrDescription) throws RSSpectException {
+	public Item getItem(String titleOrDescription) {
 		if (this.items != null) {
 			for (Item item : this.items) {
 				if ((item.getTitle() != null
@@ -419,11 +397,7 @@ public class Channel implements Serializable {
 						|| (item.getDescription() != null && item
 								.getDescription().getDescription().equals(
 										titleOrDescription))) {
-					return new Item(item.getTitle(), item.getLink(), item
-							.getDescription(), item.getAuthor(), item
-							.getCategories(), item.getComments(), item
-							.getEnclosure(), item.getGuid(), item.getPubDate(),
-							item.getSource(), item.getExtensions());
+					return new Item(item);
 				}
 			}
 		}
@@ -435,15 +409,12 @@ public class Channel implements Serializable {
 	 *            the element name of the extension. eg. "atom:link" or
 	 *            "someExtension"
 	 * @return the extension matching the element or null if not found.
-	 * @throws RSSpectException
-	 *             if the data is not valid.
 	 */
-	public Extension getExtension(String extName) throws RSSpectException {
+	public Extension getExtension(String extName) {
 		if (this.extensions != null) {
 			for (Extension extension : this.extensions) {
 				if (extension.getElementName().equals(extName)) {
-					return new Extension(extension.getElementName(), extension
-							.getAttributes(), extension.getContent());
+					return new Extension(extension);
 				}
 			}
 		}

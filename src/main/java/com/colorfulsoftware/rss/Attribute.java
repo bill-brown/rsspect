@@ -40,6 +40,12 @@ public class Attribute implements Serializable {
 		this.name = name;
 		this.value = value;
 	}
+	
+	//copy constructor
+	Attribute(Attribute attribute){
+		this.name = attribute.getName();
+		this.value = attribute.getValue();
+	}
 
 	/**
 	 * 
