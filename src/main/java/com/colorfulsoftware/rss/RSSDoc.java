@@ -19,7 +19,7 @@ package com.colorfulsoftware.rss;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -47,7 +47,7 @@ public final class RSSDoc {
 	/**
 	 * the default document encoding of "UTF-8"
 	 */
-	private String encoding = "UTF-8";
+	private String encoding = System.getProperty("file.encoding");
 
 	/**
 	 * the default XML version of "1.0"
@@ -133,7 +133,7 @@ public final class RSSDoc {
 	public void writeRSSDoc(File file, RSS rss, String encoding, String version)
 			throws Exception {
 		writeRSSOutput(rss, XMLOutputFactory.newInstance()
-				.createXMLStreamWriter(new FileWriter(file)), encoding, version);
+				.createXMLStreamWriter(new FileOutputStream(file),encoding), encoding, version);
 	}
 
 	/**

@@ -701,6 +701,7 @@ class RSSReader {
 		return xhtml.toString();
 	}
 
+	
 	private String getElementName(XMLStreamReader reader) {
 		String elementName = null;
 		String prefix = reader.getPrefix();

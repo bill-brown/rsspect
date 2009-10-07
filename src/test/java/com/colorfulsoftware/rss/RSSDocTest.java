@@ -21,7 +21,9 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -188,6 +190,29 @@ public class RSSDocTest {
 	@Before
 	public void setUp() throws Exception {
 		rssDoc = new RSSDoc("UTF-8", "1.0");
+
+		// add the indenting stream writer jar to the classpath
+		// http://forums.sun.com/thread.jspa?threadID=300557&start=0&tstart=0
+		URLClassLoader sysloader = (URLClassLoader) ClassLoader
+				.getSystemClassLoader();
+		Class<?> sysclass = URLClassLoader.class;
+		try {
+			Method method = sysclass.getDeclaredMethod("addURL",
+					java.net.URL.class);
+			method.setAccessible(true);
+			method.invoke(sysloader, new Object[] { new java.net.URL(
+					"http://ftpna2.bea.com/pub/downloads/jsr173.jar") });
+			method
+					.invoke(
+							sysloader,
+							new Object[] { new java.net.URL(
+									"http://repo2.maven.org/maven2/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar") });
+		} catch (Throwable t) {
+			t.printStackTrace();
+			throw new IOException(
+					"Error, could not add URL to system classloader");
+		}// end try catch
+
 	}
 
 	/**
@@ -237,29 +262,28 @@ public class RSSDocTest {
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
 
 		try {
-			//load the stax util classes
-			java.net.URL jsr173 = new java.net.URL("http://ftpna2.bea.com/pub/downloads/jsr173.jar");
-			java.net.URL staxUtils = new java.net.URL("http://repo2.maven.org/maven2/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar");
-			
-			URLClassLoader child = new URLClassLoader (new java.net.URL[]{jsr173,staxUtils});
-			Class<?> classToLoad = child.loadClass("javanet.staxutils.IndentingXMLStreamWriter");
-			Constructor<?> constructor = classToLoad.getDeclaredConstructor(XMLStreamWriter.class);
-			XMLStreamWriter writer = (XMLStreamWriter)constructor.newInstance(XMLOutputFactory.newInstance().createXMLStreamWriter(
-					new FileOutputStream("target/out2.xml"),
-					rssDoc.getEncoding()));
-			
-			
-			
+			// load the stax util classes
+			URLClassLoader sysloader = (URLClassLoader) ClassLoader
+					.getSystemClassLoader();
+			Class<?> classToLoad = sysloader
+					.loadClass("javanet.staxutils.IndentingXMLStreamWriter");
+			Constructor<?> indentingXMLStreamWriter = classToLoad
+					.getDeclaredConstructor(XMLStreamWriter.class);
+			XMLStreamWriter writer = (XMLStreamWriter) indentingXMLStreamWriter
+					.newInstance(XMLOutputFactory.newInstance()
+							.createXMLStreamWriter(
+									new FileOutputStream("target/out2.xml"),
+									rssDoc.getEncoding()));
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			//XMLStreamWriter writer = new IndentingXMLStreamWriter(
-			//		XMLOutputFactory.newInstance().createXMLStreamWriter(
-			//				new FileOutputStream("target/out2.xml"),
-			//				rssDoc.getEncoding()));
 			rssDoc.writeRSSDoc(writer, rss1, null, null);
+
+			rssDoc.writeRSSDoc(writer, null, null, null);
+			fail("should not get here.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("could not write output file with file output stream.");
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
 		}
 
 		try {
@@ -304,16 +328,6 @@ public class RSSDocTest {
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
 		}
-
-		/*
-		 * add the stax-utils dependency in the root pom to run this example.
-		 * try { XMLStreamWriter writer = new IndentingXMLStreamWriter(
-		 * XMLOutputFactory.newInstance().createXMLStreamWriter( new
-		 * FileOutputStream("target/out2.xml"), rssDoc.encoding));
-		 * rssDoc.writeRSSDoc(writer, null, null, null); } catch (Exception e) {
-		 * assertTrue(e instanceof RSSpectException);
-		 * assertEquals(e.getMessage(), "error writing rss feed: null"); }
-		 */
 	}
 
 	/**
@@ -336,19 +350,21 @@ public class RSSDocTest {
 			fail("should be working. " + e.getLocalizedMessage());
 		}
 
-		/*
-		 * uncomment this to try formatted writing of the feed. try { rss1 =
-		 * rssDoc.readRSSToBean(expectedRSS1); String rss1Str =
-		 * rssDoc.readRSSToString(rss1,
-		 * "javanet.staxutils.IndentingXMLStreamWriter"); rss1 =
-		 * rssDoc.readRSSToBean(rss1Str); assertNotNull(rss1);
-		 * assertNotNull(rss1.getAttributes());
-		 * assertNotNull(rss1.getChannel());
-		 * assertNotNull(rss1.getExtensions());
-		 * 
-		 * } catch (Exception e) { e.printStackTrace();
-		 * fail("should be working. " + e.getLocalizedMessage()); }
-		 */
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(rss1,
+					"javanet.staxutils.IndentingXMLStreamWriter");
+			rss1 = rssDoc.readRSSToBean(rss1Str);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getAttributes());
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getExtensions());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should be working. " + e.getLocalizedMessage());
+		}
+
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			String rss1Str = rssDoc.readRSSToString(rss1, "Bunky");
@@ -362,19 +378,21 @@ public class RSSDocTest {
 			fail("should not get here." + e.getLocalizedMessage());
 		}
 
-		/*
-		 * uncomment this to try formatted writing of the feed. try { rss1 =
-		 * rssDoc.readRSSToBean(expectedRSS1); String rss1Str =
-		 * rssDoc.readRSSToString(null,
-		 * "javanet.staxutils.IndentingXMLStreamWriter"); rss1 =
-		 * rssDoc.readRSSToBean(rss1Str); assertNotNull(rss1);
-		 * assertNotNull(rss1.getAttributes());
-		 * assertNotNull(rss1.getChannel());
-		 * assertNotNull(rss1.getExtensions());
-		 * 
-		 * } catch (Exception e) { assertTrue(e instanceof RSSpectException);
-		 * assertEquals(e.getMessage(),"The rss feed object cannot be null."); }
-		 */
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS1);
+			String rss1Str = rssDoc.readRSSToString(null,
+					"javanet.staxutils.IndentingXMLStreamWriter");
+			rss1 = rssDoc.readRSSToBean(rss1Str);
+			assertNotNull(rss1);
+			assertNotNull(rss1.getAttributes());
+			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getExtensions());
+
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
+		}
+
 	}
 
 	/**
