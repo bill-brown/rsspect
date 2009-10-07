@@ -173,6 +173,8 @@ public class RSSDocTest {
 
 	private String expectedRSS8 = "<rss version=\"2.0\" xmlns:media=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel><media:credit>Khalid Mohammed/Associated<media:subEle>test</media:subEle> Press</media:credit></rss>";
 
+	private String expectedRSS9 = "<channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel>";
+	
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -477,6 +479,17 @@ public class RSSDocTest {
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://www.earthbeats.net/drops.xml"));
+			fail("should not get here.");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			System.out.println("message: " + e.getLocalizedMessage());
+			e.printStackTrace();
+			assertEquals(e.getMessage(),
+					"rss documents must contain the version attribute.");
+		}
+		
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS9);
 			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);

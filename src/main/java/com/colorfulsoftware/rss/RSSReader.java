@@ -59,10 +59,6 @@ class RSSReader {
 			int next = reader.next();
 			switch (next) {
 
-			case XMLStreamConstants.START_DOCUMENT:
-				rss = new RSSDoc(reader.getEncoding(), reader.getVersion());
-				break;
-
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
@@ -86,22 +82,9 @@ class RSSReader {
 			case XMLStreamConstants.END_ELEMENT:
 				reader.next();
 				break;
-			case XMLStreamConstants.ATTRIBUTE:
-			case XMLStreamConstants.CDATA:
-			case XMLStreamConstants.CHARACTERS:
-			case XMLStreamConstants.COMMENT:
-			case XMLStreamConstants.DTD:
-			case XMLStreamConstants.END_DOCUMENT:
-			case XMLStreamConstants.ENTITY_DECLARATION:
-			case XMLStreamConstants.ENTITY_REFERENCE:
-			case XMLStreamConstants.NAMESPACE:
-			case XMLStreamConstants.NOTATION_DECLARATION:
-			case XMLStreamConstants.PROCESSING_INSTRUCTION:
-			case XMLStreamConstants.SPACE:
-				break;
+
 			default:
-				throw new Exception("unknown event in the xml file = "
-						+ reader.getEventType());
+				break;
 			}
 		}
 
