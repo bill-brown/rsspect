@@ -21,13 +21,11 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Constructor;
+import java.net.URLClassLoader;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-
-/* add the stax-utils dependency in the root pom to run this example.
- import javanet.staxutils.IndentingXMLStreamWriter;
- */
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
@@ -237,17 +235,32 @@ public class RSSDocTest {
 	 */
 	@Test
 	public void testWriteRSSDocXMLStreamWriterRSSStringString() {
-		/*
-		 * add the stax-utils dependency in the root pom to run this example.
-		 * try { rss1 = rssDoc.readRSSToBean(new java.net.URL(
-		 * "http://feeds.nytimes.com/nyt/rss/HomePage")); XMLStreamWriter writer
-		 * = new IndentingXMLStreamWriter(
-		 * XMLOutputFactory.newInstance().createXMLStreamWriter( new
-		 * FileOutputStream("target/out2.xml"), rssDoc.encoding));
-		 * rssDoc.writeRSSDoc(writer, rss1, null, null); } catch (Exception e) {
-		 * e.printStackTrace();
-		 * fail("could not write output file with file output stream."); }
-		 */
+
+		try {
+			//load the stax util classes
+			java.net.URL jsr173 = new java.net.URL("http://ftpna2.bea.com/pub/downloads/jsr173.jar");
+			java.net.URL staxUtils = new java.net.URL("http://repo2.maven.org/maven2/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar");
+			
+			URLClassLoader child = new URLClassLoader (new java.net.URL[]{jsr173,staxUtils});
+			Class<?> classToLoad = child.loadClass("javanet.staxutils.IndentingXMLStreamWriter");
+			Constructor<?> constructor = classToLoad.getDeclaredConstructor(XMLStreamWriter.class);
+			XMLStreamWriter writer = (XMLStreamWriter)constructor.newInstance(XMLOutputFactory.newInstance().createXMLStreamWriter(
+					new FileOutputStream("target/out2.xml"),
+					rssDoc.getEncoding()));
+			
+			
+			
+			rss1 = rssDoc.readRSSToBean(new java.net.URL(
+					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+			//XMLStreamWriter writer = new IndentingXMLStreamWriter(
+			//		XMLOutputFactory.newInstance().createXMLStreamWriter(
+			//				new FileOutputStream("target/out2.xml"),
+			//				rssDoc.getEncoding()));
+			rssDoc.writeRSSDoc(writer, rss1, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("could not write output file with file output stream.");
+		}
 
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
@@ -505,19 +518,20 @@ public class RSSDocTest {
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
 			Channel channel = rss1.getChannel();
-			System.out.println("items: "+channel.getItems().size());
-			for(Item item: channel.getItems()){
-				System.out.println("extensions: "+ item.getExtensions());
-				for(Extension ext: item.getExtensions()){
-					System.out.println("ext name: "+ext.getElementName());
+			System.out.println("items: " + channel.getItems().size());
+			for (Item item : channel.getItems()) {
+				System.out.println("extensions: " + item.getExtensions());
+				for (Extension ext : item.getExtensions()) {
+					System.out.println("ext name: " + ext.getElementName());
 				}
 			}
-			rssDoc.writeRSSDoc(new File("target/out3.xml"), rss1,rssDoc.getEncoding(),rssDoc.getXmlVersion());
+			rssDoc.writeRSSDoc(new File("target/out3.xml"), rss1, rssDoc
+					.getEncoding(), rssDoc.getXmlVersion());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
-		
+
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS2);
 			assertNotNull(rss1);
