@@ -95,14 +95,6 @@ class RSSReader {
 
 		List<Attribute> attributes = new LinkedList<Attribute>();
 
-		if (reader.getEventType() == XMLStreamConstants.START_DOCUMENT) {
-			reader.next();
-		}
-
-		if (reader.getEventType() != XMLStreamConstants.START_ELEMENT) {
-			return null;
-		}
-
 		int eventSkip = 0;
 		for (int i = 0; i < reader.getNamespaceCount(); i++) {
 			eventSkip++;

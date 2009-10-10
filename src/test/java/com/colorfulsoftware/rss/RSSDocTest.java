@@ -136,7 +136,7 @@ public class RSSDocTest {
 			+ "<media:credit>Khalid Mohammed/Associated Press</media:credit>"
 			+ "<description>The attacks outside the gates of the holiest Shiite site in Baghdad on Friday came a day after the deadliest day in Iraq in more than a year.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By STEVEN LEE MYERS and TIMOTHY WILLIAMS</dc:creator>"
-			+ "<atom:title type=\"html\"><div>test title</div></atom:title>"
+			+ "<atom:title atom:type=\"html\"><div>test title</div></atom:title>"
 			+ "<pubDate>Fri, 24 Apr 2009 16:50:22 GMT</pubDate>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/nyt_geo\">Iraq</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Iraq War (2003- )</category>"
@@ -174,6 +174,9 @@ public class RSSDocTest {
 	private String expectedRSS8 = "<rss version=\"2.0\" xmlns:media=\"http://www.w3.org/2005/Atom\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel><media:credit>Khalid Mohammed/Associated<media:subEle>test</media:subEle> Press</media:credit></rss>";
 
 	private String expectedRSS9 = "<channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel>";
+
+	//bad lastBuildDate
+	private String expectedRSS10 = "<rss version=\"2.0\"><channel><lastBuildDate>abcdefghijabcdefghij</lastBuildDate><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
 	
 	private static Calendar theDate;
 	static {
@@ -571,6 +574,14 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
+		}
+		
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS10);
+			fail("should not get here");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertEquals(e.getMessage(),"");
 		}
 
 		try {
