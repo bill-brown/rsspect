@@ -17,7 +17,6 @@
  */
 package com.colorfulsoftware.rss;
 
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +57,12 @@ class RSSReader {
 		while (reader.hasNext()) {
 			int next = reader.next();
 			switch (next) {
+
+			// so far: neither the stax-api or geronimo stax implementations
+			// can see this :(
+			// case XMLStreamConstants.START_DOCUMENT:
+			// rss = new RSSDoc(reader.getEncoding(), reader.getVersion());
+			// break;
 
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
@@ -437,16 +442,7 @@ class RSSReader {
 	}
 
 	LastBuildDate readLastBuildDate(XMLStreamReader reader) throws Exception {
-		String dateText = reader.getElementText();
-		try {
-			return rss
-					.buildLastBuildDate(getSimpleDateFormat().parse(dateText));
-		} catch (Exception e) {
-			SimpleDateFormat simpleDateFmt2 = new SimpleDateFormat(
-					getSimpleDateFormat().toPattern().substring(0, 19));
-			return rss.buildLastBuildDate(simpleDateFmt2.parse(dateText
-					.substring(0, 19)));
-		}
+		return rss.buildLastBuildDate(reader.getElementText());
 	}
 
 	Link readLink(XMLStreamReader reader) throws Exception {
@@ -461,21 +457,8 @@ class RSSReader {
 		return rss.buildName(reader.getElementText());
 	}
 
-	SimpleDateFormat getSimpleDateFormat() {
-		// example Sun, 19 May 2002 15:21:36 GMT
-		return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-	}
-
 	PubDate readPubDate(XMLStreamReader reader) throws Exception {
-		String dateText = reader.getElementText();
-		try {
-			return rss.buildPubDate(getSimpleDateFormat().parse(dateText));
-		} catch (Exception e) {
-			SimpleDateFormat simpleDateFmt2 = new SimpleDateFormat(
-					getSimpleDateFormat().toPattern().substring(0, 19));
-			return rss.buildPubDate(simpleDateFmt2.parse(dateText.substring(0,
-					19)));
-		}
+		return rss.buildPubDate(reader.getElementText());
 	}
 
 	Rating readRating(XMLStreamReader reader) throws Exception {
@@ -631,7 +614,6 @@ class RSSReader {
 		StringBuilder xhtml = new StringBuilder();
 		String elementName = null;
 		boolean breakOut = false;
-		System.out.println("parent element: "+parentElement);
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 
@@ -651,7 +633,6 @@ class RSSReader {
 
 			case XMLStreamConstants.END_ELEMENT:
 				elementName = getElementName(reader);
-				System.out.println("end element: "+parentElement);
 				if (elementName.equals(parentElement)) {
 					breakOut = true;
 				} else {
@@ -659,9 +640,11 @@ class RSSReader {
 				}
 				break;
 
-			case XMLStreamConstants.CDATA:
-				xhtml.append("<![CDATA[" + reader.getText() + "]]>");
-				break;
+			// so far: neither the stax-api or geronimo stax implementations
+			// can see this :(
+			// case XMLStreamConstants.CDATA:
+			// xhtml.append("<![CDATA[" + reader.getText() + "]]>");
+			// break;
 
 			default:
 				// escape the necessary characters.
@@ -676,7 +659,6 @@ class RSSReader {
 		return xhtml.toString();
 	}
 
-	
 	private String getElementName(XMLStreamReader reader) {
 		String elementName = null;
 		String prefix = reader.getPrefix();

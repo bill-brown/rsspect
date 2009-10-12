@@ -89,7 +89,7 @@ public class RSSDocTest {
 			+ "<title>NYT &gt; Home Page</title>"
 			+ "<link>http://www.nytimes.com/pages/index.html?partner=rss</link>"
 			+ "<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml\"/>"
-			+ "<description/>"
+			+ "<description><![CDATA[test a cdata section]]></description>"
 			+ "<language>en-us</language>"
 			+ "<copyright>Copyright 2009 The New York Times Company</copyright>"
 			+ "<lastBuildDate>Fri, 24 Apr 2009 17:29:13 GMT</lastBuildDate>"
@@ -175,9 +175,9 @@ public class RSSDocTest {
 
 	private String expectedRSS9 = "<channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel>";
 
-	//bad lastBuildDate
+	// bad lastBuildDate
 	private String expectedRSS10 = "<rss version=\"2.0\"><channel><lastBuildDate>abcdefghijabcdefghij</lastBuildDate><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
-	
+
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -286,7 +286,6 @@ public class RSSDocTest {
 			rssDoc.writeRSSDoc(writer, null, null, null);
 			fail("should not get here.");
 		} catch (Exception e) {
-			e.printStackTrace();
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
 		}
@@ -485,19 +484,15 @@ public class RSSDocTest {
 			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
-			System.out.println("message: " + e.getLocalizedMessage());
-			e.printStackTrace();
 			assertEquals(e.getMessage(),
 					"rss documents must contain the version attribute.");
 		}
-		
+
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS9);
 			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
-			System.out.println("message: " + e.getLocalizedMessage());
-			e.printStackTrace();
 			assertEquals(e.getMessage(),
 					"rss documents must contain the version attribute.");
 		}
@@ -551,14 +546,6 @@ public class RSSDocTest {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
 			assertNotNull(rss1.getChannel());
-			Channel channel = rss1.getChannel();
-			System.out.println("items: " + channel.getItems().size());
-			for (Item item : channel.getItems()) {
-				System.out.println("extensions: " + item.getExtensions());
-				for (Extension ext : item.getExtensions()) {
-					System.out.println("ext name: " + ext.getElementName());
-				}
-			}
 			rssDoc.writeRSSDoc(new File("target/out3.xml"), rss1, rssDoc
 					.getEncoding(), rssDoc.getXmlVersion());
 		} catch (Exception e) {
@@ -575,13 +562,14 @@ public class RSSDocTest {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
-		
+
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS10);
 			fail("should not get here");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
-			assertEquals(e.getMessage(),"");
+			assertTrue(e.getMessage().startsWith(
+					"error trying to create the date element:"));
 		}
 
 		try {
@@ -1178,10 +1166,14 @@ public class RSSDocTest {
 	 */
 	@Test
 	public void testBuildLastBuildDate() {
-		LastBuildDate lastBuildDate = rssDoc.buildLastBuildDate(null);
-		assertNotNull(lastBuildDate);
-		assertNull(lastBuildDate.getDateTime());
-		assertNull(lastBuildDate.getText());
+		try {
+			LastBuildDate lastBuildDate = rssDoc.buildLastBuildDate(null);
+			assertNotNull(lastBuildDate);
+			assertNull(lastBuildDate.getDateTime());
+			assertNull(lastBuildDate.getText());
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
 	}
 
 	/**
@@ -1255,10 +1247,14 @@ public class RSSDocTest {
 	 */
 	@Test
 	public void testBuildPubDate() {
-		PubDate pubDate = rssDoc.buildPubDate(null);
-		assertNotNull(pubDate);
-		assertNull(pubDate.getDateTime());
-		assertNull(pubDate.getText());
+		try {
+			PubDate pubDate = rssDoc.buildPubDate(null);
+			assertNotNull(pubDate);
+			assertNull(pubDate.getDateTime());
+			assertNull(pubDate.getText());
+		} catch (RSSpectException r) {
+			fail("should not fail here.");
+		}
 	}
 
 	/**

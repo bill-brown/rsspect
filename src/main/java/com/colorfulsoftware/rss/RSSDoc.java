@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -133,7 +132,8 @@ public final class RSSDoc {
 	public void writeRSSDoc(File file, RSS rss, String encoding, String version)
 			throws Exception {
 		writeRSSOutput(rss, XMLOutputFactory.newInstance()
-				.createXMLStreamWriter(new FileOutputStream(file),encoding), encoding, version);
+				.createXMLStreamWriter(new FileOutputStream(file), encoding),
+				encoding, version);
 	}
 
 	/**
@@ -246,7 +246,6 @@ public final class RSSDoc {
 		} catch (RSSpectException e) {
 			throw e;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
@@ -623,8 +622,11 @@ public final class RSSDoc {
 	 * @param lastBuildDate
 	 *            the last build date.
 	 * @return an immutable LastBuildDate object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public LastBuildDate buildLastBuildDate(Date lastBuildDate) {
+	public LastBuildDate buildLastBuildDate(String lastBuildDate)
+			throws RSSpectException {
 		return new LastBuildDate(lastBuildDate);
 	}
 
@@ -665,8 +667,10 @@ public final class RSSDoc {
 	 * @param pubDate
 	 *            the published date.
 	 * @return an immutable PubDate object.
+	 * @throws RSSpectException
+	 *             If the dateTime format is invalid.
 	 */
-	public PubDate buildPubDate(Date pubDate) {
+	public PubDate buildPubDate(String pubDate) throws RSSpectException {
 		return new PubDate(pubDate);
 	}
 
@@ -842,8 +846,6 @@ public final class RSSDoc {
 			new RSSWriter().writeRSS(writer, rss);
 			writer.flush();
 			writer.close();
-		} catch (RSSpectException e) {
-			throw e;
 		} catch (Exception e) {
 			throw new RSSpectException(e.getLocalizedMessage());
 		}

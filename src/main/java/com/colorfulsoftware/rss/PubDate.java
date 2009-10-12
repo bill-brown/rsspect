@@ -53,7 +53,11 @@ public class PubDate implements Serializable {
 
 	private final RSSDateConstruct pubDate;
 
-	PubDate(Date pubDate) {
+	PubDate(String pubDate) throws RSSpectException {
+		this.pubDate = new RSSDateConstruct(pubDate);
+	}
+	
+	PubDate(Date pubDate){
 		this.pubDate = new RSSDateConstruct(pubDate);
 	}
 
