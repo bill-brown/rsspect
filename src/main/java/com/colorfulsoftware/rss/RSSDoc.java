@@ -202,6 +202,7 @@ public final class RSSDoc {
 
 			return theString.toString();
 
+			// if the xmlStreamWriter cannot be found, read with the default
 		} catch (Exception e) {
 			return readRSSToString(rss);
 		}

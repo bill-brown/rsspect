@@ -452,12 +452,16 @@ public class RSSDocTest {
 		}
 
 		try {
-			rss1 = rssDoc
-					.readRSSToBean(new File("src/test/resources/out1.xml"));
-			fail("should not get here.");
+			new File("/temp").renameTo(new File("target/classes/rsspect.properties"));
+			assertTrue(new File(RSSDoc.class.getResource("/rsspect.properties").toURI()).exists());
+			new RSSDoc();
+			assertTrue(new File("src/main/resources/rsspect.properties.tmp")
+			.renameTo(new File("src/main/resources/rsspect.properties")));
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "ParseError at [row,col]:[1,1]\n"
-					+ "Message: Premature end of file.");
+			e.printStackTrace();
+			assertTrue(e.getMessage().startsWith(
+					"error with rsspect initialization: "));
+			assertTrue(new File("/temp").renameTo(new File("target/classes/rsspect.properties")));
 		}
 	}
 
