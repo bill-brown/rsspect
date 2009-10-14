@@ -452,7 +452,7 @@ public class RSSDocTest {
 		}
 
 		try {
-			new File("/temp").renameTo(new File("target/classes/rsspect.properties"));
+			//new File("/temp").renameTo(new File("target/classes/rsspect.properties"));
 			assertTrue(new File(RSSDoc.class.getResource("/rsspect.properties").toURI()).exists());
 			new RSSDoc();
 			assertTrue(new File("src/main/resources/rsspect.properties.tmp")
