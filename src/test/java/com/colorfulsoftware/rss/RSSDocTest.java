@@ -20,6 +20,7 @@ package com.colorfulsoftware.rss;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -452,16 +453,31 @@ public class RSSDocTest {
 		}
 
 		try {
-			//new File("/temp").renameTo(new File("target/classes/rsspect.properties"));
-			assertTrue(new File(RSSDoc.class.getResource("/rsspect.properties").toURI()).exists());
-			new RSSDoc();
-			assertTrue(new File("src/main/resources/rsspect.properties.tmp")
-			.renameTo(new File("src/main/resources/rsspect.properties")));
+			rssDoc.readRSSToBean(new File(""));
+			fail("should not get here");
 		} catch (Exception e) {
-			e.printStackTrace();
-			assertTrue(e.getMessage().startsWith(
-					"error with rsspect initialization: "));
-			assertTrue(new File("/temp").renameTo(new File("target/classes/rsspect.properties")));
+			assertTrue(e instanceof RSSpectException);
+		}
+		
+		try {
+			rssDoc.readRSSToBean(new File("src/test/resources/brokeRSS.xml"));
+			fail("should not get here");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+		}
+		
+		try {
+			rssDoc.readRSSToBean(new FileInputStream("src/test/resources/brokeRSS.xml"));
+			fail("should not get here");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+		}
+		
+		try {
+			rssDoc.readRSSToBean(new FileInputStream("src/test/resources/brokeRSS2.xml"));
+			fail("should not get here");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
 		}
 	}
 

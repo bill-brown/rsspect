@@ -57,20 +57,15 @@ public final class RSSDoc {
 	private String libVersion;
 
 	/**
-	 * @throws RSSpectException
-	 *             if the rsspect properties file cant be read.
+	 * @throws Exception
+	 *             if the rsspect.properties file cant be read.
 	 * 
 	 */
-	public RSSDoc() throws RSSpectException {
-		try {
+	public RSSDoc() throws Exception {
 			Properties props = new Properties();
 			props.load(RSSDoc.class.getResourceAsStream("/rsspect.properties"));
 			libUri = props.getProperty("uri");
 			libVersion = props.getProperty("version");
-		} catch (Exception e) {
-			throw new RSSpectException("error with rsspect initialization: "
-					+ e.getLocalizedMessage());
-		}
 	}
 
 	/**
@@ -78,10 +73,10 @@ public final class RSSDoc {
 	 *            the xml encoding eg. UTF-8
 	 * @param xmlVersion
 	 *            the xml document version eg. 1.0
-	 * @throws RSSpectException
+	 * @throws Exception
 	 *             if the rsspect properties file cant be read.
 	 */
-	public RSSDoc(String encoding, String xmlVersion) throws RSSpectException {
+	public RSSDoc(String encoding, String xmlVersion) throws Exception {
 		this();
 		this.encoding = encoding;
 		this.xmlVersion = xmlVersion;
@@ -822,7 +817,7 @@ public final class RSSDoc {
 
 	// used to write feed output for several feed writing methods.
 	private void writeRSSOutput(RSS rss, XMLStreamWriter writer,
-			String encoding, String version) throws RSSpectException {
+			String encoding, String version) throws Exception {
 
 		if (rss == null) {
 			throw new RSSpectException("The rss feed object cannot be null.");
@@ -840,16 +835,12 @@ public final class RSSDoc {
 				channel.getTextInput(), channel.getSkipHours(), channel
 						.getSkipDays(), channel.getExtensions(), channel
 						.getItems()), rss.getAttributes(), rss.getExtensions());
-
-		try {
+		
 			// write the xml header.
 			writer.writeStartDocument(encoding, version);
 			new RSSWriter().writeRSS(writer, rss);
 			writer.flush();
 			writer.close();
-		} catch (Exception e) {
-			throw new RSSpectException(e.getLocalizedMessage());
-		}
 	}
 
 	/**
