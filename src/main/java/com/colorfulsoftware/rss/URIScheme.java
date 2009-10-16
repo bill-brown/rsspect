@@ -30,9 +30,6 @@ import java.util.Map;
  */
 class URIScheme implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3125832208350819540L;
 
 	private Map<String, String> uriScheme = new HashMap<String, String>();

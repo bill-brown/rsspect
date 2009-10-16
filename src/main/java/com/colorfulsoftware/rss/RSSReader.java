@@ -17,6 +17,7 @@
  */
 package com.colorfulsoftware.rss;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,9 @@ import javax.xml.stream.XMLStreamReader;
  * @author Bill Brown
  * 
  */
-class RSSReader {
+class RSSReader implements Serializable {
+
+	private static final long serialVersionUID = 3767186359346213145L;
 
 	private RSSDoc rss;
 

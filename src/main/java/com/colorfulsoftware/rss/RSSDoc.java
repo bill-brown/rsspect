@@ -17,11 +17,13 @@
  */
 package com.colorfulsoftware.rss;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -41,7 +43,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @author Bill Brown
  * 
  */
-public final class RSSDoc {
+public final class RSSDoc implements Serializable {
+
+	private static final long serialVersionUID = 649162683570000798L;
 
 	/**
 	 * the default document encoding of "UTF-8"
@@ -62,10 +66,10 @@ public final class RSSDoc {
 	 * 
 	 */
 	public RSSDoc() throws Exception {
-			Properties props = new Properties();
-			props.load(RSSDoc.class.getResourceAsStream("/rsspect.properties"));
-			libUri = props.getProperty("uri");
-			libVersion = props.getProperty("version");
+		Properties props = new Properties();
+		props.load(RSSDoc.class.getResourceAsStream("/rsspect.properties"));
+		libUri = props.getProperty("uri");
+		libVersion = props.getProperty("version");
 	}
 
 	/**
@@ -234,10 +238,20 @@ public final class RSSDoc {
 	 *             if the string cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(String xmlString) throws RSSpectException {
+		// try to grab the encoding first:
+		if (xmlString.contains("encoding=\"")) {
+			String localEncoding = xmlString.substring(xmlString
+					.indexOf("encoding=\"") + 10);
+			localEncoding = localEncoding.substring(0, localEncoding
+					.indexOf('"'));
+			encoding = localEncoding;
+
+		}
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			XMLStreamReader reader = inputFactory
-					.createXMLStreamReader(new java.io.StringReader(xmlString));
+					.createXMLStreamReader(new ByteArrayInputStream(xmlString
+							.getBytes(encoding)));
 			return new RSSReader().readRSS(reader);
 		} catch (RSSpectException e) {
 			throw e;
@@ -835,12 +849,12 @@ public final class RSSDoc {
 				channel.getTextInput(), channel.getSkipHours(), channel
 						.getSkipDays(), channel.getExtensions(), channel
 						.getItems()), rss.getAttributes(), rss.getExtensions());
-		
-			// write the xml header.
-			writer.writeStartDocument(encoding, version);
-			new RSSWriter().writeRSS(writer, rss);
-			writer.flush();
-			writer.close();
+
+		// write the xml header.
+		writer.writeStartDocument(encoding, version);
+		new RSSWriter().writeRSS(writer, rss);
+		writer.flush();
+		writer.close();
 	}
 
 	/**

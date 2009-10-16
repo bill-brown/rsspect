@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
@@ -68,7 +69,9 @@ import com.colorfulsoftware.rss.URL;
  * @author Bill Brown
  * 
  */
-public class RSSDocTest {
+public class RSSDocTest implements Serializable {
+
+	private static final long serialVersionUID = 4215775931435710474L;
 
 	// http://nytimes.com feed from 04/24/2009
 	private String expectedRSS1 = "<?xml version=\"1.0\"?>"
@@ -458,23 +461,25 @@ public class RSSDocTest {
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 		}
-		
+
 		try {
 			rssDoc.readRSSToBean(new File("src/test/resources/brokeRSS.xml"));
 			fail("should not get here");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 		}
-		
+
 		try {
-			rssDoc.readRSSToBean(new FileInputStream("src/test/resources/brokeRSS.xml"));
+			rssDoc.readRSSToBean(new FileInputStream(
+					"src/test/resources/brokeRSS.xml"));
 			fail("should not get here");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 		}
-		
+
 		try {
-			rssDoc.readRSSToBean(new FileInputStream("src/test/resources/brokeRSS2.xml"));
+			rssDoc.readRSSToBean(new FileInputStream(
+					"src/test/resources/brokeRSS2.xml"));
 			fail("should not get here");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);

@@ -17,6 +17,7 @@
  */
 package com.colorfulsoftware.rss;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamWriter;
@@ -27,7 +28,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @author Bill Brown
  * 
  */
-class RSSWriter {
+class RSSWriter implements Serializable {
+
+	private static final long serialVersionUID = -835487922633476364L;
 
 	// used internally by FeedDoc to write feed to output streams.
 	void writeRSS(XMLStreamWriter writer, RSS rss) throws Exception {
