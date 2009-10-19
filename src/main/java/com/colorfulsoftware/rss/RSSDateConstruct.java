@@ -43,10 +43,13 @@ class RSSDateConstruct implements Serializable {
 
 		if (dateTime == null) {
 			this.dateTime = null;
+			this.text = null;
 		} else {
 			try {
 				this.dateTime = new SimpleDateFormat(
 						"EEE, dd MMM yyyy HH:mm:ss z").parse(dateTime);
+				this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
+				.format(this.dateTime);
 			} catch (Exception e) {
 				throw new RSSpectException(
 						"error trying to create the date element: "
@@ -57,6 +60,8 @@ class RSSDateConstruct implements Serializable {
 
 	RSSDateConstruct(Date dateTime) {
 		this.dateTime = new Date(dateTime.getTime());
+		this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
+		.format(this.dateTime);
 	}
 
 	/**
@@ -73,11 +78,6 @@ class RSSDateConstruct implements Serializable {
 	 *         2006-04-28T12:50:43.337-05:00
 	 */
 	public String getText() {
-		if (dateTime == null) {
-			return null;
-		}
-		// example Sun, 19 May 2002 15:21:36 GMT
-		return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-				.format(dateTime);
+		return text;
 	}
 }
