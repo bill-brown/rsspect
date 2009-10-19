@@ -29,6 +29,8 @@ class RSSDateConstruct implements Serializable {
 	private static final long serialVersionUID = 661002136563928416L;
 
 	private final Date dateTime;
+	
+	private final String text; 
 
 	/**
 	 * 
