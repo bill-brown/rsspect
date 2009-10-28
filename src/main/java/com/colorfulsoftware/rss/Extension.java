@@ -40,11 +40,11 @@ public class Extension implements Serializable {
 	Extension(String elementName, List<Attribute> attributes, String content)
 			throws RSSpectException {
 
-		// spec doesn't require it but elementName should be present
-		if (elementName == null) {
-			throw new RSSpectException(
-					"channel elements SHOULD contain a title element.");
+		if (elementName.indexOf(":") == -1 || elementName.indexOf(":") == 0) {
+			throw new RSSpectException("Extension element '" + elementName
+					+ "' is missing a namespace prefix.");
 		}
+
 		this.elementName = elementName;
 
 		this.content = content;
@@ -58,8 +58,8 @@ public class Extension implements Serializable {
 			}
 		}
 	}
-	
-	Extension(Extension extension){
+
+	Extension(Extension extension) {
 		this.elementName = extension.getElementName();
 		this.attributes = extension.getAttributes();
 		this.content = extension.getContent();
