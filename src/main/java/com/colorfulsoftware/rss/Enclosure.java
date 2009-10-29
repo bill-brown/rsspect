@@ -70,17 +70,17 @@ public class Enclosure implements Serializable {
 
 		if ((this.url = getAttribute("url")) == null) {
 			throw new RSSpectException(
-					"enclusure elements MUST have a url attribute.");
+					"enclosure elements MUST have a url attribute.");
 		}
 
 		if ((this.length = getAttribute("length")) == null) {
 			throw new RSSpectException(
-					"enclusure elements MUST have a length attribute.");
+					"enclosure elements MUST have a length attribute.");
 		}
 
 		if ((this.type = getAttribute("type")) == null) {
 			throw new RSSpectException(
-					"enclusure elements MUST have a type attribute.");
+					"enclosure elements MUST have a type attribute.");
 		}
 
 	}
@@ -140,6 +140,19 @@ public class Enclosure implements Serializable {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Shows the contents of the <enclosure> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<enclosure");
+		for (Attribute attribute : attributes) {
+			sb.append(attribute);
+		}
+		sb.append(" />");
+		return sb.toString();
 	}
 
 }

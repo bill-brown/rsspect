@@ -45,4 +45,11 @@ public class Copyright implements Serializable {
 		return copyright;
 	}
 
+	/**
+	 * Shows the contents of the <copyright> element.
+	 */
+	@Override
+	public String toString() {
+		return "<copyright>" + copyright + "</copyright>";
+	}
 }

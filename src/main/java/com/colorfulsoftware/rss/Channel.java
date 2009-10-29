@@ -420,4 +420,99 @@ public class Channel implements Serializable {
 		}
 		return null;
 	}
+	
+	/**
+	 * Shows the contents of the <channel> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<channel>");
+		
+		sb.append(title);
+		
+		sb.append(link);
+		
+		sb.append(description);
+
+		if(language != null){
+			sb.append(language);
+		}
+
+		if(copyright != null){
+			sb.append(copyright);
+		}
+		
+		if(managingEditor != null){
+			sb.append(managingEditor);
+		}
+
+		if(webMaster != null){
+			sb.append(webMaster);
+		}
+
+		if(pubDate != null){
+			sb.append(pubDate);
+		}
+
+		if(lastBuildDate != null){
+			sb.append(lastBuildDate);
+		}
+
+		if(categories != null){
+			for (Category category : categories) {
+				sb.append(category);
+			}
+		}
+
+		if(generator != null){
+			sb.append(generator);
+		}
+
+		if(docs != null){
+			sb.append(docs);
+		}
+
+		if(cloud != null){
+			sb.append(cloud);
+		}
+
+		if(ttl != null){
+			sb.append(ttl);
+		}
+
+		if(image != null){
+			sb.append(image);
+		}
+
+		if(rating != null){
+			sb.append(rating);
+		}
+
+		if(textInput != null){
+			sb.append(textInput);
+		}
+
+		if(skipHours != null){
+			sb.append(skipHours);
+		}
+
+		if(skipDays != null){
+			sb.append(skipDays);
+		}
+
+		if (items != null) {
+			for (Item item : items) {
+				sb.append(item);
+			}
+		}
+
+		if (extensions != null) {
+			for (Extension extension : extensions) {
+				sb.append(extension);
+			}
+		}
+
+		sb.append("</channel>");
+		return sb.toString();
+	}
 }

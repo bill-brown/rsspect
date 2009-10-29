@@ -45,4 +45,11 @@ public class Description implements Serializable {
 		return description;
 	}
 
+	/**
+	 * Shows the contents of the <description> element.
+	 */
+	@Override
+	public String toString() {
+		return "<description>" + description + "</description>";
+	}
 }

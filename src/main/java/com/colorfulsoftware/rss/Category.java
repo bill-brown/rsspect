@@ -89,4 +89,18 @@ public class Category implements Serializable {
 
 	}
 
+	/**
+	 * Shows the contents of the <author> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<category");
+
+		// conditionally add the domain.
+		sb.append(((domain == null) ? ">" : domain + " >") + category
+				+ "</category>");
+
+		return sb.toString();
+	}
+
 }

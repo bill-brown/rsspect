@@ -75,4 +75,18 @@ public class GUID implements Serializable {
 	public Attribute getIsPermaLink() {
 		return (isPermaLink == null) ? null : new Attribute(isPermaLink);
 	}
+
+	/**
+	 * Shows the contents of the <guid> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<guid");
+
+		// conditionally add the domain.
+		sb.append(((isPermaLink == null) ? ">" : isPermaLink + " >") + guid
+				+ "</guid>");
+
+		return sb.toString();
+	}
 }

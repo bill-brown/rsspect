@@ -186,4 +186,17 @@ public class Cloud implements Serializable {
 		}
 		return null;
 	}
+
+	/**
+	 * Shows the contents of the <cloud> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<cloud");
+		for (Attribute attribute : attributes) {
+			sb.append(attribute);
+		}
+		sb.append(" />");
+		return sb.toString();
+	}
 }

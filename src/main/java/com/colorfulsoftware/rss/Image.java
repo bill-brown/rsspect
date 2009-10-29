@@ -97,13 +97,14 @@ public class Image implements Serializable {
 	}
 
 	Image(Image image) {
-		 this.url = image.getUrl();
-		 this.title = image.getTitle();
-		 this.link = image.getLink();
-		 this.width = image.getWidth();
-		 this.height = image.getHeight();
-		 this.description = image.getDescription();
+		this.url = image.getUrl();
+		this.title = image.getTitle();
+		this.link = image.getLink();
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+		this.description = image.getDescription();
 	}
+
 	/**
 	 * @return the url element.
 	 */
@@ -146,5 +147,34 @@ public class Image implements Serializable {
 	public Description getDescription() {
 		return (description == null) ? null : new Description(description
 				.getDescription());
+	}
+
+	/**
+	 * Shows the contents of the <image> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<image>");
+
+		sb.append(url);
+
+		sb.append(title);
+
+		sb.append(link);
+
+		if (width != null) {
+			sb.append(width);
+		}
+
+		if (height != null) {
+			sb.append(height);
+		}
+
+		if (description != null) {
+			sb.append(description);
+		}
+
+		sb.append("</image>");
+		return sb.toString();
 	}
 }

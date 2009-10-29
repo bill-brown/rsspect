@@ -870,4 +870,11 @@ public final class RSSDoc implements Serializable {
 	public String getXmlVersion() {
 		return xmlVersion;
 	}
+	
+	/**
+	 * @return the atomsphere library version.
+	 */
+	public String getLibVersion() {
+		return libVersion;
+	}
 }

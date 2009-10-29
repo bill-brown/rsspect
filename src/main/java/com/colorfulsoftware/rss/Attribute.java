@@ -63,6 +63,9 @@ public class Attribute implements Serializable {
 		return value;
 	}
 
+	/**
+	 * @return true if the attribute name and value are equal.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Attribute) {
@@ -73,5 +76,13 @@ public class Attribute implements Serializable {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Shows the contents of the element's attribute in the form of ' attrName="attrValue"'.
+	 */
+	@Override
+	public String toString() {
+		return " " + name + "=\"" + value + "\"";
 	}
 }

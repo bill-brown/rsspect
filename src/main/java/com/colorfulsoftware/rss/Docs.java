@@ -38,10 +38,18 @@ public class Docs implements Serializable {
 	}
 
 	/**
-	 * @return the documentation information.
+	 * @return the documentation information for the rss format in url form.
 	 */
 	public String getDocs() {
 		return docs;
+	}
+	
+	/**
+	 * Shows the contents of the <docs> element.
+	 */
+	@Override
+	public String toString() {
+		return "<docs>" + docs + "</docs>";
 	}
 
 }

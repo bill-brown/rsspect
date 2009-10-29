@@ -258,4 +258,63 @@ public class Item implements Serializable {
 		}
 		return null;
 	}
+	
+	/**
+	 * Shows the contents of the <item> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<item>");
+		
+		if(title != null){
+			sb.append(title);
+		}
+		
+		if(description != null){
+			sb.append(description);
+		}
+
+		if(link != null){
+			sb.append(link);
+		}
+
+		if(author != null){
+			sb.append(author);
+		}
+		
+		if(categories != null){
+			for (Category category : categories) {
+				sb.append(category);
+			}
+		}
+		
+		if(comments != null){
+			sb.append(comments);
+		}
+
+		if(enclosure != null){
+			sb.append(enclosure);
+		}
+
+		if(guid != null){
+			sb.append(guid);
+		}
+
+		if(pubDate != null){
+			sb.append(pubDate);
+		}
+
+		if(source != null){
+			sb.append(source);
+		}
+
+		if (extensions != null) {
+			for (Extension extension : extensions) {
+				sb.append(extension);
+			}
+		}
+
+		sb.append("</item>");
+		return sb.toString();
+	}
 }

@@ -59,4 +59,12 @@ public class Height implements Serializable {
 	public String getHeight() {
 		return height;
 	}
+	
+	/**
+	 * Shows the contents of the <height> element.
+	 */
+	@Override
+	public String toString() {
+		return "<height>" + height + "</height>";
+	}
 }

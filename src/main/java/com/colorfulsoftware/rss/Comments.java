@@ -50,10 +50,17 @@ public class Comments implements Serializable {
 	}
 
 	/**
-	 * @return the comments.
+	 * @return the comments url.
 	 */
 	public String getComments() {
 		return comments;
 	}
 
+	/**
+	 * Shows the contents of the <comments> element.
+	 */
+	@Override
+	public String toString() {
+		return "<comments>" + comments + "</comments>";
+	}
 }

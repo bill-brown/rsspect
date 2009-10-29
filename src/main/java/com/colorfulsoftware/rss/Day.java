@@ -54,4 +54,12 @@ public class Day implements Serializable {
 	public String getDay() {
 		return day;
 	}
+	
+	/**
+	 * Shows the contents of the <day> element.
+	 */
+	@Override
+	public String toString() {
+		return "<day>" + day + "</day>";
+	}
 }

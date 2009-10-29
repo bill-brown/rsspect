@@ -56,4 +56,12 @@ public class Hour implements Serializable {
 	public String getHour() {
 		return hour;
 	}
+	
+	/**
+	 * Shows the contents of the <hour> element.
+	 */
+	@Override
+	public String toString() {
+		return "<hour>" + hour + "</hour>";
+	}
 }

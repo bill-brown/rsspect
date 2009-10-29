@@ -41,5 +41,13 @@ public class Generator implements Serializable {
 	public String getGenerator() {
 		return generator;
 	}
+	
+	/**
+	 * Shows the contents of the <generator> element.
+	 */
+	@Override
+	public String toString() {
+		return "<generator>" + generator + "</generator>";
+	}
 
 }

@@ -109,4 +109,25 @@ public class Extension implements Serializable {
 		}
 		return null;
 	}
+	
+	/**
+	 * Shows the contents of the extension element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<" + elementName);
+		if (attributes != null) {
+			for (Attribute attribute : attributes) {
+				sb.append(attribute);
+			}
+		}
+
+		if (content == null || content.equals("")) {
+			sb.append(" />");
+		} else {
+			sb.append(" >" + content + "</" + elementName + ">");
+		}
+
+		return sb.toString();
+	}
 }

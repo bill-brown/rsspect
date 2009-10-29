@@ -48,4 +48,11 @@ public class Language implements Serializable {
 		return language;
 	}
 
+	/**
+	 * Shows the contents of the <language> element.
+	 */
+	@Override
+	public String toString() {
+		return "<language>" + language + "</language>";
+	}
 }
