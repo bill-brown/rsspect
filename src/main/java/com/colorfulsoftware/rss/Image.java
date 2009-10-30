@@ -154,13 +154,7 @@ public class Image implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("<image>");
-
-		sb.append(url);
-
-		sb.append(title);
-
-		sb.append(link);
+		StringBuilder sb = new StringBuilder("<image>" + url + title + link);
 
 		if (width != null) {
 			sb.append(width);

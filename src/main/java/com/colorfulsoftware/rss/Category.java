@@ -94,13 +94,8 @@ public class Category implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("<category");
-
-		// conditionally add the domain.
-		sb.append(((domain == null) ? ">" : domain + " >") + category
-				+ "</category>");
-
-		return sb.toString();
+		return "<category" + ((domain == null) ? ">" : domain + " >")
+				+ category + "</category>";
 	}
 
 }

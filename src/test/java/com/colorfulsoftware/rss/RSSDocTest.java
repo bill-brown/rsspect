@@ -78,6 +78,7 @@ public class RSSDocTest implements Serializable {
 			+ "<?xml-stylesheet href=\"/css/rss20.xsl\" type=\"text/xsl\"?>"
 			+ "<rss xmlns:pheedo=\"http://www.pheedo.com/namespace/pheedo\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:media=\"http://search.yahoo.com/mrss/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:nyt=\"http://www.nytimes.com/namespaces/rss/2.0\" version=\"2.0\">"
 			+ "<fakeExt xmlns=\"http://www.fake.extension.org/fakeness\" />"
+			+ "<fakeExt xmlns=\"http://www.fake.extension.org/fakeness\">fakecontent</fakeExt>"
 			+ "<channel>"
 			+ "<pubDate>Fri, 24 Apr 2009 17:29:13 GMT</pubDate>"
 			+ "<category>music</category>"
@@ -140,7 +141,7 @@ public class RSSDocTest implements Serializable {
 			+ "<media:credit>Khalid Mohammed/Associated Press</media:credit>"
 			+ "<description>The attacks outside the gates of the holiest Shiite site in Baghdad on Friday came a day after the deadliest day in Iraq in more than a year.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By STEVEN LEE MYERS and TIMOTHY WILLIAMS</dc:creator>"
-			+ "<atom:title atom:type=\"html\"><div>test title</div></atom:title>"
+			+ "<atom:title atom:type=\"html\">&lt;div&gt;test title&lt;/div&gt;</atom:title>"
 			+ "<pubDate>Fri, 24 Apr 2009 16:50:22 GMT</pubDate>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/nyt_geo\">Iraq</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Iraq War (2003- )</category>"
@@ -242,12 +243,14 @@ public class RSSDocTest implements Serializable {
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+			// System.out.println("rss1:\n"+rss1);
 			rssDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), rss1,
 					rssDoc.getEncoding(), rssDoc.getXmlVersion());
 			RSS rss2 = rssDoc.readRSSToBean(new File("target/out1.xml"));
 			assertNotNull(rss2);
 			assertNotNull(rss2.getAttributes());
 			assertNotNull(rss2.getChannel());
+			assertNotNull(rss2.getChannel().toString());
 			assertNull(rss2.getExtensions());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -570,7 +573,9 @@ public class RSSDocTest implements Serializable {
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			assertNotNull(rss1);
+			assertNotNull(rss1.toString());
 			assertNotNull(rss1.getChannel());
+			assertNotNull(rss1.getChannel().toString());
 			rssDoc.writeRSSDoc(new File("target/out3.xml"), rss1, rssDoc
 					.getEncoding(), rssDoc.getXmlVersion());
 		} catch (Exception e) {
@@ -957,7 +962,7 @@ public class RSSDocTest implements Serializable {
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
-						"enclusure elements MUST have a url attribute.");
+						"enclosure elements MUST have a url attribute.");
 			}
 			attrs
 					.add(rssDoc.buildAttribute("url",
@@ -968,7 +973,7 @@ public class RSSDocTest implements Serializable {
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
-						"enclusure elements MUST have a length attribute.");
+						"enclosure elements MUST have a length attribute.");
 			}
 			attrs.add(rssDoc.buildAttribute("length", "1234567"));
 
@@ -977,7 +982,7 @@ public class RSSDocTest implements Serializable {
 				fail("we should have thrown an exception above.");
 			} catch (RSSpectException r) {
 				assertEquals(r.getMessage(),
-						"enclusure elements MUST have a type attribute.");
+						"enclosure elements MUST have a type attribute.");
 			}
 			attrs.add(rssDoc.buildAttribute("type", "media/flac"));
 
@@ -1003,13 +1008,18 @@ public class RSSDocTest implements Serializable {
 			assertNotNull(extOne.getAttribute("type"));
 			assertEquals(extOne.getAttribute("type").getValue(),
 					"application/rss+xml");
+			assertEquals(extOne.getAttribute("type").toString(),
+					" type=\"application/rss+xml\"");
 			assertNull(extOne.getAttribute("Bunky"));
 			assertNull(rss1.getChannel().getExtension("Bunky"));
 			rssDoc.buildExtension(null, null, "Bunky");
 			fail("should not get here.");
 		} catch (RSSpectException r) {
-			assertEquals(r.getMessage(),
-					"channel elements SHOULD contain a title element.");
+			assertEquals(
+					r.getMessage(),
+					"Extension element '"
+							+ null
+							+ "' is missing a namespace prefix or namespace declaration.");
 		}
 
 		try {
@@ -1119,6 +1129,7 @@ public class RSSDocTest implements Serializable {
 				assertNotNull(item.getTitle());
 				assertNotNull(item.getDescription());
 				assertNotNull(item.getAuthor());
+				assertNotNull(item.getAuthor().toString());
 				assertNotNull(item.getSource());
 				Extension extOne = item.getExtension("media:content");
 				assertNull(item.getExtension("thingy:majig"));
@@ -1129,6 +1140,7 @@ public class RSSDocTest implements Serializable {
 				Category cat = item.getCategory("Subprime Mortgage Crisis");
 				Category cat2 = item.getCategory("");
 				Category cat3 = item.getCategory(null);
+
 				assertNull(cat2);
 				assertNull(cat3);
 				if (cat != null) {
@@ -1136,6 +1148,9 @@ public class RSSDocTest implements Serializable {
 					assertEquals(cat.getCategory(), "Subprime Mortgage Crisis");
 					assertEquals(cat.getDomain().getValue(),
 							"http://www.nytimes.com/namespaces/keywords/des");
+					assertEquals(
+							cat.toString(),
+							"<category domain=\"http://www.nytimes.com/namespaces/keywords/des\" >Subprime Mortgage Crisis</category>");
 				}
 			}
 

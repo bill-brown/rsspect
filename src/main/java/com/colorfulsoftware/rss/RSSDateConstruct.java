@@ -80,4 +80,12 @@ class RSSDateConstruct implements Serializable {
 	public String getText() {
 		return text;
 	}
+	
+	/**
+	 * Shows the contents of the <pubDate> or <lastBuildDate> elements.
+	 */
+	@Override
+	public String toString() {
+		return text;
+	}
 }

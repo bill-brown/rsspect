@@ -56,4 +56,12 @@ public class LastBuildDate implements Serializable {
 	public String getText() {
 		return lastBuildDate.getText();
 	}
+
+	/**
+	 * Shows the contents of the <lastBuildDate> element.
+	 */
+	@Override
+	public String toString() {
+		return "<lastBuildDate>" + lastBuildDate + "</lastBuildDate>";
+	}
 }

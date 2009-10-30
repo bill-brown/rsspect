@@ -46,4 +46,11 @@ public class WebMaster implements Serializable {
 		return webMaster;
 	}
 
+	/**
+	 * Shows the contents of the <webMaster> element.
+	 */
+	@Override
+	public String toString() {
+		return "<webMaster>" + webMaster + "</webMaster>";
+	}
 }

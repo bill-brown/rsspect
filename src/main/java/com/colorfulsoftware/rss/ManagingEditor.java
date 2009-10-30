@@ -42,4 +42,11 @@ public class ManagingEditor implements Serializable {
 		return managingEditor;
 	}
 
+	/**
+	 * Shows the contents of the <managingEditor> element.
+	 */
+	@Override
+	public String toString() {
+		return "<managingEditor>" + managingEditor + "</managingEditor>";
+	}
 }

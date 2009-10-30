@@ -160,4 +160,28 @@ public class RSS implements Serializable {
 		}
 		return null;
 	}
+
+	/**
+	 * Shows the contents of the <updated> or <published> elements.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<rss");
+		for (Attribute attribute : attributes) {
+			sb.append(attribute);
+		}
+		// close the parent element
+		sb.append(">");
+
+		sb.append(channel);
+		
+		if (extensions != null) {
+			for (Extension extension : extensions) {
+				sb.append(extension);
+			}
+		}
+		
+		sb.append("</rss>");
+		return sb.toString();
+	}
 }

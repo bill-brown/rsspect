@@ -87,4 +87,17 @@ public class SkipHours implements Serializable {
 		}
 		return null;
 	}
+
+	/**
+	 * Shows the contents of the <skipHours> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<skipHours>");
+		for (Hour hour : this.skipHours) {
+			sb.append(hour);
+		}
+		sb.append("</skipHours>");
+		return sb.toString();
+	}
 }

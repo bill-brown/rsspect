@@ -77,4 +77,12 @@ public class PubDate implements Serializable {
 	public String getText() {
 		return pubDate.getText();
 	}
+	
+	/**
+	 * Shows the contents of the <pubDate> element.
+	 */
+	@Override
+	public String toString() {
+		return "<pubDate>" + pubDate + "</pubDate>";
+	}
 }

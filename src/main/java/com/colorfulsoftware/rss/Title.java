@@ -47,4 +47,11 @@ public class Title implements Serializable {
 		return title;
 	}
 
+	/**
+	 * Shows the contents of the <title> element.
+	 */
+	@Override
+	public String toString() {
+		return "<title>" + title + "</title>";
+	}
 }

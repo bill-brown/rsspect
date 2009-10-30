@@ -66,4 +66,11 @@ public class Link implements Serializable {
 		return this.link;
 	}
 
+	/**
+	 * Shows the contents of the <link> element.
+	 */
+	@Override
+	public String toString() {
+		return "<link>" + link + "</link>";
+	}
 }

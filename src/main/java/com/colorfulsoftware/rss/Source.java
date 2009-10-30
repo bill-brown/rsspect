@@ -80,4 +80,12 @@ public class Source implements Serializable {
 		return source;
 	}
 
+	/**
+	 * Shows the contents of the <source> element.
+	 */
+	@Override
+	public String toString() {
+		return "<source" + url + " >" + source + "</source>";
+	}
+
 }

@@ -41,4 +41,12 @@ public class Name implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Shows the contents of the <name> element.
+	 */
+	@Override
+	public String toString() {
+		return "<name>" + name + "</name>";
+	}
 }

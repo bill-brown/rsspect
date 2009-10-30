@@ -123,4 +123,12 @@ public class TextInput implements Serializable {
 
 	}
 
+	/**
+	 * Shows the contents of the <textInput> element.
+	 */
+	@Override
+	public String toString() {
+		return "<textInput>" + title + description + name + link
+				+ "</textInput>";
+	}
 }

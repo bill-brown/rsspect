@@ -45,4 +45,11 @@ public class Rating implements Serializable {
 		return rating;
 	}
 
+	/**
+	 * Shows the contents of the <rating> element.
+	 */
+	@Override
+	public String toString() {
+		return "<rating>" + rating + "</rating>";
+	}
 }

@@ -347,9 +347,9 @@ class RSSWriter implements Serializable {
 
 	void writeImage(XMLStreamWriter writer, Image image) throws Exception {
 
-		writer.writeStartElement("height");
+		writer.writeStartElement("image");
 
-		// write requried elements
+		// write required elements
 		writeURL(writer, image.getUrl());
 		writeTitle(writer, image.getTitle());
 		writeLink(writer, image.getLink());

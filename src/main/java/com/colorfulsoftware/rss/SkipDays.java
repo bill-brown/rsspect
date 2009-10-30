@@ -79,4 +79,16 @@ public class SkipDays implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Shows the contents of the <skipDays> element.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("<skipDays>");
+		for (Day day : this.skipDays) {
+			sb.append(day);
+		}
+		sb.append("</skipDays>");
+		return sb.toString();
+	}
 }

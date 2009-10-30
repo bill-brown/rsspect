@@ -54,4 +54,11 @@ public class TTL implements Serializable {
 		return ttl;
 	}
 
+	/**
+	 * Shows the contents of the <ttl> element.
+	 */
+	@Override
+	public String toString() {
+		return "<ttl>" + ttl + "</ttl>";
+	}
 }

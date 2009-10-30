@@ -59,4 +59,12 @@ public class Width implements Serializable {
 	public String getWidth() {
 		return width;
 	}
+
+	/**
+	 * Shows the contents of the <width> element.
+	 */
+	@Override
+	public String toString() {
+		return "<width>" + width + "</width>";
+	}
 }

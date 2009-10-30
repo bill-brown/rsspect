@@ -220,6 +220,7 @@ class RSSReader implements Serializable {
 
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
+				System.out.println("elementName first:\n"+elementName);
 				// call each feed elements read method depending on the name
 				if (elementName.equals("title")) {
 					title = readTitle(reader);
@@ -262,12 +263,14 @@ class RSSReader implements Serializable {
 				} else if (elementName.equals("item")) {
 					items = readItem(reader, items);
 				} else {// extension
+					System.out.println("elementName:\n"+elementName);
 					extensions = readExtension(reader, extensions, elementName);
 				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
 				elementName = getElementName(reader);
+				System.out.println("endElementName:\n"+elementName);
 				if (elementName.equals("channel")) {
 					breakOut = true;
 				}
@@ -338,6 +341,7 @@ class RSSReader implements Serializable {
 
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
+				System.out.println("start elementName in image:\n"+elementName);
 				// call each feed elements read method depending on the name
 				if (elementName.equals("url")) {
 					url = readURL(reader);
@@ -356,6 +360,7 @@ class RSSReader implements Serializable {
 
 			case XMLStreamConstants.END_ELEMENT:
 				elementName = getElementName(reader);
+				System.out.println("endELement in image:\n"+elementName);
 				if (elementName.equals("image")) {
 					breakOut = true;
 				}

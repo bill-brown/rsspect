@@ -63,4 +63,12 @@ public class URL implements Serializable {
 	public String getUrl() {
 		return url;
 	}
+
+	/**
+	 * Shows the contents of the <url> element.
+	 */
+	@Override
+	public String toString() {
+		return "<url>" + url + "</url>";
+	}
 }

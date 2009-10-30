@@ -39,11 +39,7 @@ public class Extension implements Serializable {
 
 	Extension(String elementName, List<Attribute> attributes, String content)
 			throws RSSpectException {
-
-		if (elementName.indexOf(":") == -1 || elementName.indexOf(":") == 0) {
-			throw new RSSpectException("Extension element '" + elementName
-					+ "' is missing a namespace prefix.");
-		}
+		System.out.println("elementName in ext:\n" + elementName);
 
 		this.elementName = elementName;
 
@@ -56,6 +52,14 @@ public class Extension implements Serializable {
 			for (Attribute attr : attributes) {
 				this.attributes.add(new Attribute(attr));
 			}
+		}
+
+		if (elementName == null
+				|| (elementName.indexOf(":") == -1 && getAttribute("xmlns") == null)
+				|| elementName.indexOf(":") == 0) {
+
+			throw new RSSpectException("Extension element '" + elementName
+					+ "' is missing a namespace prefix or namespace declaration.");
 		}
 	}
 
@@ -109,7 +113,7 @@ public class Extension implements Serializable {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Shows the contents of the extension element.
 	 */
