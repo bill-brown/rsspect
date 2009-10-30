@@ -249,6 +249,8 @@ public final class RSSDoc implements Serializable {
 		}
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+			inputFactory.setProperty("javax.xml.stream.isReplacingEntityReferences",Boolean.FALSE);
+			//inputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities",Boolean.TRUE);
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(new ByteArrayInputStream(xmlString
 							.getBytes(encoding)));
@@ -256,6 +258,7 @@ public final class RSSDoc implements Serializable {
 		} catch (RSSpectException e) {
 			throw e;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}

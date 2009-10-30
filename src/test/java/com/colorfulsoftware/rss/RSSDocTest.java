@@ -141,7 +141,8 @@ public class RSSDocTest implements Serializable {
 			+ "<media:credit>Khalid Mohammed/Associated Press</media:credit>"
 			+ "<description>The attacks outside the gates of the holiest Shiite site in Baghdad on Friday came a day after the deadliest day in Iraq in more than a year.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
 			+ "<dc:creator>By STEVEN LEE MYERS and TIMOTHY WILLIAMS</dc:creator>"
-			+ "<atom:title atom:type=\"html\">&lt;div&gt;test title&lt;/div&gt;</atom:title>"
+			+ "<atom:title atom:type=\"html\">&lt;div&gt;test &amp;mdash; title&lt;/div&gt;</atom:title>"
+			+ "<atom:rights atom:type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\">test &mdash; title</div></atom:rights>"
 			+ "<pubDate>Fri, 24 Apr 2009 16:50:22 GMT</pubDate>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/nyt_geo\">Iraq</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Iraq War (2003- )</category>"
@@ -164,7 +165,7 @@ public class RSSDocTest implements Serializable {
 			+ "<source url=\"http://www.tomalak.org/links2.xml\">Tomalak's Realm</source>"
 			+ "</item>" + "</channel>" + "</rss>";
 
-	private String expectedRSS2 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
+	private String expectedRSS2 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something  &amp;mdash; cool</description></channel></rss>";
 
 	private String expectedRSS3 = "<rss version=\"2.0\"><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description><item><title>simplest feed</title><comments>these are comments.  they contain </comments><description><b xmlns=\"http://www.w3.org/1999/xhtml\">html</b></description></item></channel></rss>";
 

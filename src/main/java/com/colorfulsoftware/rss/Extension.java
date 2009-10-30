@@ -39,7 +39,9 @@ public class Extension implements Serializable {
 
 	Extension(String elementName, List<Attribute> attributes, String content)
 			throws RSSpectException {
-
+		System.out.println("attributes:\n"+attributes);
+		System.out.println("elementName:\n"+elementName);
+		
 		this.elementName = elementName;
 
 		this.content = content;
@@ -53,6 +55,7 @@ public class Extension implements Serializable {
 			}
 		}
 
+		System.out.println("getAttribute(\"xmlns\"):\n"+getAttribute("xmlns"));
 		if (elementName == null
 				|| (elementName.indexOf(":") == -1 && getAttribute("xmlns") == null)
 				|| elementName.indexOf(":") == 0) {
