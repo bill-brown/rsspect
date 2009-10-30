@@ -60,6 +60,8 @@ public final class RSSDoc implements Serializable {
 	private String libUri;
 	private String libVersion;
 
+	private XMLInputFactory inputFactory;
+
 	/**
 	 * @throws Exception
 	 *             if the rsspect.properties file cant be read.
@@ -70,6 +72,12 @@ public final class RSSDoc implements Serializable {
 		props.load(RSSDoc.class.getResourceAsStream("/rsspect.properties"));
 		libUri = props.getProperty("uri");
 		libVersion = props.getProperty("version");
+
+		inputFactory = XMLInputFactory.newInstance();
+		// this is done to help for parsing documents that have undeclared and
+		// unescaped html or xhtml entities.
+		inputFactory.setProperty(
+				"javax.xml.stream.isReplacingEntityReferences", Boolean.FALSE);
 	}
 
 	/**
@@ -248,9 +256,6 @@ public final class RSSDoc implements Serializable {
 
 		}
 		try {
-			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-			inputFactory.setProperty("javax.xml.stream.isReplacingEntityReferences",Boolean.FALSE);
-			//inputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities",Boolean.TRUE);
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(new ByteArrayInputStream(xmlString
 							.getBytes(encoding)));
@@ -258,7 +263,6 @@ public final class RSSDoc implements Serializable {
 		} catch (RSSpectException e) {
 			throw e;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new RSSpectException(e.getLocalizedMessage());
 		}
 	}
@@ -274,7 +278,6 @@ public final class RSSDoc implements Serializable {
 	 */
 	public RSS readRSSToBean(File file) throws RSSpectException {
 		try {
-			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(new FileInputStream(file));
 			return new RSSReader().readRSS(reader);
@@ -316,7 +319,6 @@ public final class RSSDoc implements Serializable {
 	 */
 	public RSS readRSSToBean(InputStream inputStream) throws RSSpectException {
 		try {
-			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			XMLStreamReader reader = inputFactory
 					.createXMLStreamReader(inputStream);
 			return new RSSReader().readRSS(reader);
@@ -873,7 +875,7 @@ public final class RSSDoc implements Serializable {
 	public String getXmlVersion() {
 		return xmlVersion;
 	}
-	
+
 	/**
 	 * @return the atomsphere library version.
 	 */
