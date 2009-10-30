@@ -39,7 +39,6 @@ public class Extension implements Serializable {
 
 	Extension(String elementName, List<Attribute> attributes, String content)
 			throws RSSpectException {
-		System.out.println("elementName in ext:\n" + elementName);
 
 		this.elementName = elementName;
 

@@ -243,7 +243,6 @@ public class RSSDocTest implements Serializable {
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
 					"http://feeds.nytimes.com/nyt/rss/HomePage"));
-			// System.out.println("rss1:\n"+rss1);
 			rssDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), rss1,
 					rssDoc.getEncoding(), rssDoc.getXmlVersion());
 			RSS rss2 = rssDoc.readRSSToBean(new File("target/out1.xml"));
@@ -539,7 +538,7 @@ public class RSSDocTest implements Serializable {
 			 * "error reading rss feed: java.net.UnknownHostException: www.someunknownnonworkingurl.nogood: www.someunknownnonworkingurl.nogood"
 			 * );
 			 * 
-			 * System.out.println("mesg: "+e.getMessage());
+			 * 
 			 * assertTrue(e.getMessage
 			 * ().startsWith("www.someunknownnonworkingurl.nogood"));
 			 */
