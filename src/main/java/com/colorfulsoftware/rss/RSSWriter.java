@@ -95,8 +95,8 @@ class RSSWriter implements Serializable {
 			writeCategories(writer, channel.getCategories());
 		}
 
-		// always write out the rsspect lib version.
-		writeGenerator(writer, new RSSDoc().getRSSpectVersion());
+		// always write out the rsspect library version.
+		writeGenerator(writer, new RSSDoc().getLibVersion());
 
 		if (channel.getDocs() != null) {
 			writeDocs(writer, channel.getDocs());

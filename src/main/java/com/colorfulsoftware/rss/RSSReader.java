@@ -133,30 +133,14 @@ class RSSReader implements Serializable {
 		return (attributes.size() == 0) ? null : attributes;
 	}
 
-	// used for xhtml.
-	private boolean containsXHTML(List<Attribute> attributes) {
-		Attribute xhtml = null;
-		if (attributes != null) {
-			for (Attribute attr : attributes) {
-				if (attr.getName().equalsIgnoreCase("type")) {
-					xhtml = attr;
-				}
-			}
+	// used to check if the extension prefix matches the xhtml namespace
+	private boolean isAtomExtension(XMLStreamReader reader, String elementName) {
+		if (elementName.indexOf(":") != -1) {
+			String ns = reader.getNamespaceURI(elementName.substring(0,
+					elementName.indexOf(":")));
+			return ns != null && ns.equals("http://www.w3.org/2005/Atom");
 		}
-		return ((xhtml != null) && (xhtml.getValue().equals("xhtml")));
-	}
-
-	// used for html.
-	private boolean containsHTML(List<Attribute> attributes) {
-		Attribute html = null;
-		if (attributes != null) {
-			for (Attribute attr : attributes) {
-				if (attr.getName().equalsIgnoreCase("type")) {
-					html = attr;
-				}
-			}
-		}
-		return ((html != null) && (html.getValue().equals("html")));
+		return false;
 	}
 
 	List<Extension> readExtension(XMLStreamReader reader,
@@ -168,33 +152,39 @@ class RSSReader implements Serializable {
 		StringBuilder extText = new StringBuilder();
 		List<Attribute> attributes = getAttributes(reader);
 
-		boolean breakOut = false;
-		while (reader.hasNext()) {
-			switch (reader.next()) {
-			case XMLStreamConstants.START_ELEMENT:
-				String elementNameStart = getElementName(reader);
-				if (!elementNameStart.equals(elementName)) {
-					extText.append(readSubExtension(reader, elementNameStart,
-							attributes));
-				}
-				break;
+		// if this is a top level atom extension and it is has type of xhtml
+		// then treat it as such.
 
-			case XMLStreamConstants.END_ELEMENT:
-				String elementNameEnd = getElementName(reader);
-				if (elementNameEnd.equals(elementName)) {
-					breakOut = true;
-				}
-				break;
+		if (isAtomExtension(reader, elementName)) {
+			extText.append(readXHTML(reader, elementName, true));
 
-			default:
-				if (containsXHTML(attributes) || containsHTML(attributes)) {
-					extText.append(readEncodedHTML(reader, elementName));
-				} else {
+		} else {
+
+			boolean breakOut = false;
+			while (reader.hasNext()) {
+				switch (reader.next()) {
+				case XMLStreamConstants.START_ELEMENT:
+					String elementNameStart = getElementName(reader);
+					if (!elementNameStart.equals(elementName)) {
+						extText.append(readSubExtension(reader,
+								elementNameStart, attributes));
+					}
+					break;
+
+				case XMLStreamConstants.END_ELEMENT:
+					String elementNameEnd = getElementName(reader);
+					if (elementNameEnd.equals(elementName)) {
+						breakOut = true;
+					}
+					break;
+
+				default:
 					extText.append(reader.getText());
+					break;
 				}
-			}
-			if (breakOut) {
-				break;
+				if (breakOut) {
+					break;
+				}
 			}
 		}
 
@@ -206,12 +196,7 @@ class RSSReader implements Serializable {
 	private String readSubExtension(XMLStreamReader reader, String elementName,
 			List<Attribute> parentAttributes) throws Exception {
 
-		StringBuffer xhtml = null;
-		if (containsXHTML(parentAttributes) || containsHTML(parentAttributes)) {
-			xhtml = new StringBuffer("&lt;" + elementName);
-		} else {
-			xhtml = new StringBuffer("<" + elementName);
-		}
+		StringBuffer xhtml = new StringBuffer("<" + elementName);
 
 		List<Attribute> attributes = getAttributes(reader);
 		// add the attributes
@@ -244,19 +229,10 @@ class RSSReader implements Serializable {
 					breakOut = true;
 				}
 
-				if (containsXHTML(parentAttributes)
-						|| containsHTML(parentAttributes)) {
-					if (openElementClosed) {
-						xhtml.append("&lt;/" + elementName + "&gt;");
-					} else {
-						xhtml.append(" /&gt;");
-					}
+				if (openElementClosed) {
+					xhtml.append("</" + elementName + ">");
 				} else {
-					if (openElementClosed) {
-						xhtml.append("</" + elementName + ">");
-					} else {
-						xhtml.append(" />");
-					}
+					xhtml.append(" />");
 				}
 
 				break;
@@ -270,15 +246,91 @@ class RSSReader implements Serializable {
 			default:
 				// close the open element if we get here
 				if (elementNameStart.equals(elementName)) {
-					if (containsXHTML(parentAttributes)
-							|| containsHTML(parentAttributes)) {
-						xhtml.append(" &gt;");
-					} else {
-						xhtml.append(" >");
-					}
+					xhtml.append(" >");
 					openElementClosed = true;
 				}
 				xhtml.append(reader.getText());
+			}
+			if (breakOut) {
+				break;
+			}
+		}
+		return xhtml.toString();
+	}
+
+	// set the current namespace.
+	private String namespaceURI = "http://www.w3.org/2005/Atom";
+
+	private String readXHTML(XMLStreamReader reader, String parentElement,
+			boolean escapeHTML) throws Exception {
+		String parentNamespaceURI = namespaceURI;
+		StringBuffer xhtml = new StringBuffer();
+		String elementName = null;
+		boolean justReadStart = false;
+
+		while (reader.hasNext()) {
+			boolean breakOut = false;
+
+			switch (reader.next()) {
+
+			case XMLStreamConstants.START_ELEMENT:
+				elementName = getElementName(reader);
+				// if we read 2 start elements in a row, we need to close the
+				// first start element.
+				if (justReadStart) {
+					xhtml.append(">");
+				}
+
+				xhtml.append("<" + elementName);
+
+				List<Attribute> attributes = getAttributes(reader);
+				// add the attributes
+				if (attributes != null && attributes.size() > 0) {
+					for (Attribute attr : attributes) {
+						String attrVal = attr.getValue();
+						xhtml.append(" " + attr.getName() + "=\"" + attrVal
+								+ "\"");
+					}
+				}
+				justReadStart = true;
+
+				break;
+
+			case XMLStreamConstants.END_ELEMENT:
+				elementName = getElementName(reader);
+				if ((elementName.equals(parentElement) && !namespaceURI
+						.equals("http://www.w3.org/1999/xhtml"))
+						|| (elementName.equals(parentElement) && parentNamespaceURI
+								.equals("http://www.w3.org/1999/xhtml"))) {
+					breakOut = true;
+				} else {
+					if (justReadStart) {
+						xhtml.append(" />");
+					} else {
+						xhtml.append("</" + elementName + ">");
+					}
+					justReadStart = false;
+				}
+				break;
+
+			// so far no parsers seem to be able to detect CDATA :(. Maybe a
+			// not necessary?
+			// case XMLStreamConstants.CDATA:
+			// xhtml.append("<![CDATA[" + reader.getText() + "]]>");
+			// break;
+
+			default:
+				if (justReadStart) {
+					xhtml.append(">");
+					justReadStart = false;
+				}
+				// this is html, escape the markup.
+				String text = reader.getText();
+				if (text != null && text.length() > 0) {
+					xhtml.append(text.replaceAll("&", "&amp;").replaceAll("<",
+							"&lt;").replaceAll(">", "&gt;"));
+				}
+
 			}
 			if (breakOut) {
 				break;

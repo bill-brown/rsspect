@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 	<name>RSSpect</name>
 	<version>1.0.0.0-SNAPSHOT</version>
-	<description>An RSS 2.0 Feed Library written in Java</description>
+	<description>A RSS 2.0 feed library written in Java on top of the Stax API.</description>
 	<url>http://www.colorfulsoftware.com/projects/rsspect</url>
 	<licenses>
 		<license>

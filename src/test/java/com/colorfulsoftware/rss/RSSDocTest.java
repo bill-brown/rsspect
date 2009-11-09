@@ -140,9 +140,9 @@ public class RSSDocTest implements Serializable {
 			+ "<media:description>A man injured in a suicide bombing at the Kazimiyah hospital in Baghdad on Friday.</media:description>"
 			+ "<media:credit>Khalid Mohammed/Associated Press</media:credit>"
 			+ "<description>The attacks outside the gates of the holiest Shiite site in Baghdad on Friday came a day after the deadliest day in Iraq in more than a year.&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;br clear=&quot;both&quot; style=&quot;clear: both;&quot;/&gt;&lt;a href=&quot;http://www.pheedo.com/click.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;&gt;&lt;img alt=&quot;&quot; style=&quot;border: 0;&quot; border=&quot;0&quot; src=&quot;http://www.pheedo.com/img.phdo?s=fc9008de1b57c65c3ed32c7c74613c9a&amp;p=1&quot;/&gt;&lt;/a&gt;</description>"
-			+ "<dc:creator>By STEVEN LEE MYERS and TIMOTHY WILLIAMS</dc:creator>"
+			+ "<dc:creator>By STEVEN LEE MYERS and TIMOTHY WILLIAMS<dc:subelement><dc:another testattr=\"testval\" /> this is a sub extension <dc:another>with another sub element</dc:another> good bye. </dc:subelement></dc:creator>"
 			+ "<atom:title atom:type=\"html\">&lt;div&gt;test &amp;mdash; title&lt;/div&gt;</atom:title>"
-			+ "<atom:rights atom:type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\">test &mdash; title</div></atom:rights>"
+			+ "<atom:rights atom:type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\">test &mdash; title <p><hr />lets test <span class=\"bold\">>bold</span>a sub extension. <hr /></p></div></atom:rights>"
 			+ "<pubDate>Fri, 24 Apr 2009 16:50:22 GMT</pubDate>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/nyt_geo\">Iraq</category>"
 			+ "<category domain=\"http://www.nytimes.com/namespaces/keywords/des\">Iraq War (2003- )</category>"
@@ -248,6 +248,7 @@ public class RSSDocTest implements Serializable {
 					rssDoc.getEncoding(), rssDoc.getXmlVersion());
 			RSS rss2 = rssDoc.readRSSToBean(new File("target/out1.xml"));
 			assertNotNull(rss2);
+			assertNotNull(rssDoc.getLibVersion());
 			assertNotNull(rss2.getAttributes());
 			assertNotNull(rss2.getChannel());
 			assertNotNull(rss2.getChannel().toString());
@@ -264,6 +265,13 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
+		}
+		
+		try {
+			rssDoc.readRSSToBean("http://www.google.com/fakepage");
+			fail("should not get here.");
+		} catch (Exception e) {
+			assertTrue(e instanceof Exception);
 		}
 	}
 
@@ -462,14 +470,14 @@ public class RSSDocTest implements Serializable {
 			rssDoc.readRSSToBean(new File(""));
 			fail("should not get here");
 		} catch (Exception e) {
-			assertTrue(e instanceof RSSpectException);
+			assertTrue(e instanceof Exception);
 		}
 
 		try {
 			rssDoc.readRSSToBean(new File("src/test/resources/brokeRSS.xml"));
 			fail("should not get here");
 		} catch (Exception e) {
-			assertTrue(e instanceof RSSpectException);
+			assertTrue(e instanceof Exception);
 		}
 
 		try {
@@ -477,7 +485,7 @@ public class RSSDocTest implements Serializable {
 					"src/test/resources/brokeRSS.xml"));
 			fail("should not get here");
 		} catch (Exception e) {
-			assertTrue(e instanceof RSSpectException);
+			assertTrue(e instanceof Exception);
 		}
 
 		try {
@@ -485,7 +493,7 @@ public class RSSDocTest implements Serializable {
 					"src/test/resources/brokeRSS2.xml"));
 			fail("should not get here");
 		} catch (Exception e) {
-			assertTrue(e instanceof RSSpectException);
+			assertTrue(e instanceof Exception);
 		}
 	}
 
@@ -780,7 +788,7 @@ public class RSSDocTest implements Serializable {
 			assertNotNull(rss1.getChannel());
 			assertNotNull(rss1.getChannel().getCategory("Funky"));
 			assertNull(rss1.getChannel().getCategory("Bunky"));
-		} catch (RSSpectException r) {
+		} catch (Exception r) {
 			fail("should just work.");
 		}
 	}
@@ -1014,7 +1022,8 @@ public class RSSDocTest implements Serializable {
 			assertNull(rss1.getChannel().getExtension("Bunky"));
 			rssDoc.buildExtension(null, null, "Bunky");
 			fail("should not get here.");
-		} catch (RSSpectException r) {
+		} catch (Exception r) {
+			assertTrue(r instanceof RSSpectException);
 			assertEquals(
 					r.getMessage(),
 					"Extension element '"
@@ -1026,10 +1035,8 @@ public class RSSDocTest implements Serializable {
 			// for testing extension element sub elements.
 			rss1 = rssDoc.readRSSToBean(expectedRSS8);
 			assertNotNull(rss1);
-		} catch (RSSpectException r) {
-			r.printStackTrace();
-			assertEquals(r.getMessage(),
-					"channel elements SHOULD contain a title element.");
+		} catch (Exception r) {
+			fail("should not get here.");
 		}
 	}
 
