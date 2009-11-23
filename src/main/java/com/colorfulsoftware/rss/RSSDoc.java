@@ -194,6 +194,9 @@ public final class RSSDoc implements Serializable {
 	 */
 	public String readRSSToString(RSS rss, String xmlStreamWriter)
 			throws Exception {
+		if (rss == null) {
+			throw new RSSpectException("The rss feed object cannot be null.");
+		}
 		try {
 			StringWriter theString = new StringWriter();
 
@@ -799,8 +802,8 @@ public final class RSSDoc implements Serializable {
 						.getCopyright(), channel.getManagingEditor(), channel
 						.getWebMaster(), channel.getPubDate(), channel
 						.getLastBuildDate(), channel.getCategories(),
-				getLibVersion(), channel.getDocs(), channel.getCloud(),
-				channel.getTtl(), channel.getImage(), channel.getRating(),
+				getLibVersion(), channel.getDocs(), channel.getCloud(), channel
+						.getTtl(), channel.getImage(), channel.getRating(),
 				channel.getTextInput(), channel.getSkipHours(), channel
 						.getSkipDays(), channel.getExtensions(), channel
 						.getItems()), rss.getAttributes(), rss.getExtensions());

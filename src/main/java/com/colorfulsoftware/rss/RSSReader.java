@@ -111,8 +111,8 @@ class RSSReader implements Serializable {
 				attrName += ":" + reader.getNamespacePrefix(i);
 			}
 
-			attributes.add(rss.buildAttribute(attrName, reader
-					.getNamespaceURI(i)));
+			attributes.add(rss.buildAttribute(attrName, reader.getNamespaceURI(
+					i).replaceAll("&amp;", "&").replaceAll("&", "&amp;")));
 		}
 		for (int i = 0; i < reader.getAttributeCount(); i++) {
 			eventSkip++;
@@ -126,7 +126,8 @@ class RSSReader implements Serializable {
 			}
 
 			attributes.add(rss.buildAttribute(attrName, reader
-					.getAttributeValue(i)));
+					.getAttributeValue(i).replaceAll("&amp;", "&").replaceAll(
+							"&", "&amp;")));
 		}
 
 		// return null if no attributes were created.
@@ -134,11 +135,14 @@ class RSSReader implements Serializable {
 	}
 
 	// used to check if the extension prefix matches the xhtml namespace
-	private boolean isAtomExtension(XMLStreamReader reader, String elementName) {
+	private boolean containsXHTML(XMLStreamReader reader, String elementName) {
+		if (reader.getNamespaceURI().equals("http://www.w3.org/1999/xhtml")) {
+			return true;
+		}
 		if (elementName.indexOf(":") != -1) {
 			String ns = reader.getNamespaceURI(elementName.substring(0,
 					elementName.indexOf(":")));
-			return ns != null && ns.equals("http://www.w3.org/2005/Atom");
+			return ns != null && ns.equals("http://www.w3.org/1999/xhtml");
 		}
 		return false;
 	}
@@ -152,11 +156,10 @@ class RSSReader implements Serializable {
 		StringBuilder extText = new StringBuilder();
 		List<Attribute> attributes = getAttributes(reader);
 
-		// if this is a top level atom extension and it is has type of xhtml
-		// then treat it as such.
-
-		if (isAtomExtension(reader, elementName)) {
-			extText.append(readXHTML(reader, elementName, true));
+		// if this is a top level extension and it is has type of xhtml then
+		// treat it as such.
+		if (containsXHTML(reader, elementName)) {
+			extText.append(readXHTML(reader, elementName));
 
 		} else {
 
@@ -218,6 +221,10 @@ class RSSReader implements Serializable {
 			case XMLStreamConstants.START_ELEMENT:
 				elementNameStart = getElementName(reader);
 				if (!elementNameStart.equals(elementName)) {
+					if (!openElementClosed) {
+						openElementClosed = true;
+						xhtml.append(">");
+					}
 					xhtml.append(readSubExtension(reader, elementNameStart,
 							attributes));
 				}
@@ -258,11 +265,8 @@ class RSSReader implements Serializable {
 		return xhtml.toString();
 	}
 
-	// set the current namespace.
-	private String namespaceURI = "http://www.w3.org/2005/Atom";
-
-	private String readXHTML(XMLStreamReader reader, String parentElement,
-			boolean escapeHTML) throws Exception {
+	private String readXHTML(XMLStreamReader reader, String parentElement)
+			throws Exception {
 		String parentNamespaceURI = namespaceURI;
 		StringBuffer xhtml = new StringBuffer();
 		String elementName = null;
@@ -324,12 +328,9 @@ class RSSReader implements Serializable {
 					xhtml.append(">");
 					justReadStart = false;
 				}
-				// this is html, escape the markup.
-				String text = reader.getText();
-				if (text != null && text.length() > 0) {
-					xhtml.append(text.replaceAll("&", "&amp;").replaceAll("<",
-							"&lt;").replaceAll(">", "&gt;"));
-				}
+				// escape the markup.
+				xhtml.append(reader.getText().replaceAll("&", "&amp;").replaceAll("<",
+						"&lt;").replaceAll(">", "&gt;"));
 
 			}
 			if (breakOut) {
@@ -338,6 +339,9 @@ class RSSReader implements Serializable {
 		}
 		return xhtml.toString();
 	}
+
+	// set the current namespace.
+	private String namespaceURI = "http://www.w3.org/2005/Atom";
 
 	Author readAuthor(XMLStreamReader reader) throws Exception {
 		return rss.buildAuthor(reader.getElementText());
@@ -789,16 +793,19 @@ class RSSReader implements Serializable {
 
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
-				xhtml.append("<" + elementName);
+				xhtml.append("&lt;" + elementName);
 				List<Attribute> attributes = getAttributes(reader);
 				// add the attributes
 				if (attributes != null && attributes.size() > 0) {
 					for (Attribute attr : attributes) {
-						xhtml.append(" " + attr.getName() + "=\""
-								+ attr.getValue() + "\"");
+						xhtml.append(" "
+								+ attr.getName()
+								+ "=\""
+								+ attr.getValue().replaceAll("&amp;", "&")
+										.replaceAll("&", "&amp;") + "\"");
 					}
 				}
-				xhtml.append(">");
+				xhtml.append("&gt;");
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
@@ -806,7 +813,7 @@ class RSSReader implements Serializable {
 				if (elementName.equals(parentElement)) {
 					breakOut = true;
 				} else {
-					xhtml.append("</" + elementName + ">");
+					xhtml.append("&lt;/" + elementName + "&gt;");
 				}
 				break;
 
@@ -818,9 +825,8 @@ class RSSReader implements Serializable {
 
 			default:
 				// escape the necessary characters.
-				// String escapedTxt = reader.getText().replaceAll("&", "&amp;")
-				// .replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-				xhtml.append(reader.getText());
+				xhtml.append(reader.getText().replaceAll("&", "&amp;")
+						.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
 			}
 			if (breakOut) {
 				break;

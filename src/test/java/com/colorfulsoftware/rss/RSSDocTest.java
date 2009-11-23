@@ -81,6 +81,9 @@ public class RSSDocTest implements Serializable {
 			+ "<rss xmlns:pheedo=\"http://www.pheedo.com/namespace/pheedo\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:media=\"http://search.yahoo.com/mrss/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:nyt=\"http://www.nytimes.com/namespaces/rss/2.0\" version=\"2.0\">"
 			+ "<fakeExt xmlns=\"http://www.fake.extension.org/fakeness\" />"
 			+ "<fakeExt xmlns=\"http://www.fake.extension.org/fakeness\">fakecontent</fakeExt>"
+			+ "<div xmlns=\"http://www.w3.org/1999/xhtml\">fakecontent<p> hello I am a piece of html sitting inside an rss feed &amp; this is legal.<hr /></p></div>"
+			+ "<div xmlns=\"http://www.w3.org/1999/xhtml\">A marked up <br /> rights.This is <span style=\"color:blue;\">blue text :). <hr id=\"unique\" class=\"phat\" /> <a href=\"http://maps.google.com?q=something&amp;b=somethingElse\">a fake map link</a></span>. </div>"
+			+ "<div xmlns=\"http://www.w3.org/1999/xhtml\">/mean> Example Feed <p><a href=\"brokenULR\">two start elements in a row</a></p></div>"
 			+ "<channel>"
 			+ "<pubDate>Fri, 24 Apr 2009 17:29:13 GMT</pubDate>"
 			+ "<category>music</category>"
@@ -407,17 +410,13 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = rssDoc.readRSSToString(null,
+			rssDoc.readRSSToString(null,
 					"javanet.staxutils.IndentingXMLStreamWriter");
-			rss1 = rssDoc.readRSSToBean(rss1Str);
-			assertNotNull(rss1);
-			assertNotNull(rss1.getAttributes());
-			assertNotNull(rss1.getChannel());
-			assertNotNull(rss1.getExtensions());
-
+			fail("should not get here.");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
+
 		}
 
 	}
@@ -546,7 +545,7 @@ public class RSSDocTest implements Serializable {
 					"http://www.someunknownnonworkingurl.nogood"));
 			fail("should not get here.");
 		} catch (Exception e) {
-			assertTrue(e instanceof RSSpectException);
+			assertTrue(e instanceof java.net.UnknownHostException);
 			/*
 			 * for some reason hosts behind Comcast (and maybe other) ISPs choke
 			 * on this we would like to test for unknown host here because they
