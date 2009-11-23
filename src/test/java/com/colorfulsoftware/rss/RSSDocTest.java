@@ -362,7 +362,6 @@ public class RSSDocTest implements Serializable {
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
 			String rss1Str = rss1.toString();
-			System.out.println("srr1Str:\n" + rss1Str);
 			BufferedWriter fout = new BufferedWriter(new FileWriter(
 					"target/rssDoc.xml"));
 			fout.write(rss1Str);
