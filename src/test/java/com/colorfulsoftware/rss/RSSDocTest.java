@@ -19,9 +19,11 @@ package com.colorfulsoftware.rss;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -266,7 +268,7 @@ public class RSSDocTest implements Serializable {
 			assertTrue(e instanceof RSSpectException);
 			assertEquals(e.getMessage(), "The rss feed object cannot be null.");
 		}
-		
+
 		try {
 			rssDoc.readRSSToBean("http://www.google.com/fakepage");
 			fail("should not get here.");
@@ -356,7 +358,13 @@ public class RSSDocTest implements Serializable {
 	public void testReadRSSToStringRSS() {
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = rssDoc.readRSSToString(rss1);
+			String rss1Str = rss1.toString();
+			System.out.println("srr1Str:\n" + rss1Str);
+			BufferedWriter fout = new BufferedWriter(new FileWriter(
+					"target/rssDoc.xml"));
+			fout.write(rss1Str);
+			fout.flush();
+			fout.close();
 			assertNotNull(rss1Str);
 			rss1 = rssDoc.readRSSToBean(rss1Str);
 			assertNotNull(rss1);
@@ -667,7 +675,7 @@ public class RSSDocTest implements Serializable {
 	public void testBuildAttribute() {
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS1);
-			String rss1Str = rssDoc.readRSSToString(rss1);
+			String rss1Str = rss1.toString();
 			assertNotNull(rss1Str);
 			rss1 = rssDoc.readRSSToBean(rss1Str);
 
@@ -729,7 +737,7 @@ public class RSSDocTest implements Serializable {
 	public void testBuildChannel() {
 		try {
 			rss1 = rssDoc.readRSSToBean(expectedRSS2);
-			String rss1Str = rssDoc.readRSSToString(rss1);
+			String rss1Str = rss1.toString();
 			assertNotNull(rss1Str);
 			rss1 = rssDoc.readRSSToBean(rss1Str);
 

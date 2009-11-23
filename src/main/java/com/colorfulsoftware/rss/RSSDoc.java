@@ -208,31 +208,10 @@ public final class RSSDoc implements Serializable {
 
 			return theString.toString();
 
-			// if the xmlStreamWriter cannot be found, read with the default
+			// if the xmlStreamWriter cannot be found, return the default
 		} catch (Exception e) {
-			return readRSSToString(rss);
+			return rss.toString();
 		}
-	}
-
-	/**
-	 * This method reads in a Feed bean and returns the contents as an rss feed
-	 * string.
-	 * 
-	 * @param rss
-	 *            the rss object to be converted to an rss string.
-	 * @return an rss feed document string.
-	 * @throws Exception
-	 *             thrown if the feed cannot be returned as a String
-	 */
-	public String readRSSToString(RSS rss) throws Exception {
-		StringWriter theString = new StringWriter();
-
-		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-		XMLStreamWriter writer = outputFactory.createXMLStreamWriter(theString);
-
-		writeRSSOutput(rss, writer, encoding, xmlVersion);
-
-		return theString.toString();
 	}
 
 	/**
