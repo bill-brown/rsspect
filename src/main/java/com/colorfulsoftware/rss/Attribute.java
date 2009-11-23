@@ -40,9 +40,9 @@ public class Attribute implements Serializable {
 		this.name = name;
 		this.value = value;
 	}
-	
-	//copy constructor
-	Attribute(Attribute attribute){
+
+	// copy constructor
+	Attribute(Attribute attribute) {
 		this.name = attribute.getName();
 		this.value = attribute.getValue();
 	}
@@ -77,9 +77,10 @@ public class Attribute implements Serializable {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Shows the contents of the element's attribute in the form of ' attrName="attrValue"'.
+	 * Shows the contents of the element's attribute in the form of '
+	 * attrName="attrValue"'.
 	 */
 	@Override
 	public String toString() {

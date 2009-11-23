@@ -56,8 +56,8 @@ public class PubDate implements Serializable {
 	PubDate(String pubDate) throws RSSpectException {
 		this.pubDate = new RSSDateConstruct(pubDate);
 	}
-	
-	PubDate(Date pubDate){
+
+	PubDate(Date pubDate) {
 		this.pubDate = new RSSDateConstruct(pubDate);
 	}
 
@@ -77,7 +77,7 @@ public class PubDate implements Serializable {
 	public String getText() {
 		return pubDate.getText();
 	}
-	
+
 	/**
 	 * Shows the contents of the <pubDate> element.
 	 */

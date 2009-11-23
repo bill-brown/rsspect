@@ -39,7 +39,7 @@ public class Extension implements Serializable {
 
 	Extension(String elementName, List<Attribute> attributes, String content)
 			throws RSSpectException {
-		
+
 		this.elementName = elementName;
 
 		this.content = content;
@@ -57,8 +57,10 @@ public class Extension implements Serializable {
 				|| (elementName.indexOf(":") == -1 && getAttribute("xmlns") == null)
 				|| elementName.indexOf(":") == 0) {
 
-			throw new RSSpectException("Extension element '" + elementName
-					+ "' is missing a namespace prefix or namespace declaration.");
+			throw new RSSpectException(
+					"Extension element '"
+							+ elementName
+							+ "' is missing a namespace prefix or namespace declaration.");
 		}
 	}
 

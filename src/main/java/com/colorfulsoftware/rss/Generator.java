@@ -36,12 +36,12 @@ public class Generator implements Serializable {
 	}
 
 	/**
-	 * @return the generator of the feed. 
+	 * @return the generator of the feed.
 	 */
 	public String getGenerator() {
 		return generator;
 	}
-	
+
 	/**
 	 * Shows the contents of the <generator> element.
 	 */

@@ -20,10 +20,11 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * This class returns the hour sub element of the skipHours element.
- * Valid values are 0 - 23.
+ * This class returns the hour sub element of the skipHours element. Valid
+ * values are 0 - 23.
+ * 
  * @author bill
- *
+ * 
  */
 public class Hour implements Serializable {
 
@@ -45,8 +46,8 @@ public class Hour implements Serializable {
 		}
 		this.hour = hour;
 	}
-	
-	Hour(Hour hour){
+
+	Hour(Hour hour) {
 		this.hour = hour.getHour();
 	}
 
@@ -56,7 +57,7 @@ public class Hour implements Serializable {
 	public String getHour() {
 		return hour;
 	}
-	
+
 	/**
 	 * Shows the contents of the <hour> element.
 	 */

@@ -52,12 +52,12 @@ public class Author implements Serializable {
 	}
 
 	/**
-	 * @return the author's email address and maybe more text. 
+	 * @return the author's email address and maybe more text.
 	 */
 	public String getAuthor() {
 		return author;
 	}
-	
+
 	/**
 	 * Shows the contents of the <author> element.
 	 */

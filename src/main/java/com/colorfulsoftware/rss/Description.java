@@ -34,8 +34,8 @@ public class Description implements Serializable {
 	private final String description;
 
 	Description(String description) {
-		//descriptions can be empty
-		this.description = (description == null)?"":description;
+		// descriptions can be empty
+		this.description = (description == null) ? "" : description;
 	}
 
 	/**

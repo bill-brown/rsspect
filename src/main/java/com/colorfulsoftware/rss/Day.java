@@ -54,7 +54,7 @@ public class Day implements Serializable {
 	public String getDay() {
 		return day;
 	}
-	
+
 	/**
 	 * Shows the contents of the <day> element.
 	 */

@@ -164,8 +164,8 @@ public class Channel implements Serializable {
 			}
 		}
 	}
-	
-	Channel(Channel channel){
+
+	Channel(Channel channel) {
 		this.title = channel.getTitle();
 		this.link = channel.getLink();
 		this.description = channel.getDescription();
@@ -420,83 +420,83 @@ public class Channel implements Serializable {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Shows the contents of the <channel> element.
 	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("<channel>");
-		
+
 		sb.append(title);
-		
+
 		sb.append(link);
-		
+
 		sb.append(description);
 
-		if(language != null){
+		if (language != null) {
 			sb.append(language);
 		}
 
-		if(copyright != null){
+		if (copyright != null) {
 			sb.append(copyright);
 		}
-		
-		if(managingEditor != null){
+
+		if (managingEditor != null) {
 			sb.append(managingEditor);
 		}
 
-		if(webMaster != null){
+		if (webMaster != null) {
 			sb.append(webMaster);
 		}
 
-		if(pubDate != null){
+		if (pubDate != null) {
 			sb.append(pubDate);
 		}
 
-		if(lastBuildDate != null){
+		if (lastBuildDate != null) {
 			sb.append(lastBuildDate);
 		}
 
-		if(categories != null){
+		if (categories != null) {
 			for (Category category : categories) {
 				sb.append(category);
 			}
 		}
 
-		if(generator != null){
+		if (generator != null) {
 			sb.append(generator);
 		}
 
-		if(docs != null){
+		if (docs != null) {
 			sb.append(docs);
 		}
 
-		if(cloud != null){
+		if (cloud != null) {
 			sb.append(cloud);
 		}
 
-		if(ttl != null){
+		if (ttl != null) {
 			sb.append(ttl);
 		}
 
-		if(image != null){
+		if (image != null) {
 			sb.append(image);
 		}
 
-		if(rating != null){
+		if (rating != null) {
 			sb.append(rating);
 		}
 
-		if(textInput != null){
+		if (textInput != null) {
 			sb.append(textInput);
 		}
 
-		if(skipHours != null){
+		if (skipHours != null) {
 			sb.append(skipHours);
 		}
 
-		if(skipDays != null){
+		if (skipDays != null) {
 			sb.append(skipDays);
 		}
 

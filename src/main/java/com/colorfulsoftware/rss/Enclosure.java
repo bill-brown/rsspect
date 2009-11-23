@@ -141,7 +141,7 @@ public class Enclosure implements Serializable {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Shows the contents of the <enclosure> element.
 	 */

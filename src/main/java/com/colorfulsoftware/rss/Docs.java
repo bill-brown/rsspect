@@ -43,7 +43,7 @@ public class Docs implements Serializable {
 	public String getDocs() {
 		return docs;
 	}
-	
+
 	/**
 	 * Shows the contents of the <docs> element.
 	 */

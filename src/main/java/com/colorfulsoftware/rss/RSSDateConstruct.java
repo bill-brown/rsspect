@@ -29,8 +29,8 @@ class RSSDateConstruct implements Serializable {
 	private static final long serialVersionUID = 661002136563928416L;
 
 	private final Date dateTime;
-	
-	private final String text; 
+
+	private final String text;
 
 	/**
 	 * 
@@ -49,7 +49,7 @@ class RSSDateConstruct implements Serializable {
 				this.dateTime = new SimpleDateFormat(
 						"EEE, dd MMM yyyy HH:mm:ss z").parse(dateTime);
 				this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-				.format(this.dateTime);
+						.format(this.dateTime);
 			} catch (Exception e) {
 				throw new RSSpectException(
 						"error trying to create the date element: "
@@ -61,7 +61,7 @@ class RSSDateConstruct implements Serializable {
 	RSSDateConstruct(Date dateTime) {
 		this.dateTime = new Date(dateTime.getTime());
 		this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-		.format(this.dateTime);
+				.format(this.dateTime);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class RSSDateConstruct implements Serializable {
 	public String getText() {
 		return text;
 	}
-	
+
 	/**
 	 * Shows the contents of the <pubDate> or <lastBuildDate> elements.
 	 */

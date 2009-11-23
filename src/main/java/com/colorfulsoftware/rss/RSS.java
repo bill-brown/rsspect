@@ -174,13 +174,13 @@ public class RSS implements Serializable {
 		sb.append(">");
 
 		sb.append(channel);
-		
+
 		if (extensions != null) {
 			for (Extension extension : extensions) {
 				sb.append(extension);
 			}
 		}
-		
+
 		sb.append("</rss>");
 		return sb.toString();
 	}

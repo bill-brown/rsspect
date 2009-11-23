@@ -329,8 +329,8 @@ class RSSReader implements Serializable {
 					justReadStart = false;
 				}
 				// escape the markup.
-				xhtml.append(reader.getText().replaceAll("&", "&amp;").replaceAll("<",
-						"&lt;").replaceAll(">", "&gt;"));
+				xhtml.append(reader.getText().replaceAll("&", "&amp;")
+						.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
 
 			}
 			if (breakOut) {
