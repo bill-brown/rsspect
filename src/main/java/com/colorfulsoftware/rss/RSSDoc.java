@@ -43,23 +43,23 @@ import javax.xml.stream.XMLStreamWriter;
  * <p>
  * Here are some examples of how to use the RSSpect library in your application:
  * <br />
- * <ul style="padding:5px;">
+ * <ul style="margin-left:15px;">
  * <li>Read a file from disk into an RSS bean.<br />
- * <code style="font-style: italic;">RSS myRSS = new RSSDoc().readRSSToBean(new File("/myPath/myRSS.xml");</code>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">RSS myRSS = new RSSDoc().readRSSToBean(new File("/myPath/myRSS.xml");</code>
  * </li>
  * <li>Read a file from the web into an RSS bean.<br />
- * <code style="font-style: italic;">RSS myRSS = new RSSDoc().readRSSToBean(new URL("http://www.abcdefg.net/myRSS.xml");</code>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">RSS myRSS = new RSSDoc().readRSSToBean(new URL("http://www.abcdefg.net/myRSS.xml");</code>
  * </li>
  * <li>Read an RSS bean into a String.<br />
- * <code style="font-style: italic;">String myRssStr = myRSS.toString();</code></li>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = myRSS.toString();</code></li>
  * <li>Read an RSS bean into a formatted String.<br />
- * <code style="font-style: italic;">String myRssStr = new RSSDoc().readRSSToString(myRSS, "javanet.staxutils.IndentingXMLStreamWriter");</code>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = new RSSDoc().readRSSToString(myRSS, "javanet.staxutils.IndentingXMLStreamWriter");</code>
  * </li>
  * <li>Write an RSS bean to disk.<br />
- * <code style="font-style: italic;">String myRssStr = new RSSDoc().writeRSSDoc(new File("/somewhere/myRSS.xml"), myRSS, "UTF-8", "1.0");</code>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = new RSSDoc().writeRSSDoc(new File("/somewhere/myRSS.xml"), myRSS, "UTF-8", "1.0");</code>
  * </li>
  * <li>Write a formatted RSS bean to disk.<br />
- * <code style="font-style: italic;">String myRssStr = new RSSDoc().writeRSSDoc(new javanet.staxutils.IndentingXMLStreamWriter( XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream("/somewhere/myRSS.xml"), "UTF-8")), myRSS, "UTF-8", "1.0");</code>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = new RSSDoc().writeRSSDoc(new javanet.staxutils.IndentingXMLStreamWriter( XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream("/somewhere/myRSS.xml"), "UTF-8")), myRSS, "UTF-8", "1.0");</code>
  * </li>
  * </ul>
  * 
