@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * The last time the content of the channel changed.
+ * <p>The &lt;lastBuildDate> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>The last time the content of the channel changed.</p>
  * 
  * @author Bill Brown
  * 
@@ -58,7 +60,7 @@ public class LastBuildDate implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <lastBuildDate> element.
+	 * Shows the contents of the &lt;lastBuildDate> element.
 	 */
 	@Override
 	public String toString() {

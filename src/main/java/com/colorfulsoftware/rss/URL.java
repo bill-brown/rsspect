@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * This class models a url element in an rss feed.
+ * <p>The &lt;url> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>This class models a &lt;url> element in an rss feed.</p>
  * 
  * @author Bill Brown
  * 
@@ -65,7 +67,7 @@ public class URL implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <url> element.
+	 * Shows the contents of the &lt;url> element.
 	 */
 	@Override
 	public String toString() {

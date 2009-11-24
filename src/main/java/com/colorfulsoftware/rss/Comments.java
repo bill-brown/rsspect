@@ -20,18 +20,20 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * URL of a page for comments relating to the item. <a href=
+ * <p>The &lt;comments> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>URL of a page for comments relating to the item. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltcommentsgtSubelementOfLtitemgt"
- * >More</a>.
+ * >More</a>.</p>
  * 
- * <comments> is an optional sub-element of <item>.
+ * <p>&lt;comments> is an optional sub-element of &lt;item>.</p>
  * 
- * If present, it is the url of the comments page for the item.
+ * <p>If present, it is the url of the comments page for the item.</p>
  * 
- * <comments>http://ekzemplo.com/entry/4403/comments</comments>
+ * <p>&lt;comments>http://ekzemplo.com/entry/4403/comments&lt;/comments></p>
  * 
- * More about comments <a
- * href="http://cyber.law.harvard.edu/rss/weblogComments.html">here</a>.
+ * <p>More about comments <a
+ * href="http://cyber.law.harvard.edu/rss/weblogComments.html">here</a>.</p>
  * 
  * @author Bill Brown
  * 
@@ -57,7 +59,7 @@ public class Comments implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <comments> element.
+	 * Shows the contents of the &lt;comments> element.
 	 */
 	@Override
 	public String toString() {

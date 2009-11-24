@@ -20,12 +20,14 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * For Channel: The name of the channel. It's how people refer to your service.
+ * <p>The &lt;title> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>For Channel: The name of the channel. It's how people refer to your service.
  * If you have an HTML website that contains the same information as your RSS
  * file, the title of your channel should be the same as the title of your
- * website.
+ * website.</p>
  * 
- * For Item: The title of the item.
+ * <p>For Item: The title of the item.</p>
  * 
  * @author Bill Brown
  * 
@@ -48,7 +50,7 @@ public class Title implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <title> element.
+	 * Shows the contents of the &lt;title> element.
 	 */
 	@Override
 	public String toString() {

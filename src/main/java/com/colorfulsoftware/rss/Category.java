@@ -20,33 +20,35 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * FOR channels: Specify one or more categories that the channel belongs to.
- * Follows the same rules as the <item>-level <a href=
+ * <p>The &lt;category> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>FOR channels: Specify one or more categories that the channel belongs to.
+ * Follows the same rules as the &lt;item>-level <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltcategorygtSubelementOfLtitemgt"
  * >category</a> element. More <a
- * href="http://cyber.law.harvard.edu/rss/rss.html#syndic8">info</a>.
+ * href="http://cyber.law.harvard.edu/rss/rss.html#syndic8">info</a>.</p>
  * 
- * FOR items: Includes the item in one or more categories. <a href=
+ * <p>FOR items: Includes the item in one or more categories. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltcategorygtSubelementOfLtitemgt"
  * >More</a>.
  * 
- * <category> is an optional sub-element of <item>.
+ * <p>&lt;category> is an optional sub-element of &lt;item>.</p>
  * 
- * It has one optional attribute, domain, a string that identifies a
- * categorization taxonomy.
+ * <p>It has one optional attribute, domain, a string that identifies a
+ * categorization taxonomy.</p>
  * 
- * The value of the element is a forward-slash-separated string that identifies
+ * <p>The value of the element is a forward-slash-separated string that identifies
  * a hierarchic location in the indicated taxonomy. Processors may establish
  * conventions for the interpretation of categories. Two examples are provided
- * below:
+ * below:</p>
  * 
- * <category>Grateful Dead</category>
+ * <p>&lt;category>Grateful Dead&lt;/category></p>
  * 
- * <category domain="http://www.fool.com/cusips">MSFT</category>
+ * <p>&lt;category domain="http://www.fool.com/cusips">MSFT&lt;/category></p>
  * 
- * You may include as many category elements as you need to, for different
+ * <p>You may include as many category elements as you need to, for different
  * domains, and to have an item cross-referenced in different parts of the same
- * domain.
+ * domain.</p>
  * 
  * @author Bill Brown
  * 
@@ -90,7 +92,7 @@ public class Category implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <author> element.
+	 * Shows the contents of the &lt;category> element.
 	 */
 	@Override
 	public String toString() {

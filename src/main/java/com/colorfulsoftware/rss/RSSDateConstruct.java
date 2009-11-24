@@ -23,9 +23,6 @@ import java.util.Date;
 
 class RSSDateConstruct implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 661002136563928416L;
 
 	private final Date dateTime;
@@ -82,7 +79,7 @@ class RSSDateConstruct implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <pubDate> or <lastBuildDate> elements.
+	 * Shows the contents of the &lt;pubDate> or &lt;lastBuildDate> elements.
 	 */
 	@Override
 	public String toString() {

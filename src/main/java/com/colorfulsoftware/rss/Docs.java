@@ -20,9 +20,11 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * A URL that points to the documentation for the format used in the RSS file.
+ * <p>The &lt;author> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>A URL that points to the documentation for the format used in the RSS file.
  * It's probably a pointer to this page. It's for people who might stumble
- * across an RSS file on a Web server 25 years from now and wonder what it is.
+ * across an RSS file on a Web server 25 years from now and wonder what it is.</p>
  * 
  * @author Bill Brown
  * 
@@ -45,7 +47,7 @@ public class Docs implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <docs> element.
+	 * Shows the contents of the &lt;docs> element.
 	 */
 	@Override
 	public String toString() {

@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * This class is used by the RSSDoc to read an xml file into a Feed bean.
+ * <p>This class is used by the RSSDoc to read an xml file into a Feed bean.</p>
  * 
  * @author Bill Brown
  * 

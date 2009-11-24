@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Email address for person responsible for editorial content.
+ * <p>The &lt;managingEditor> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Email address for person responsible for editorial content.</p>
  * 
  * @author Bill Brown
  * 
@@ -43,7 +45,7 @@ public class ManagingEditor implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <managingEditor> element.
+	 * Shows the contents of the &lt;managingEditor> element.
 	 */
 	@Override
 	public String toString() {

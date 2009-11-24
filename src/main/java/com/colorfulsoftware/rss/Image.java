@@ -20,31 +20,33 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Specifies a GIF, JPEG or PNG image that can be displayed with the channel.
+ * <p>The &lt;image> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Specifies a GIF, JPEG or PNG image that can be displayed with the channel.
  * More info <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltimagegtSubelementOfLtchannelgt"
- * >here</a>.
+ * >here</a>.</p>
  * 
- * <image> is an optional sub-element of <channel>, which contains three
- * required and three optional sub-elements.
+ * <p>&lt;image> is an optional sub-element of &lt;channel>, which contains three
+ * required and three optional sub-elements.</p>
  * 
- * <url> is the URL of a GIF, JPEG or PNG image that represents the channel.
+ * <p>&lt;url> is the URL of a GIF, JPEG or PNG image that represents the channel.</p>
  * 
- * <title> describes the image, it's used in the ALT attribute of the HTML <img>
- * tag when the channel is rendered in HTML.
+ * <p>&lt;title> describes the image, it's used in the ALT attribute of the HTML
+ * &lt;img> tag when the channel is rendered in HTML.</p>
  * 
- * <link> is the URL of the site, when the channel is rendered, the image is a
- * link to the site. (Note, in practice the image <title> and <link> should have
- * the same value as the channel's <title> and <link>.
+ * <p>&lt;link> is the URL of the site, when the channel is rendered, the image is
+ * a link to the site. (Note, in practice the image &lt;title> and &lt;link>
+ * should have the same value as the channel's &lt;title> and &lt;link>.</p>
  * 
- * Optional elements include <width> and <height>, numbers, indicating the width
- * and height of the image in pixels. <description> contains text that is
- * included in the TITLE attribute of the link formed around the image in the
- * HTML rendering.
+ * <p>Optional elements include &lt;width> and &lt;height>, numbers, indicating the
+ * width and height of the image in pixels. &lt;description> contains text that
+ * is included in the TITLE attribute of the link formed around the image in the
+ * HTML rendering.</p>
  * 
- * Maximum value for width is 144, default value is 88.
+ * <p>Maximum value for width is 144, default value is 88.</p>
  * 
- * Maximum value for height is 400, default value is 31.
+ * <p>Maximum value for height is 400, default value is 31.</p>
  * 
  * @author Bill Brown
  * 
@@ -150,7 +152,7 @@ public class Image implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <image> element.
+	 * Shows the contents of the &lt;image> element.
 	 */
 	@Override
 	public String toString() {

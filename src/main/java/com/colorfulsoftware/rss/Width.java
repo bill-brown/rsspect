@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Maximum value for width is 144, default value is 88.
+ * <p>The &lt;width> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Maximum value for width is 144, default value is 88.</p>
  * 
  * @author Bill Brown
  * 
@@ -61,7 +63,7 @@ public class Width implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <width> element.
+	 * Shows the contents of the &lt;width> element.
 	 */
 	@Override
 	public String toString() {

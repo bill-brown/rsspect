@@ -22,15 +22,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A channel may contain any number of <item>s. An item may represent a "story"
- * -- much like a story in a newspaper or magazine; if so its description is a
- * synopsis of the story, and the link points to the full story. An item may
- * also be complete in itself, if so, the description contains the text
- * (entity-encoded HTML is allowed; see <a
+ * <p>The &lt;item> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>A channel may contain any number of &lt;item>s. An item may represent a
+ * "story" -- much like a story in a newspaper or magazine; if so its
+ * description is a synopsis of the story, and the link points to the full
+ * story. An item may also be complete in itself, if so, the description
+ * contains the text (entity-encoded HTML is allowed; see <a
  * href="http://cyber.law.harvard.edu/rss/encodingDescriptions.html"
  * >examples</a>), and the link and title may be omitted. All elements of an
  * item are optional, however at least one of title or description must be
- * present.
+ * present.</p>
  * 
  * @author Bill Brown
  * 
@@ -260,7 +262,7 @@ public class Item implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <item> element.
+	 * Shows the contents of the &lt;item> element.
 	 */
 	@Override
 	public String toString() {

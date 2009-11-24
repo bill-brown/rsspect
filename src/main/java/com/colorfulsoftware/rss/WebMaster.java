@@ -20,8 +20,10 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Email address for person responsible for technical issues relating to
- * channel.
+ * <p>The &lt;webMaster> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Email address for person responsible for technical issues relating to
+ * channel.</p>
  * 
  * @author Bill Brown
  * 
@@ -47,7 +49,7 @@ public class WebMaster implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <webMaster> element.
+	 * Shows the contents of the &lt;webMaster> element.
 	 */
 	@Override
 	public String toString() {

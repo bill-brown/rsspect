@@ -22,30 +22,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * At the top level, a RSS document is a <rss> element, with a mandatory
+ * <p>The &lt;rss> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>At the top level, a RSS document is a &lt;rss> element, with a mandatory
  * attribute called version, that specifies the version of RSS that the document
  * conforms to. If it conforms to this specification, the version attribute must
- * be 2.0.
+ * be 2.0.</p>
  * 
- * Subordinate to the <rss> element is a single <channel> element, which
+ * <p>Subordinate to the &lt;rss> element is a single &lt;channel> element, which
  * contains information about the channel (metadata) and its contents. RSS
  * originated in 1999, and has strived to be a simple, easy to understand
  * format, with relatively modest goals. After it became a popular format,
  * developers wanted to extend it using modules defined in namespaces, as
- * specified by the W3C.
+ * specified by the W3C.</p>
  * 
- * RSS 2.0 adds that capability, following a simple rule. A RSS feed may contain
+ * <p>RSS 2.0 adds that capability, following a simple rule. A RSS feed may contain
  * elements not described on this page, only if those elements are defined in a
- * namespace.
+ * namespace.</p>
  * 
- * The elements defined in this document are not themselves members of a
+ * <p>The elements defined in this document are not themselves members of a
  * namespace, so that RSS 2.0 can remain compatible with previous versions in
- * the following sense -- a version 0.91 or 0.92 file is also a valid 2.0 file.
+ * the following sense - - a version 0.91 or 0.92 file is also a valid 2.0 file.
  * If the elements of RSS 2.0 were in a namespace, this constraint would break,
- * a version 0.9x file would not be a valid 2.0 file.
+ * a version 0.9x file would not be a valid 2.0 file.</p>
  * 
- * The version="2.0" attribute of the <rss> element is automatically provided in
- * this implementation.
+ * <p>The version="2.0" attribute of the &lt;rss> element is automatically provided
+ * in this implementation.</p>
  * 
  * @author Bill Brown
  * 
@@ -162,7 +164,7 @@ public class RSS implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <updated> or <published> elements.
+	 * Shows the contents of the &lt;rss> element.
 	 */
 	@Override
 	public String toString() {

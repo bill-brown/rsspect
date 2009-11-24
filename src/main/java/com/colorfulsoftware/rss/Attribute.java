@@ -20,7 +20,7 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * This class contains the attribute definition for elements.
+ * <p>This class contains the attribute definition for elements.</p>
  * 
  * @author Bill Brown
  * 

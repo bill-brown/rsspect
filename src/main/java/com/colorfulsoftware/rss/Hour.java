@@ -20,8 +20,10 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * This class returns the hour sub element of the skipHours element. Valid
- * values are 0 - 23.
+ * <p>The &lt;hour> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>This class returns the hour sub element of the &lt;skipHours> element. Valid
+ * values are 0 - 23.</p>
  * 
  * @author bill
  * 
@@ -59,7 +61,7 @@ public class Hour implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <hour> element.
+	 * Shows the contents of the &lt;hour> element.
 	 */
 	@Override
 	public String toString() {

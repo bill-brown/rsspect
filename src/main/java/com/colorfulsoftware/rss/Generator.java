@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * A string indicating the program used to generate the channel.
+ * <p>The &lt;generator> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>A string indicating the program used to generate the channel.</p>
  * 
  * @author Bill Brown
  * 
@@ -43,7 +45,7 @@ public class Generator implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <generator> element.
+	 * Shows the contents of the &lt;generator> element.
 	 */
 	@Override
 	public String toString() {

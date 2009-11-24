@@ -22,33 +22,36 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Allows processes to register with a cloud to be notified of updates to the
+ * <p>The &lt;cloud> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Allows processes to register with a cloud to be notified of updates to the
  * channel, implementing a lightweight publish-subscribe protocol for RSS feeds.
- * More info <a href=
- * "http://cyber.law.harvard.edu/rss/rss.html#ltcloudgtSubelementOfLtchannelgt"
- * >here</a>
+ * More info &lt;a href=
+ * &quot;http://cyber.law.harvard.edu/rss/rss.html#ltcloudgtSubelementOfLtchannelgt&quot;
+ * &gt;here&lt;/a&gt;</p>
  * 
- * <cloud> sub-element of <channel>
+ * <p>&lt;cloud&gt; sub-element of &lt;channel&gt;</p>
  * 
- * <cloud> is an optional sub-element of <channel>.
+ * <p>&lt;cloud&gt; is an optional sub-element of &lt;channel&gt;.</p>
  * 
- * It specifies a web service that supports the rssCloud interface which can be
- * implemented in HTTP-POST, XML-RPC or SOAP 1.1.
+ * <p>It specifies a web service that supports the rssCloud interface which can be
+ * implemented in HTTP-POST, XML-RPC or SOAP 1.1.</p>
  * 
- * Its purpose is to allow processes to register with a cloud to be notified of
+ * <p>Its purpose is to allow processes to register with a cloud to be notified of
  * updates to the channel, implementing a lightweight publish-subscribe protocol
- * for RSS feeds.
+ * for RSS feeds.</p>
  * 
- * <cloud domain="rpc.sys.com" port="80" path="/RPC2"
- * registerProcedure="myCloud.rssPleaseNotify" protocol="xml-rpc" />
+ * <p>&lt;cloud domain=&quot;rpc.sys.com&quot; port=&quot;80&quot; path=&quot;/RPC2&quot;
+ * registerProcedure=&quot;myCloud.rssPleaseNotify&quot; protocol=&quot;xml-rpc&quot; /&gt;</p>
  * 
- * In this example, to request notification on the channel it appears in, you
+ * <p>In this example, to request notification on the channel it appears in, you
  * would send an XML-RPC message to rpc.sys.com on port 80, with a path of
- * /RPC2. The procedure to call is myCloud.rssPleaseNotify.
+ * /RPC2. The procedure to call is myCloud.rssPleaseNotify.</p>
  * 
- * A full explanation of this element and the rssCloud interface is <a
- * href="http://cyber.law.harvard.edu/rss/soapMeetsRss.html#rsscloudInterface"
- * >here</a>.
+ * <p>A full explanation of this element and the rssCloud interface is <a
+ * href=&quot;http://cyber.law.harvard.edu/rss/soapMeetsRss.html#rsscloudInterface&quot;
+ * &gt;here&lt;/a&gt;.</p>
+ * 
  * 
  * @author Bill Brown
  * 
@@ -188,7 +191,7 @@ public class Cloud implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <cloud> element.
+	 * Shows the contents of the &lt;cloud> element.
 	 */
 	@Override
 	public String toString() {

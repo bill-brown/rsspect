@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Copyright notice for content in the channel.
+ * <p>The &lt;copyright> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Copyright notice for content in the channel.</p>
  * 
  * @author Bill Brown
  * 
@@ -46,7 +48,7 @@ public class Copyright implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <copyright> element.
+	 * Shows the contents of the &lt;copyright> element.
 	 */
 	@Override
 	public String toString() {

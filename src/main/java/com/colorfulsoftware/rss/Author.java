@@ -20,20 +20,22 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Email address of the author of the item. <a href=
+ * <p>The &lt;author> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Email address of the author of the item. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltauthorgtSubelementOfLtitemgt"
- * >More</a>.
+ * >More</a>.</p>
  * 
- * <author> is an optional sub-element of <item>.
+ * <p>&lt;author> is an optional sub-element of &lt;item>.</p>
  * 
- * It's the email address of the author of the item. For newspapers and
+ * <p>It's the email address of the author of the item. For newspapers and
  * magazines syndicating via RSS, the author is the person who wrote the article
- * that the <item> describes. For collaborative weblogs, the author of the item
- * might be different from the managing editor or webmaster. For a weblog
- * authored by a single individual it would make sense to omit the <author>
- * element.
+ * that the &lt;item> describes. For collaborative weblogs, the author of the
+ * item might be different from the managing editor or webmaster. For a weblog
+ * authored by a single individual it would make sense to omit the &lt;author>
+ * element.</p>
  * 
- * <author>lawyer@boyer.net (Lawyer Boyer)</author>
+ * <p>&lt;author>lawyer@boyer.net (Lawyer Boyer)&lt;/author></p>
  * 
  * @author Bill Brown
  * 
@@ -59,7 +61,7 @@ public class Author implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <author> element.
+	 * Shows the contents of the &lt;author> element.
 	 */
 	@Override
 	public String toString() {

@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * Maximum value for height is 400, default value is 31.
+ * <p>The &lt;element> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Maximum value for height is 400, default value is 31.</p>
  * 
  * @author Bill Brown
  * 
@@ -61,7 +63,7 @@ public class Height implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <height> element.
+	 * Shows the contents of the &lt;height> element.
 	 */
 	@Override
 	public String toString() {

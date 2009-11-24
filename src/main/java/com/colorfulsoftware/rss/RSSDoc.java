@@ -34,9 +34,34 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * <p>
  * This class reads and writes RSS documents to and from xml files, objects or
  * Strings. It contains all of the factory methods for building immutable copies
  * of the object elements.
+ * </p>
+ * 
+ * <p>
+ * Here are some examples of how to use the RSSpect library in your application:
+ * <br />
+ * <ul id="examplesList">
+ * <li>Read a file from disk into an RSS bean.<br />
+ * <code>RSS myRSS = new RSSDoc().readRSSToBean(new File("/myPath/myRSS.xml");</code>
+ * </li>
+ * <li>Read a file from the web into an RSS bean.<br />
+ * <code>RSS myRSS = new RSSDoc().readRSSToBean(new URL("http://www.abcdefg.net/myRSS.xml");</code>
+ * </li>
+ * <li>Read an RSS bean into a String.<br />
+ * <code>String myRssStr = myRSS.toString();</code></li>
+ * <li>Read an RSS bean into a formatted String.<br />
+ * <code>String myRssStr = new RSSDoc().readRSSToString(myRSS, "javanet.staxutils.IndentingXMLStreamWriter");</code>
+ * </li>
+ * <li>Write an RSS bean to disk.<br />
+ * <code>String myRssStr = new RSSDoc().writeRSSDoc(new File("/somewhere/myRSS.xml"), myRSS, "UTF-8", "1.0");</code>
+ * </li>
+ * <li>Write a formatted RSS bean to disk.<br />
+ * <code>String myRssStr = new RSSDoc().writeRSSDoc(new javanet.staxutils.IndentingXMLStreamWriter( XMLOutputFactory.newInstance().createXMLStreamWriter( new FileOutputStream("/somewhere/myRSS.xml"), "UTF-8")), myRSS, "UTF-8", "1.0");</code>
+ * </li>
+ * </ul>
  * 
  * 
  * @author Bill Brown

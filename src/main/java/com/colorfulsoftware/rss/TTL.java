@@ -20,19 +20,21 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * ttl stands for time to live. It's a number of minutes that indicates how long
+ * <p>The &lt;ttl> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>ttl stands for time to live. It's a number of minutes that indicates how long
  * a channel can be cached before refreshing from the source. More info <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltttlgtSubelementOfLtchannelgt"
- * >here</a>.
+ * >here</a>.</p>
  * 
- * <ttl> is an optional sub-element of <channel>.
+ * <p>&lt;ttl> is an optional sub-element of &lt;channel>.</p>
  * 
- * ttl stands for time to live. It's a number of minutes that indicates how long
+ * <p>ttl stands for time to live. It's a number of minutes that indicates how long
  * a channel can be cached before refreshing from the source. This makes it
  * possible for RSS sources to be managed by a file-sharing network such as
- * Gnutella.
+ * Gnutella.</p>
  * 
- * Example: <ttl>60</ttl>
+ * <p>Example: <ttl>60</ttl></p>
  * 
  * @author Bill Brown
  * 
@@ -55,7 +57,7 @@ public class TTL implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <ttl> element.
+	 * Shows the contents of the &lt;ttl> element.
 	 */
 	@Override
 	public String toString() {

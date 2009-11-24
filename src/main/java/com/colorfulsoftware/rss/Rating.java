@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * The <a href="http://www.w3.org/PICS/">PICS</a> rating for the channel.
+ * <p>The &lt;rating> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>The <a href="http://www.w3.org/PICS/">PICS</a> rating for the channel.</p>
  * 
  * @author Bill Brown
  * 
@@ -46,7 +48,7 @@ public class Rating implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <rating> element.
+	 * Shows the contents of the &lt;rating> element.
 	 */
 	@Override
 	public String toString() {

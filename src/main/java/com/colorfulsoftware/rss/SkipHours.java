@@ -22,16 +22,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A hint for aggregators telling them which hours they can skip. More info <a
+ * <p>The &lt;skipHours> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>A hint for aggregators telling them which hours they can skip. More info <a
  * href
- * ="http://cyber.law.harvard.edu/rss/skipHoursDays.html#skiphours">here</a>.
+ * ="http://cyber.law.harvard.edu/rss/skipHoursDays.html#skiphours">here</a>.</p>
  * 
- * skipHours
+ * <p>skipHours</p>
  * 
- * An XML element that contains up to 24 <hour> sub-elements whose value is a
+ * <p>An XML element that contains up to 24 &lt;hour> sub-elements whose value is a
  * number between 0 and 23, representing a time in GMT, when aggregators, if
  * they support the feature, may not read the channel on hours listed in the
- * skipHours element.
+ * &lt;skipHours> element.</p>
  * 
  * 
  * The hour beginning at midnight is hour zero.
@@ -89,7 +91,7 @@ public class SkipHours implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <skipHours> element.
+	 * Shows the contents of the &lt;skipHours> element.
 	 */
 	@Override
 	public String toString() {

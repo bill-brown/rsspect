@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * This class represents the day sub element of the skipDays element.
+ * <p>The &lt;day> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>This class represents the day sub element of the &lt;skipDays> element.</p>
  * 
  * @author Bill Brown
  * 
@@ -56,7 +58,7 @@ public class Day implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <day> element.
+	 * Shows the contents of the &lt;day> element.
 	 */
 	@Override
 	public String toString() {

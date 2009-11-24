@@ -20,9 +20,11 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * For Channel: Phrase or sentence describing the channel.
+ * <p>The &lt;description> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>For Channel: Phrase or sentence describing the channel.</p>
  * 
- * For Item: The item synopsis.
+ * <p>For Item: The item synopsis.</p>
  * 
  * @author Bill Brown
  * 
@@ -46,7 +48,7 @@ public class Description implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <description> element.
+	 * Shows the contents of the &lt;description> element.
 	 */
 	@Override
 	public String toString() {

@@ -20,9 +20,11 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * For Channel: The URL to the HTML website corresponding to the channel.
+ * <p>The &lt;link> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>For Channel: The URL to the HTML website corresponding to the channel.</p>
  * 
- * For Item: The URL of the item.
+ * <p>For Item: The URL of the item.</p>
  * 
  * @author Bill Brown
  * 
@@ -67,7 +69,7 @@ public class Link implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <link> element.
+	 * Shows the contents of the &lt;link> element.
 	 */
 	@Override
 	public String toString() {

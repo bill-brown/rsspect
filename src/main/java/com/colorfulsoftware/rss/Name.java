@@ -20,7 +20,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * The name of the text object in the text input area.
+ * <p>The &lt;name> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>The name of the text object in the text input area.</p>
  * 
  * @author Bill Brown
  * 
@@ -43,7 +45,7 @@ public class Name implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <name> element.
+	 * Shows the contents of the &lt;name> element.
 	 */
 	@Override
 	public String toString() {

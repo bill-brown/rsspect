@@ -18,7 +18,11 @@
 package com.colorfulsoftware.rss;
 
 /**
- * This class is used as an rss feed specification error container.
+ * <p>
+ * This class wraps <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a> errors. It also wraps errors that compromise the quality of
+ * the RSSpect built feed.
+ * </p>
  * 
  * @author Bill Brown.
  * 

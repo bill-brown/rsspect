@@ -22,23 +22,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Describes a media object that is attached to the item. <a href=
+ * <p>The &lt;enclosure> element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>Describes a media object that is attached to the item. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltenclosuregtSubelementOfLtitemgt"
- * >More</a>.
+ * >More</a>.</p>
  * 
- * <enclosure> is an optional sub-element of <item>.
+ * <p>&lt;enclosure> is an optional sub-element of &lt;item>.</p>
  * 
- * It has three required attributes. url says where the enclosure is located,
+ * <p>It has three required attributes. url says where the enclosure is located,
  * length says how big it is in bytes, and type says what its type is, a
- * standard MIME type.
+ * standard MIME type.</p>
  * 
- * The url must be an http url.
+ * <p>The url must be an http url.</p>
  * 
- * <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3"
- * length="12216320" type="audio/mpeg" />
+ * <p>&lt;enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3"
+ * length="12216320" type="audio/mpeg" /></p>
  * 
- * A use-case narrative for this element is <a
- * href="http://www.thetwowayweb.com/payloadsforrss">here</a>.
+ * <p>A use-case narrative for this element is <a
+ * href="http://www.thetwowayweb.com/payloadsforrss">here</a>.</p>
  * 
  * @author Bill Brown
  * 
@@ -143,7 +145,7 @@ public class Enclosure implements Serializable {
 	}
 
 	/**
-	 * Shows the contents of the <enclosure> element.
+	 * Shows the contents of the &lt;enclosure> element.
 	 */
 	@Override
 	public String toString() {

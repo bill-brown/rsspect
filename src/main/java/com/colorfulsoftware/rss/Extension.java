@@ -22,7 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class can be used to add extended namespace elements.
+ * <p>The external namespace extension element.</p>
+ * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
+ * <p>This class can be used to add extended namespace elements.</p>
  * 
  * @author Bill Brown
  * 
