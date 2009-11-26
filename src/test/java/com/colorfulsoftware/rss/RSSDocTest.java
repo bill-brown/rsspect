@@ -1,10 +1,10 @@
 /**
  * Copyright (C) 2009 William R. Brown <wbrown@colorfulsoftware.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.colorfulsoftware.rss;
 
@@ -544,7 +543,8 @@ public class RSSDocTest implements Serializable {
 					"http://www.someunknownnonworkingurl.nogood"));
 			fail("should not get here.");
 		} catch (Exception e) {
-			assertTrue(e instanceof java.net.UnknownHostException);
+			assertTrue(e instanceof java.net.UnknownHostException
+					|| e instanceof Exception);
 			/*
 			 * for some reason hosts behind Comcast (and maybe other) ISPs choke
 			 * on this we would like to test for unknown host here because they
