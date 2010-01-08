@@ -21,15 +21,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>The &lt;skipDays> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>A hint for aggregators telling them which days they can skip. More info <a
+ * <p>
+ * The &lt;skipDays> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * A hint for aggregators telling them which days they can skip. More info <a
  * href
- * ="http://cyber.law.harvard.edu/rss/skipHoursDays.html#skipdays">here</a>.</p>
+ * ="http://cyber.law.harvard.edu/rss/skipHoursDays.html#skipdays">here</a>.
+ * </p>
  * 
- * <p>An XML element that contains up to seven &lt;day> sub-elements whose value is
+ * <p>
+ * An XML element that contains up to seven &lt;day> sub-elements whose value is
  * Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday. Aggregators
- * may not read the channel during days listed in the &lt;skipDays> element.</p>
+ * may not read the channel during days listed in the &lt;skipDays> element.
+ * </p>
  * 
  * @author Bill Brown
  * 

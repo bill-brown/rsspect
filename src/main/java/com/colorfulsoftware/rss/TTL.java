@@ -19,21 +19,34 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;ttl> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>ttl stands for time to live. It's a number of minutes that indicates how long
+ * <p>
+ * The &lt;ttl> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * ttl stands for time to live. It's a number of minutes that indicates how long
  * a channel can be cached before refreshing from the source. More info <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltttlgtSubelementOfLtchannelgt"
- * >here</a>.</p>
+ * >here</a>.
+ * </p>
  * 
- * <p>&lt;ttl> is an optional sub-element of &lt;channel>.</p>
+ * <p>
+ * &lt;ttl> is an optional sub-element of &lt;channel>.
+ * </p>
  * 
- * <p>ttl stands for time to live. It's a number of minutes that indicates how long
+ * <p>
+ * ttl stands for time to live. It's a number of minutes that indicates how long
  * a channel can be cached before refreshing from the source. This makes it
  * possible for RSS sources to be managed by a file-sharing network such as
- * Gnutella.</p>
+ * Gnutella.
+ * </p>
  * 
- * <p>Example: <ttl>60</ttl></p>
+ * <p>
+ * Example: <ttl>60</ttl>
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -44,8 +57,15 @@ public class TTL implements Serializable {
 
 	private final String ttl;
 
-	TTL(String ttl) {
+	TTL(String ttl) throws RSSpectException {
+		if (ttl == null || ttl.equals("")) {
+			throw new RSSpectException("ttl SHOULD NOT be blank.");
+		}
 		this.ttl = ttl;
+	}
+
+	TTL(TTL ttl) {
+		this.ttl = ttl.ttl;
 	}
 
 	/**

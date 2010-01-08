@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;name> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>The name of the text object in the text input area.</p>
+ * <p>
+ * The &lt;name> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * The name of the text object in the text input area.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -32,8 +39,15 @@ public class Name implements Serializable {
 
 	private final String name;
 
-	Name(String name) {
+	Name(String name) throws RSSpectException {
+		if (name == null || name.equals("")) {
+			throw new RSSpectException("name SHOULD NOT be blank.");
+		}
 		this.name = name;
+	}
+
+	Name(Name name) {
+		this.name = name.name;
 	}
 
 	/**

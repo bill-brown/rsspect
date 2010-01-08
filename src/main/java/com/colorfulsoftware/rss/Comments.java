@@ -19,20 +19,35 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;comments> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>URL of a page for comments relating to the item. <a href=
+ * <p>
+ * The &lt;comments> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * URL of a page for comments relating to the item. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltcommentsgtSubelementOfLtitemgt"
- * >More</a>.</p>
+ * >More</a>.
+ * </p>
  * 
- * <p>&lt;comments> is an optional sub-element of &lt;item>.</p>
+ * <p>
+ * &lt;comments> is an optional sub-element of &lt;item>.
+ * </p>
  * 
- * <p>If present, it is the url of the comments page for the item.</p>
+ * <p>
+ * If present, it is the url of the comments page for the item.
+ * </p>
  * 
- * <p>&lt;comments>http://ekzemplo.com/entry/4403/comments&lt;/comments></p>
+ * <p>
+ * &lt;comments>http://ekzemplo.com/entry/4403/comments&lt;/comments>
+ * </p>
  * 
- * <p>More about comments <a
- * href="http://cyber.law.harvard.edu/rss/weblogComments.html">here</a>.</p>
+ * <p>
+ * More about comments <a
+ * href="http://cyber.law.harvard.edu/rss/weblogComments.html">here</a>.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -46,8 +61,15 @@ public class Comments implements Serializable {
 
 	private final String comments;
 
-	Comments(String comments) {
+	Comments(String comments) throws RSSpectException {
+		if (comments == null || comments.equals("")) {
+			throw new RSSpectException("comments SHOULD NOT be blank.");
+		}
 		this.comments = comments;
+	}
+
+	Comments(Comments comments) {
+		this.comments = comments.comments;
 	}
 
 	/**

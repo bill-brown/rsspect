@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;width> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Maximum value for width is 144, default value is 88.</p>
+ * <p>
+ * The &lt;width> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Maximum value for width is 144, default value is 88.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -36,22 +43,26 @@ public class Width implements Serializable {
 	private final String width;
 
 	Width(String width) throws RSSpectException {
-		if (width != null) {
-			try {
-				int localWidth = Integer.parseInt(width);
-				if (localWidth > 144) {
-					throw new RSSpectException(
-							"width cannot be greater than 144px.");
-				}
-			} catch (NumberFormatException n) {
-				throw new RSSpectException("invalid number format for width.");
-			}
+
+		if (width == null || width.equals("")) {
+			throw new RSSpectException("width SHOULD NOT be blank.");
 		}
+
+		try {
+			int localWidth = Integer.parseInt(width);
+			if (localWidth > 144) {
+				throw new RSSpectException(
+						"width cannot be greater than 144px.");
+			}
+		} catch (NumberFormatException n) {
+			throw new RSSpectException("invalid number format for width.");
+		}
+
 		this.width = width;
 	}
 
 	Width(Width width) {
-		this.width = width.getWidth();
+		this.width = width.width;
 	}
 
 	/**

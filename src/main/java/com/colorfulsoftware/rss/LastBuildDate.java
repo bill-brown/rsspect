@@ -20,9 +20,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>The &lt;lastBuildDate> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>The last time the content of the channel changed.</p>
+ * <p>
+ * The &lt;lastBuildDate> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * The last time the content of the channel changed.
+ * </p>
  * 
  * @author Bill Brown
  * 

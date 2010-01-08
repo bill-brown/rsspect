@@ -19,10 +19,17 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;hour> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>This class returns the hour sub element of the &lt;skipHours> element. Valid
- * values are 0 - 23.</p>
+ * <p>
+ * The &lt;hour> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * This class returns the hour sub element of the &lt;skipHours> element. Valid
+ * values are 0 - 23.
+ * </p>
  * 
  * @author bill
  * 
@@ -34,22 +41,26 @@ public class Hour implements Serializable {
 	private final String hour;
 
 	Hour(String hour) throws RSSpectException {
-		if (hour != null) {
-			try {
-				int localHour = Integer.parseInt(hour);
-				if (localHour > 23 || localHour < 0) {
-					throw new RSSpectException(
-							"hour elements must be between 0 and 23 inclusive.");
-				}
-			} catch (NumberFormatException n) {
-				throw new RSSpectException("invalid number format for hour.");
-			}
+
+		if (hour == null || hour.equals("")) {
+			throw new RSSpectException("hour SHOULD NOT be blank.");
 		}
+
+		try {
+			int localHour = Integer.parseInt(hour);
+			if (localHour > 23 || localHour < 0) {
+				throw new RSSpectException(
+						"hour elements must be between 0 and 23 inclusive.");
+			}
+		} catch (NumberFormatException n) {
+			throw new RSSpectException("invalid number format for hour.");
+		}
+
 		this.hour = hour;
 	}
 
 	Hour(Hour hour) {
-		this.hour = hour.getHour();
+		this.hour = hour.hour;
 	}
 
 	/**

@@ -50,7 +50,8 @@ import javax.xml.stream.XMLStreamWriter;
  * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">RSS myRSS = new RSSDoc().readRSSToBean(new URL("http://www.abcdefg.net/myRSS.xml");</code>
  * </li>
  * <li>Read an RSS bean into a String.<br />
- * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = myRSS.toString();</code></li>
+ * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = myRSS.toString();</code>
+ * </li>
  * <li>Read an RSS bean into a formatted String.<br />
  * <code style="margin-left:20px;padding-bottom:10px;font-style: italic;">String myRssStr = new RSSDoc().readRSSToString(myRSS, "javanet.staxutils.IndentingXMLStreamWriter");</code>
  * </li>
@@ -123,7 +124,7 @@ public final class RSSDoc implements Serializable {
 	 *         RSSpect.
 	 */
 	public Generator getLibVersion() {
-		return new Generator(libVersion.getGenerator());
+		return new Generator(libVersion);
 	}
 
 	/**
@@ -340,8 +341,10 @@ public final class RSSDoc implements Serializable {
 	 * @param author
 	 *            the author element. (required)
 	 * @return an immutable Author object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Author buildAuthor(String author) {
+	public Author buildAuthor(String author) throws RSSpectException {
 		return new Author(author);
 	}
 
@@ -439,8 +442,10 @@ public final class RSSDoc implements Serializable {
 	 * @param comments
 	 *            the comments.
 	 * @return an immutable Comments object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Comments buildComments(String comments) {
+	public Comments buildComments(String comments) throws RSSpectException {
 		return new Comments(comments);
 	}
 
@@ -449,8 +454,10 @@ public final class RSSDoc implements Serializable {
 	 * @param copyright
 	 *            the copyright.
 	 * @return an immutable Copyright object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Copyright buildCopyright(String copyright) {
+	public Copyright buildCopyright(String copyright) throws RSSpectException {
 		return new Copyright(copyright);
 	}
 
@@ -459,8 +466,11 @@ public final class RSSDoc implements Serializable {
 	 * @param description
 	 *            the description.
 	 * @return an immutable Description object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Description buildDescription(String description) {
+	public Description buildDescription(String description)
+			throws RSSpectException {
 		return new Description(description);
 	}
 
@@ -469,8 +479,10 @@ public final class RSSDoc implements Serializable {
 	 * @param docs
 	 *            the documentation information.
 	 * @return an immutable Docs object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Docs buildDocs(String docs) {
+	public Docs buildDocs(String docs) throws RSSpectException {
 		return new Docs(docs);
 	}
 
@@ -508,8 +520,10 @@ public final class RSSDoc implements Serializable {
 	 * @param text
 	 *            the text content.
 	 * @return an immutable Generator object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Generator buildGenerator(String text) {
+	public Generator buildGenerator(String text) throws RSSpectException {
 		return new Generator(text);
 	}
 
@@ -520,8 +534,11 @@ public final class RSSDoc implements Serializable {
 	 * @param guid
 	 *            the guid data.
 	 * @return an immutable GUID object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public GUID buildGUID(Attribute isPermaLink, String guid) {
+	public GUID buildGUID(Attribute isPermaLink, String guid)
+			throws RSSpectException {
 		return new GUID(isPermaLink, guid);
 	}
 
@@ -601,8 +618,10 @@ public final class RSSDoc implements Serializable {
 	 * @param language
 	 *            the language.
 	 * @return an immutable Language object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Language buildLanguage(String language) {
+	public Language buildLanguage(String language) throws RSSpectException {
 		return new Language(language);
 	}
 
@@ -636,8 +655,11 @@ public final class RSSDoc implements Serializable {
 	 * @param managingEditor
 	 *            the managing editor.
 	 * @return an immutable ManagingEditor object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public ManagingEditor buildManagingEditor(String managingEditor) {
+	public ManagingEditor buildManagingEditor(String managingEditor)
+			throws RSSpectException {
 		return new ManagingEditor(managingEditor);
 	}
 
@@ -646,8 +668,10 @@ public final class RSSDoc implements Serializable {
 	 * @param name
 	 *            the name.
 	 * @return an immutable Name object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Name buildName(String name) {
+	public Name buildName(String name) throws RSSpectException {
 		return new Name(name);
 	}
 
@@ -668,8 +692,10 @@ public final class RSSDoc implements Serializable {
 	 * @param rating
 	 *            the rating information.
 	 * @return an immutable Rating object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Rating buildRating(String rating) {
+	public Rating buildRating(String rating) throws RSSpectException {
 		return new Rating(rating);
 	}
 
@@ -759,8 +785,10 @@ public final class RSSDoc implements Serializable {
 	 * @param title
 	 *            the title.
 	 * @return an immutable Title object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public Title buildTitle(String title) {
+	public Title buildTitle(String title) throws RSSpectException {
 		return new Title(title);
 	}
 
@@ -769,8 +797,10 @@ public final class RSSDoc implements Serializable {
 	 * @param ttl
 	 *            the time to live.
 	 * @return an immutable TTL object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public TTL buildTTL(String ttl) {
+	public TTL buildTTL(String ttl) throws RSSpectException {
 		return new TTL(ttl);
 	}
 
@@ -791,8 +821,10 @@ public final class RSSDoc implements Serializable {
 	 * @param webMaster
 	 *            the web master.
 	 * @return an immutable WebMaster object.
+	 * @throws RSSpectException
+	 *             if the format of the data is not valid.
 	 */
-	public WebMaster buildWebMaster(String webMaster) {
+	public WebMaster buildWebMaster(String webMaster) throws RSSpectException {
 		return new WebMaster(webMaster);
 	}
 

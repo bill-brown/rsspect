@@ -21,15 +21,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>The &lt;channel> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>A channel may contain any number of &lt;item>s. An item may represent a
+ * <p>
+ * The &lt;channel> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * A channel may contain any number of &lt;item>s. An item may represent a
  * "story" -- much like a story in a newspaper or magazine; if so its
  * description is a synopsis of the story, and the link points to the full
  * story. An item may also be complete in itself, if so, the description
  * contains the text (entity-encoded HTML is allowed; see examples), and the
  * link and title may be omitted. All elements of an item are optional, however
- * at least one of title or description must be present.</p>
+ * at least one of title or description must be present.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -115,14 +122,11 @@ public class Channel implements Serializable {
 		}
 		this.description = new Description(description.getDescription());
 
-		this.language = (language == null) ? null : new Language(language
-				.getLanguage());
-		this.copyright = (copyright == null) ? null : new Copyright(copyright
-				.getCopyright());
+		this.language = (language == null) ? null : new Language(language);
+		this.copyright = (copyright == null) ? null : new Copyright(copyright);
 		this.managingEditor = (managingEditor == null) ? null
-				: new ManagingEditor(managingEditor.getManagingEditor());
-		this.webMaster = (webMaster == null) ? null : new WebMaster(webMaster
-				.getWebMaster());
+				: new ManagingEditor(managingEditor);
+		this.webMaster = (webMaster == null) ? null : new WebMaster(webMaster);
 		this.pubDate = (pubDate == null) ? null : new PubDate(pubDate
 				.getDateTime());
 		this.lastBuildDate = (lastBuildDate == null) ? null
@@ -193,7 +197,7 @@ public class Channel implements Serializable {
 	 * @return the title.
 	 */
 	public Title getTitle() {
-		return new Title(title.getTitle());
+		return new Title(title);
 	}
 
 	/**
@@ -214,15 +218,14 @@ public class Channel implements Serializable {
 	 * @return the language element.
 	 */
 	public Language getLanguage() {
-		return (language == null) ? null : new Language(language.getLanguage());
+		return (language == null) ? null : new Language(language);
 	}
 
 	/**
 	 * @return the copyright element
 	 */
 	public Copyright getCopyright() {
-		return (copyright == null) ? null : new Copyright(copyright
-				.getCopyright());
+		return (copyright == null) ? null : new Copyright(copyright);
 	}
 
 	/**
@@ -230,15 +233,14 @@ public class Channel implements Serializable {
 	 */
 	public ManagingEditor getManagingEditor() {
 		return (managingEditor == null) ? null : new ManagingEditor(
-				managingEditor.getManagingEditor());
+				managingEditor);
 	}
 
 	/**
 	 * @return the webmaster element.
 	 */
 	public WebMaster getWebMaster() {
-		return (webMaster == null) ? null : new WebMaster(webMaster
-				.getWebMaster());
+		return (webMaster == null) ? null : new WebMaster(webMaster);
 	}
 
 	/**
@@ -275,15 +277,14 @@ public class Channel implements Serializable {
 	 * @return the generator element.
 	 */
 	public Generator getGenerator() {
-		return (generator == null) ? null : new Generator(generator
-				.getGenerator());
+		return (generator == null) ? null : new Generator(generator);
 	}
 
 	/**
 	 * @return the docs element.
 	 */
 	public Docs getDocs() {
-		return (docs == null) ? null : new Docs(docs.getDocs());
+		return (docs == null) ? null : new Docs(docs);
 	}
 
 	/**
@@ -297,7 +298,7 @@ public class Channel implements Serializable {
 	 * @return the ttl element.
 	 */
 	public TTL getTtl() {
-		return (ttl == null) ? null : new TTL(ttl.getTtl());
+		return (ttl == null) ? null : new TTL(ttl);
 	}
 
 	/**
@@ -311,7 +312,7 @@ public class Channel implements Serializable {
 	 * @return the rating element.
 	 */
 	public Rating getRating() {
-		return (rating == null) ? null : new Rating(rating.getRating());
+		return (rating == null) ? null : new Rating(rating);
 	}
 
 	/**

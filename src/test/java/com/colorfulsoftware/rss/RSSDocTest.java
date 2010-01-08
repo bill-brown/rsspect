@@ -613,7 +613,7 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertTrue(e.getMessage().startsWith(
-					"error trying to create the date element:"));
+					"error trying to create the date element with string: "));
 		}
 
 		try {
@@ -661,8 +661,7 @@ public class RSSDocTest implements Serializable {
 			rssDoc.buildAttribute(null, "null");
 			fail("should not get here");
 		} catch (RSSpectException r) {
-			assertEquals(r.getMessage(),
-					"Attributes SHOULD NOT be null and SHOULD NOT be blank.");
+			assertEquals(r.getMessage(), "Attribute names SHOULD NOT be blank.");
 		}
 	}
 
@@ -708,6 +707,430 @@ public class RSSDocTest implements Serializable {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
+
+		try {
+			rssDoc.buildAttribute(null, null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "Attribute names SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildAttribute("", null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "Attribute names SHOULD NOT be blank.");
+		}
+
+		try {
+			Attribute attr = rssDoc.buildAttribute("yep", null);
+			assertNotNull(attr);
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+		try {
+			Attribute attr = rssDoc.buildAttribute("yep", "");
+			assertNotNull(attr);
+			Attribute attr2 = rssDoc.buildAttribute("yep", "");
+			assertTrue(attr.equals(attr2));
+			attr2 = rssDoc.buildAttribute("yep", null);
+			assertTrue(attr.equals(attr2));
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building an author
+	 */
+	@Test
+	public void testBuildAuthor() {
+		try {
+			rssDoc.buildAuthor(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "Author names SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildAuthor("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "Author names SHOULD NOT be blank.");
+		}
+
+		try {
+			Author author = rssDoc.buildAuthor("someone");
+			assertNotNull(author);
+			assertEquals(author.getAuthor(), "someone");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+	}
+
+	/**
+	 * tests building an copyright
+	 */
+	@Test
+	public void testBuildCopyright() {
+		try {
+			rssDoc.buildCopyright(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "copyright SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildCopyright("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "copyright SHOULD NOT be blank.");
+		}
+
+		try {
+			Copyright copyright = rssDoc.buildCopyright("GPL man.");
+			assertNotNull(copyright);
+			assertEquals(copyright.getCopyright(), "GPL man.");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+	}
+
+	/**
+	 * tests building a day element
+	 */
+	@Test
+	public void testBuildDay() {
+		try {
+			rssDoc.buildDay(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "day SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildDay("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "day SHOULD NOT be blank.");
+		}
+
+		try {
+			Day day = rssDoc.buildDay("Thursday");
+			assertNotNull(day);
+			assertEquals(day.getDay(), "Thursday");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+	}
+
+	/**
+	 * tests building a hour element
+	 */
+	@Test
+	public void testBuildHour() {
+		try {
+			rssDoc.buildHour(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "hour SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildHour("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "hour SHOULD NOT be blank.");
+		}
+
+		try {
+			Hour hour = rssDoc.buildHour("22");
+			assertNotNull(hour);
+			assertEquals(hour.getHour(), "22");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a ttl element
+	 */
+	@Test
+	public void testBuildTTL() {
+		try {
+			rssDoc.buildTTL(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "ttl SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildTTL("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "ttl SHOULD NOT be blank.");
+		}
+
+		try {
+			TTL ttl = rssDoc.buildTTL("10000");
+			assertNotNull(ttl);
+			assertEquals(ttl.getTtl(), "10000");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a title element
+	 */
+	@Test
+	public void testBuildTitle() {
+		try {
+			rssDoc.buildTitle(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "title SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildTitle("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "title SHOULD NOT be blank.");
+		}
+
+		try {
+			Title title = rssDoc.buildTitle("the title");
+			assertNotNull(title);
+			assertEquals(title.getTitle(), "the title");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a webMaster element
+	 */
+	@Test
+	public void testBuildWebMaster() {
+		try {
+			rssDoc.buildWebMaster(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "webMaster SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildWebMaster("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "webMaster SHOULD NOT be blank.");
+		}
+
+		try {
+			WebMaster webMaster = rssDoc.buildWebMaster("dude man");
+			assertNotNull(webMaster);
+			assertEquals(webMaster.getWebMaster(), "dude man");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a name element
+	 */
+	@Test
+	public void testBuildName() {
+		try {
+			rssDoc.buildName(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "name SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildName("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "name SHOULD NOT be blank.");
+		}
+
+		try {
+			Name name = rssDoc.buildName("someone special");
+			assertNotNull(name);
+			assertEquals(name.getName(), "someone special");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a rating element
+	 */
+	@Test
+	public void testBuildRating() {
+		try {
+			rssDoc.buildRating(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "rating SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildRating("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "rating SHOULD NOT be blank.");
+		}
+
+		try {
+			Rating rating = rssDoc
+					.buildRating("suds 0.5 density 0 color/hue 1");
+			assertNotNull(rating);
+			assertEquals(rating.getRating(), "suds 0.5 density 0 color/hue 1");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a language element
+	 */
+	@Test
+	public void testBuildLanguage() {
+		try {
+			rssDoc.buildLanguage(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "language SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildLanguage("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "language SHOULD NOT be blank.");
+		}
+
+		try {
+			Language language = rssDoc.buildLanguage("en-US");
+			assertNotNull(language);
+			assertEquals(language.getLanguage(), "en-US");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+	}
+
+	/**
+	 * tests building a docs element
+	 */
+	@Test
+	public void testBuildDocs() {
+		try {
+			rssDoc.buildDocs(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "docs SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildDocs("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "docs SHOULD NOT be blank.");
+		}
+
+		try {
+			Docs docs = rssDoc
+					.buildDocs("http://www.colorfulsoftware.com/projects/rsspect/api");
+			assertNotNull(docs);
+			assertEquals(docs.getDocs(),
+					"http://www.colorfulsoftware.com/projects/rsspect/api");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+	}
+
+	/**
+	 * tests building a guid element
+	 */
+	@Test
+	public void testBuildGUID() {
+		try {
+			rssDoc
+					.buildGUID(rssDoc.buildAttribute("isPermaLink", "true"),
+							null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "guid SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildGUID(rssDoc.buildAttribute("isPermaLink", "true"), "");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "guid SHOULD NOT be blank.");
+		}
+
+		try {
+			GUID guid = rssDoc.buildGUID(null,
+					"http://www.colorfulsoftware.com/projects/rsspect/api");
+			assertNotNull(guid);
+			assertEquals(guid.getGuid(),
+					"http://www.colorfulsoftware.com/projects/rsspect/api");
+			assertNull(guid.getIsPermaLink());
+			assertNotNull(guid.toString());
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+		try {
+			GUID guid = rssDoc.buildGUID(rssDoc.buildAttribute("isPermaLink",
+					"true"),
+					"http://www.colorfulsoftware.com/projects/rsspect/api");
+			assertNotNull(guid);
+			assertEquals(guid.getGuid(),
+					"http://www.colorfulsoftware.com/projects/rsspect/api");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
+	}
+
+	/**
+	 * tests building a generator element
+	 */
+	@Test
+	public void testBuildGenerator() {
+		try {
+			rssDoc.buildGenerator(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "generator SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildGenerator("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "generator SHOULD NOT be blank.");
+		}
+
+		try {
+			Generator generator = rssDoc
+					.buildGenerator("http://www.colorfulsoftware.com/projects/rsspect/api");
+			assertNotNull(generator);
+			assertEquals(generator.getGenerator(),
+					"http://www.colorfulsoftware.com/projects/rsspect/api");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
 	}
 
 	/**
@@ -899,6 +1322,15 @@ public class RSSDocTest implements Serializable {
 			attrs.add(rssDoc.buildAttribute("protocol", "soap"));
 			assertNotNull(rssDoc.buildCloud(attrs));
 
+			attrs = new LinkedList<Attribute>();
+			attrs.add(rssDoc.buildAttribute("domain", "domain"));
+			attrs.add(rssDoc.buildAttribute("port", "port"));
+			attrs.add(rssDoc.buildAttribute("path", "path"));
+			attrs.add(rssDoc.buildAttribute("registerProcedure",
+					"registerProcedure"));
+			attrs.add(rssDoc.buildAttribute("protocol", "xml-rpc"));
+			assertNotNull(rssDoc.buildCloud(attrs));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
@@ -926,6 +1358,28 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
+		}
+
+		try {
+			rssDoc.buildComments(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "comments SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildComments("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "comments SHOULD NOT be blank.");
+		}
+
+		try {
+			Comments comments = rssDoc.buildComments("these are comments");
+			assertNotNull(comments);
+			assertEquals(comments.getComments(), "these are comments");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
 		}
 	}
 
@@ -1080,6 +1534,28 @@ public class RSSDocTest implements Serializable {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
 		}
+
+		try {
+			rssDoc.buildHeight(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "height SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildHeight("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "height SHOULD NOT be blank.");
+		}
+
+		try {
+			Height height = rssDoc.buildHeight("400");
+			assertNotNull(height);
+			assertEquals(height.getHeight(), "400");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
 	}
 
 	/**
@@ -1220,11 +1696,21 @@ public class RSSDocTest implements Serializable {
 	@Test
 	public void testBuildLastBuildDate() {
 		try {
-			LastBuildDate lastBuildDate = rssDoc.buildLastBuildDate(null);
-			assertNotNull(lastBuildDate);
-			assertNull(lastBuildDate.getDateTime());
-			assertNull(lastBuildDate.getText());
+			rssDoc.buildLastBuildDate(null);
+			fail("should not fail here.");
 		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"the date for this element SHOULD NOT be blank.");
+		}
+
+		try {
+			LastBuildDate lastBuildDate = rssDoc.buildLastBuildDate(Calendar
+					.getInstance().getTime().toString());
+			assertNotNull(lastBuildDate);
+			assertNotNull(lastBuildDate.getDateTime());
+			assertNotNull(lastBuildDate.getText());
+		} catch (RSSpectException r) {
+			r.printStackTrace();
 			fail("should not fail here.");
 		}
 	}
@@ -1235,26 +1721,21 @@ public class RSSDocTest implements Serializable {
 	@Test
 	public void testBuildLink() {
 		try {
-			Link link = rssDoc.buildLink(null);
-			assertNotNull(link);
-			assertNull(link.getLink());
+			rssDoc.buildLink(null);
 		} catch (RSSpectException r) {
-			fail("should not fail here.");
+			assertEquals(r.getMessage(), "link SHOULD NOT be blank.");
 		}
 
 		try {
-			Link link = rssDoc.buildLink("");
-			assertNotNull(link);
-			assertNotNull(link.getLink());
-			assertTrue(link.getLink().length() == 0);
+			rssDoc.buildLink("");
 		} catch (RSSpectException r) {
-			fail("should not fail here.");
+			assertEquals(r.getMessage(), "link SHOULD NOT be blank.");
 		}
 
 		try {
 			Link link = rssDoc.buildLink(" ");
 			assertNotNull(link);
-			fail("we should have thrown an exception above.");
+			fail("should not fail here.");
 		} catch (RSSpectException r) {
 			assertEquals(
 					r.getMessage(),
@@ -1266,7 +1747,7 @@ public class RSSDocTest implements Serializable {
 		try {
 			Link link = rssDoc.buildLink("abcScheme://testMe");
 			assertNotNull(link);
-			fail("we should have thrown an exception above.");
+			fail("should not fail here.");
 		} catch (RSSpectException r) {
 			assertEquals(
 					r.getMessage(),
@@ -1293,6 +1774,29 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			fail("should not fail here.");
 		}
+
+		try {
+			rssDoc.buildManagingEditor(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "managingEditor SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildManagingEditor("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "managingEditor SHOULD NOT be blank.");
+		}
+
+		try {
+			ManagingEditor managingEditor = rssDoc.buildManagingEditor("you");
+			assertNotNull(managingEditor);
+			assertEquals(managingEditor.getManagingEditor(), "you");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
+
 	}
 
 	/**
@@ -1301,11 +1805,20 @@ public class RSSDocTest implements Serializable {
 	@Test
 	public void testBuildPubDate() {
 		try {
-			PubDate pubDate = rssDoc.buildPubDate(null);
-			assertNotNull(pubDate);
-			assertNull(pubDate.getDateTime());
-			assertNull(pubDate.getText());
+			rssDoc.buildPubDate(null);
 		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"the date for this element SHOULD NOT be blank.");
+		}
+
+		try {
+			PubDate pubDate = rssDoc.buildPubDate(Calendar.getInstance()
+					.getTime().toString());
+			assertNotNull(pubDate);
+			assertNotNull(pubDate.getDateTime());
+			assertNotNull(pubDate.getText());
+		} catch (RSSpectException r) {
+			r.printStackTrace();
 			fail("should not fail here.");
 		}
 	}
@@ -1406,6 +1919,17 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			List<Hour> hours = new LinkedList<Hour>();
+			hours.add(rssDoc.buildHour("-2"));
+			SkipHours skipHours = rssDoc.buildSkipHours(hours);
+			assertNotNull(skipHours);
+			fail("we should have thrown an exception above.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(),
+					"hour elements must be between 0 and 23 inclusive.");
+		}
+
+		try {
+			List<Hour> hours = new LinkedList<Hour>();
 			hours.add(rssDoc.buildHour("cat"));
 			SkipHours skipHours = rssDoc.buildSkipHours(hours);
 			assertNotNull(skipHours);
@@ -1475,6 +1999,31 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			fail("should not fail here.");
 		}
+
+		try {
+			rssDoc.buildSource(rssDoc.buildAttribute("url",
+					"http://www.colorfulsoftware.com"), null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "source SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildSource(rssDoc.buildAttribute("url",
+					"http://www.colorfulsoftware.com"), "");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "source SHOULD NOT be blank.");
+		}
+
+		try {
+			Source source = rssDoc.buildSource(rssDoc.buildAttribute("url",
+					"http://www.colorfulsoftware.com"), "Colorful Software");
+			assertNotNull(source);
+			assertEquals(source.getSource(), "Colorful Software");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
+		}
 	}
 
 	/**
@@ -1501,6 +2050,12 @@ public class RSSDocTest implements Serializable {
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(),
 					"textInput elements MUST contain a description element.");
+		}
+
+		try {
+			assertNotNull(rssDoc.buildDescription(null));
+		} catch (RSSpectException r) {
+			fail("should not get here.");
 		}
 
 		try {
@@ -1543,25 +2098,21 @@ public class RSSDocTest implements Serializable {
 	@Test
 	public void testBuildURL() {
 		try {
-			URL url = rssDoc.buildURL(null);
-			assertNotNull(url);
-			assertNull(url.getUrl());
+			rssDoc.buildURL(null);
+			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
-			fail("should not fail here.");
+			assertEquals(r.getMessage(), "url SHOULD NOT be blank.");
 		}
 
 		try {
-			URL url = rssDoc.buildURL("");
-			assertNotNull(url);
-			assertNotNull(url.getUrl());
-			assertTrue(url.getUrl().length() == 0);
+			rssDoc.buildURL("");
+			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
-			fail("should not fail here.");
+			assertEquals(r.getMessage(), "url SHOULD NOT be blank.");
 		}
 
 		try {
-			URL url = rssDoc.buildURL(" ");
-			assertNotNull(url);
+			rssDoc.buildURL(" ");
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
 			assertEquals(
@@ -1616,6 +2167,28 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
+		}
+
+		try {
+			rssDoc.buildWidth(null);
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "width SHOULD NOT be blank.");
+		}
+
+		try {
+			rssDoc.buildWidth("");
+			fail("should not get here.");
+		} catch (RSSpectException r) {
+			assertEquals(r.getMessage(), "width SHOULD NOT be blank.");
+		}
+
+		try {
+			Width width = rssDoc.buildWidth("144");
+			assertNotNull(width);
+			assertEquals(width.getWidth(), "144");
+		} catch (RSSpectException r) {
+			fail("should not get here.");
 		}
 	}
 }

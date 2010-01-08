@@ -22,7 +22,9 @@ import java.util.List;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * <p>Used by the RSSDoc to write a RSS bean to a xml file or java String.</p>
+ * <p>
+ * Used by the RSSDoc to write a RSS bean to a xml file or java String.
+ * </p>
  * 
  * @author Bill Brown
  * 

@@ -19,11 +19,20 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;link> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>For Channel: The URL to the HTML website corresponding to the channel.</p>
+ * <p>
+ * The &lt;link> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * For Channel: The URL to the HTML website corresponding to the channel.
+ * </p>
  * 
- * <p>For Item: The URL of the item.</p>
+ * <p>
+ * For Item: The URL of the item.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -38,26 +47,26 @@ public class Link implements Serializable {
 	private final String link;
 
 	Link(String link) throws RSSpectException {
-		if (link != null && link.length() > 0) {
-			String linkLocal = link.trim();
-			if (linkLocal.length() > 0
-					&& new URIScheme().contains(linkLocal.substring(0,
-							linkLocal.indexOf(":")))) {
-				this.link = link;
-			} else {
-				throw new RSSpectException(
-						"link elements must start with a valid "
-								+ "Uniform Resource Identifer (URI) Schemes.  "
-								+ "See http://www.iana.org. Yours started with: '"
-								+ link + "'");
-			}
-		} else {
+
+		if (link == null || link.equals("")) {
+			throw new RSSpectException("link SHOULD NOT be blank.");
+		}
+
+		String linkLocal = link.trim();
+		if (linkLocal.length() > 0
+				&& new URIScheme().contains(linkLocal.substring(0, linkLocal
+						.indexOf(":")))) {
 			this.link = link;
+		} else {
+			throw new RSSpectException("link elements must start with a valid "
+					+ "Uniform Resource Identifer (URI) Schemes.  "
+					+ "See http://www.iana.org. Yours started with: '" + link
+					+ "'");
 		}
 	}
 
 	Link(Link link) {
-		this.link = link.getLink();
+		this.link = link.link;
 	}
 
 	/**

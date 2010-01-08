@@ -19,25 +19,40 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;source> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>The RSS channel that the item came from. <a href=
+ * <p>
+ * The &lt;source> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * The RSS channel that the item came from. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltsourcegtSubelementOfLtitemgt"
- * >More</a>.</p>
+ * >More</a>.
+ * </p>
  * 
- * <p>&lt;source> is an optional sub-element of &lt;item>.</p>
+ * <p>
+ * &lt;source> is an optional sub-element of &lt;item>.
+ * </p>
  * 
- * <p>Its value is the name of the RSS channel that the item came from, derived
+ * <p>
+ * Its value is the name of the RSS channel that the item came from, derived
  * from its &lt;title>. It has one required attribute, url, which links to the
- * XMLization of the source.</p>
+ * XMLization of the source.
+ * </p>
  * 
- * <p>&lt;source url="http://www.tomalak.org/links2.xml">Tomalak's
- * Realm&lt;/source></p>
+ * <p>
+ * &lt;source url="http://www.tomalak.org/links2.xml">Tomalak's
+ * Realm&lt;/source>
+ * </p>
  * 
- * <p>The purpose of this element is to propagate credit for links, to publicize
+ * <p>
+ * The purpose of this element is to propagate credit for links, to publicize
  * the sources of news items. It can be used in the Post command of an
  * aggregator. It should be generated automatically when forwarding an item from
- * an aggregator to a weblog authoring tool.</p>
+ * an aggregator to a weblog authoring tool.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -60,12 +75,15 @@ public class Source implements Serializable {
 		}
 		this.url = new Attribute(url.getName(), url.getValue());
 
+		if (source == null || source.equals("")) {
+			throw new RSSpectException("source SHOULD NOT be blank.");
+		}
 		this.source = source;
 	}
 
 	Source(Source source) {
 		this.url = source.getUrl();
-		this.source = source.getSource();
+		this.source = source.source;
 	}
 
 	/**

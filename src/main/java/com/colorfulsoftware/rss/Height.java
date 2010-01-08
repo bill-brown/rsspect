@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;element> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Maximum value for height is 400, default value is 31.</p>
+ * <p>
+ * The &lt;element> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Maximum value for height is 400, default value is 31.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -36,22 +43,26 @@ public class Height implements Serializable {
 	private final String height;
 
 	Height(String height) throws RSSpectException {
-		if (height != null) {
-			try {
-				int localHeight = Integer.parseInt(height);
-				if (localHeight > 400) {
-					throw new RSSpectException(
-							"height cannot be greater than 400px.");
-				}
-			} catch (NumberFormatException n) {
-				throw new RSSpectException("invalid number format for height.");
-			}
+
+		if (height == null || height.equals("")) {
+			throw new RSSpectException("height SHOULD NOT be blank.");
 		}
+
+		try {
+			int localHeight = Integer.parseInt(height);
+			if (localHeight > 400) {
+				throw new RSSpectException(
+						"height cannot be greater than 400px.");
+			}
+		} catch (NumberFormatException n) {
+			throw new RSSpectException("invalid number format for height.");
+		}
+
 		this.height = height;
 	}
 
 	Height(Height height) {
-		this.height = height.getHeight();
+		this.height = height.height;
 	}
 
 	/**

@@ -37,21 +37,40 @@ class RSSDateConstruct implements Serializable {
 	 */
 	RSSDateConstruct(String dateTime) throws RSSpectException {
 
-		if (dateTime == null) {
-			this.dateTime = null;
-			this.text = null;
-		} else {
+		if (dateTime == null || dateTime.trim().equals("")) {
+			throw new RSSpectException(
+					"the date for this element SHOULD NOT be blank.");
+		}
+
+		Date local = null;
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss z");
+		boolean valid = true;
+		try {
+			local = sdf.parse(dateTime);
+		} catch (Exception e1) {
+			valid = false;
+		}
+
+		if (!valid) {
 			try {
-				this.dateTime = new SimpleDateFormat(
-						"EEE, dd MMM yyyy HH:mm:ss z").parse(dateTime);
-				this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-						.format(this.dateTime);
-			} catch (Exception e) {
-				throw new RSSpectException(
-						"error trying to create the date element: "
-								+ e.getMessage());
+				// example: Mon Oct 19 10:52:18 CDT 2009
+				// or: Tue Oct 20 02:48:09 GMT+10:00 2009
+				sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+				local = sdf.parse(dateTime);
+				valid = true;
+			} catch (Exception e4) {
+				valid = false;
 			}
 		}
+
+		if (!valid) {
+			throw new RSSpectException(
+					"error trying to create the date element with string: "
+							+ dateTime);
+		}
+
+		this.text = sdf.format(this.dateTime = new Date(local.getTime()));
 	}
 
 	RSSDateConstruct(Date dateTime) {
@@ -65,7 +84,7 @@ class RSSDateConstruct implements Serializable {
 	 * @return the date timestamp for this element.
 	 */
 	protected Date getDateTime() {
-		return (dateTime == null) ? null : new Date(dateTime.getTime());
+		return new Date(dateTime.getTime());
 	}
 
 	/**

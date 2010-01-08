@@ -21,9 +21,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>The &lt;item> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>A channel may contain any number of &lt;item>s. An item may represent a
+ * <p>
+ * The &lt;item> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * A channel may contain any number of &lt;item>s. An item may represent a
  * "story" -- much like a story in a newspaper or magazine; if so its
  * description is a synopsis of the story, and the link points to the full
  * story. An item may also be complete in itself, if so, the description
@@ -31,7 +37,8 @@ import java.util.List;
  * href="http://cyber.law.harvard.edu/rss/encodingDescriptions.html"
  * >examples</a>), and the link and title may be omitted. All elements of an
  * item are optional, however at least one of title or description must be
- * present.</p>
+ * present.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -135,7 +142,7 @@ public class Item implements Serializable {
 	 * @return the title object.
 	 */
 	public Title getTitle() {
-		return (title == null) ? null : new Title(title.getTitle());
+		return (title == null) ? null : new Title(title);
 	}
 
 	/**
@@ -157,7 +164,7 @@ public class Item implements Serializable {
 	 * @return the author object.
 	 */
 	public Author getAuthor() {
-		return (author == null) ? null : new Author(author.getAuthor());
+		return (author == null) ? null : new Author(author);
 	}
 
 	/**
@@ -179,7 +186,7 @@ public class Item implements Serializable {
 	 * @return the comments object.
 	 */
 	public Comments getComments() {
-		return (comments == null) ? null : new Comments(comments.getComments());
+		return (comments == null) ? null : new Comments(comments);
 	}
 
 	/**
@@ -193,8 +200,7 @@ public class Item implements Serializable {
 	 * @return the guid object.
 	 */
 	public GUID getGuid() {
-		return (guid == null) ? null : new GUID(guid.getIsPermaLink(), guid
-				.getGuid());
+		return (guid == null) ? null : new GUID(guid);
 	}
 
 	/**

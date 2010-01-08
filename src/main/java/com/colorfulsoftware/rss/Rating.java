@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;rating> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>The <a href="http://www.w3.org/PICS/">PICS</a> rating for the channel.</p>
+ * <p>
+ * The &lt;rating> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * The <a href="http://www.w3.org/PICS/">PICS</a> rating for the channel.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -35,8 +42,15 @@ public class Rating implements Serializable {
 
 	private final String rating;
 
-	Rating(String rating) {
+	Rating(String rating) throws RSSpectException {
+		if (rating == null || rating.equals("")) {
+			throw new RSSpectException("rating SHOULD NOT be blank.");
+		}
 		this.rating = rating;
+	}
+
+	Rating(Rating rating) {
+		this.rating = rating.rating;
 	}
 
 	/**

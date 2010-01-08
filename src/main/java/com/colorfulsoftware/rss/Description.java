@@ -19,11 +19,20 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;description> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>For Channel: Phrase or sentence describing the channel.</p>
+ * <p>
+ * The &lt;description> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * For Channel: Phrase or sentence describing the channel.
+ * </p>
  * 
- * <p>For Item: The item synopsis.</p>
+ * <p>
+ * For Item: The item synopsis.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -35,7 +44,7 @@ public class Description implements Serializable {
 	private final String description;
 
 	Description(String description) {
-		// descriptions can be empty
+		// not sure why, but descriptions can be blank.
 		this.description = (description == null) ? "" : description;
 	}
 

@@ -19,7 +19,9 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>This class contains the attribute definition for elements.</p>
+ * <p>
+ * This class contains the attribute definition for elements.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -33,17 +35,16 @@ public class Attribute implements Serializable {
 	// use the factory method in the RSSDoc.
 	Attribute(String name, String value) throws RSSpectException {
 		if (name == null || name.equals("")) {
-			throw new RSSpectException(
-					"Attributes SHOULD NOT be null and SHOULD NOT be blank.");
+			throw new RSSpectException("Attribute names SHOULD NOT be blank.");
 		}
 		this.name = name;
-		this.value = value;
+		this.value = (value == null) ? "" : value;
 	}
 
 	// copy constructor
 	Attribute(Attribute attribute) {
-		this.name = attribute.getName();
-		this.value = attribute.getValue();
+		this.name = attribute.name;
+		this.value = attribute.value;
 	}
 
 	/**
@@ -69,10 +70,8 @@ public class Attribute implements Serializable {
 	public boolean equals(Object obj) {
 		if (obj instanceof Attribute) {
 			Attribute local = (Attribute) obj;
-			if (local.name != null && local.value != null) {
-				return local.name.equals(this.name)
-						&& local.value.equals(this.value);
-			}
+			return local.name.equals(this.name)
+					&& local.value.equals(this.value);
 		}
 		return false;
 	}

@@ -21,9 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Registered <a href="http://www.iana.org/assignments/uri-schemes.html">Uniform
- * Resource Identifer (URI) Schemes</a></p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Registered <a href="http://www.iana.org/assignments/uri-schemes.html">Uniform
+ * Resource Identifer (URI) Schemes</a>
+ * </p>
  * 
  * @author Bill Brown
  * 

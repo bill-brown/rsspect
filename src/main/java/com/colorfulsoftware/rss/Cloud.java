@@ -21,35 +21,57 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>The &lt;cloud> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Allows processes to register with a cloud to be notified of updates to the
+ * <p>
+ * The &lt;cloud> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Allows processes to register with a cloud to be notified of updates to the
  * channel, implementing a lightweight publish-subscribe protocol for RSS feeds.
- * More info &lt;a href=
- * &quot;http://cyber.law.harvard.edu/rss/rss.html#ltcloudgtSubelementOfLtchannelgt&quot;
- * &gt;here&lt;/a&gt;</p>
+ * More info &lt;a href= &quot;http://cyber.law.harvard.edu/rss/rss.html#
+ * ltcloudgtSubelementOfLtchannelgt&quot; &gt;here&lt;/a&gt;
+ * </p>
  * 
- * <p>&lt;cloud&gt; sub-element of &lt;channel&gt;</p>
+ * <p>
+ * &lt;cloud&gt; sub-element of &lt;channel&gt;
+ * </p>
  * 
- * <p>&lt;cloud&gt; is an optional sub-element of &lt;channel&gt;.</p>
+ * <p>
+ * &lt;cloud&gt; is an optional sub-element of &lt;channel&gt;.
+ * </p>
  * 
- * <p>It specifies a web service that supports the rssCloud interface which can be
- * implemented in HTTP-POST, XML-RPC or SOAP 1.1.</p>
+ * <p>
+ * It specifies a web service that supports the rssCloud interface which can be
+ * implemented in HTTP-POST, XML-RPC or SOAP 1.1.
+ * </p>
  * 
- * <p>Its purpose is to allow processes to register with a cloud to be notified of
+ * <p>
+ * Its purpose is to allow processes to register with a cloud to be notified of
  * updates to the channel, implementing a lightweight publish-subscribe protocol
- * for RSS feeds.</p>
+ * for RSS feeds.
+ * </p>
  * 
- * <p>&lt;cloud domain=&quot;rpc.sys.com&quot; port=&quot;80&quot; path=&quot;/RPC2&quot;
- * registerProcedure=&quot;myCloud.rssPleaseNotify&quot; protocol=&quot;xml-rpc&quot; /&gt;</p>
+ * <p>
+ * &lt;cloud domain=&quot;rpc.sys.com&quot; port=&quot;80&quot;
+ * path=&quot;/RPC2&quot; registerProcedure=&quot;myCloud.rssPleaseNotify&quot;
+ * protocol=&quot;xml-rpc&quot; /&gt;
+ * </p>
  * 
- * <p>In this example, to request notification on the channel it appears in, you
+ * <p>
+ * In this example, to request notification on the channel it appears in, you
  * would send an XML-RPC message to rpc.sys.com on port 80, with a path of
- * /RPC2. The procedure to call is myCloud.rssPleaseNotify.</p>
+ * /RPC2. The procedure to call is myCloud.rssPleaseNotify.
+ * </p>
  * 
- * <p>A full explanation of this element and the rssCloud interface is <a
- * href=&quot;http://cyber.law.harvard.edu/rss/soapMeetsRss.html#rsscloudInterface&quot;
- * &gt;here&lt;/a&gt;.</p>
+ * <p>
+ * A full explanation of this element and the rssCloud interface is <a
+ * href=&quot
+ * ;http://cyber.law.harvard.edu/rss/soapMeetsRss.html#rsscloudInterface&quot;
+ * &gt;here&lt;/a&gt;.
+ * </p>
  * 
  * 
  * @author Bill Brown
@@ -129,48 +151,45 @@ public class Cloud implements Serializable {
 	public List<Attribute> getAttributes() {
 
 		List<Attribute> attrsCopy = new LinkedList<Attribute>();
-		if (this.attributes != null) {
-			for (Attribute attr : this.attributes) {
-				attrsCopy.add(new Attribute(attr));
-			}
+		for (Attribute attr : this.attributes) {
+			attrsCopy.add(new Attribute(attr));
 		}
-		return (this.attributes == null) ? null : attrsCopy;
+		return attrsCopy;
 	}
 
 	/**
 	 * @return the domain attribute.
 	 */
 	public Attribute getDomain() {
-		return (domain == null) ? null : new Attribute(domain);
+		return new Attribute(domain);
 	}
 
 	/**
 	 * @return the port attribute
 	 */
 	public Attribute getPort() {
-		return (port == null) ? null : new Attribute(port);
+		return new Attribute(port);
 	}
 
 	/**
 	 * @return the path attribute
 	 */
 	public Attribute getPath() {
-		return (path == null) ? null : new Attribute(path);
+		return new Attribute(path);
 	}
 
 	/**
 	 * @return the registerProcedure attribute.
 	 */
 	public Attribute getRegisterProcedure() {
-		return (registerProcedure == null) ? null : new Attribute(
-				registerProcedure);
+		return new Attribute(registerProcedure);
 	}
 
 	/**
 	 * @return the protocol attribute.
 	 */
 	public Attribute getProtocol() {
-		return (protocol == null) ? null : new Attribute(protocol);
+		return new Attribute(protocol);
 	}
 
 	/**
@@ -179,11 +198,9 @@ public class Cloud implements Serializable {
 	 * @return the Attribute object if attrName matches or null if not found.
 	 */
 	public Attribute getAttribute(String attrName) {
-		if (this.attributes != null) {
-			for (Attribute attribute : this.attributes) {
-				if (attribute.getName().equals(attrName)) {
-					return new Attribute(attribute);
-				}
+		for (Attribute attribute : this.attributes) {
+			if (attribute.getName().equals(attrName)) {
+				return new Attribute(attribute);
 			}
 		}
 		return null;

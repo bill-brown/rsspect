@@ -21,25 +21,42 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>The &lt;enclosure> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Describes a media object that is attached to the item. <a href=
+ * <p>
+ * The &lt;enclosure> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Describes a media object that is attached to the item. <a href=
  * "http://cyber.law.harvard.edu/rss/rss.html#ltenclosuregtSubelementOfLtitemgt"
- * >More</a>.</p>
+ * >More</a>.
+ * </p>
  * 
- * <p>&lt;enclosure> is an optional sub-element of &lt;item>.</p>
+ * <p>
+ * &lt;enclosure> is an optional sub-element of &lt;item>.
+ * </p>
  * 
- * <p>It has three required attributes. url says where the enclosure is located,
+ * <p>
+ * It has three required attributes. url says where the enclosure is located,
  * length says how big it is in bytes, and type says what its type is, a
- * standard MIME type.</p>
+ * standard MIME type.
+ * </p>
  * 
- * <p>The url must be an http url.</p>
+ * <p>
+ * The url must be an http url.
+ * </p>
  * 
- * <p>&lt;enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3"
- * length="12216320" type="audio/mpeg" /></p>
+ * <p>
+ * &lt;enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3"
+ * length="12216320" type="audio/mpeg" />
+ * </p>
  * 
- * <p>A use-case narrative for this element is <a
- * href="http://www.thetwowayweb.com/payloadsforrss">here</a>.</p>
+ * <p>
+ * A use-case narrative for this element is <a
+ * href="http://www.thetwowayweb.com/payloadsforrss">here</a>.
+ * </p>
  * 
  * @author Bill Brown
  * 

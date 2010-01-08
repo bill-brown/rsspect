@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;day> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>This class represents the day sub element of the &lt;skipDays> element.</p>
+ * <p>
+ * The &lt;day> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * This class represents the day sub element of the &lt;skipDays> element.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -33,6 +40,9 @@ public class Day implements Serializable {
 	private final String day;
 
 	Day(String day) throws RSSpectException {
+		if (day == null || day.equals("")) {
+			throw new RSSpectException("day SHOULD NOT be blank.");
+		}
 		this.day = day;
 		if (!this.day.equals("Monday") && !this.day.equals("Tuesday")
 				&& !this.day.equals("Wednesday")
@@ -45,7 +55,7 @@ public class Day implements Serializable {
 	}
 
 	Day(Day day) {
-		this.day = day.getDay();
+		this.day = day.day;
 	}
 
 	/**

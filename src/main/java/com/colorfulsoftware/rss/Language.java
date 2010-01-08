@@ -19,15 +19,22 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;language> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>The language the channel is written in. This allows aggregators to group all
+ * <p>
+ * The &lt;language> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * The language the channel is written in. This allows aggregators to group all
  * Italian language sites, for example, on a single page. A list of allowable
  * values for this element, as provided by Netscape, is <a
  * href="http://cyber.law.harvard.edu/rss/languages.html">here</a>. You may also
  * use <a
  * href="http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes">values
- * defined</a> by the W3C.</p>
+ * defined</a> by the W3C.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -38,8 +45,15 @@ public class Language implements Serializable {
 
 	private final String language;
 
-	Language(String language) {
+	Language(String language) throws RSSpectException {
+		if (language == null || language.equals("")) {
+			throw new RSSpectException("language SHOULD NOT be blank.");
+		}
 		this.language = language;
+	}
+
+	Language(Language language) {
+		this.language = language.language;
 	}
 
 	/**

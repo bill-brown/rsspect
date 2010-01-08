@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;managingEditor> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Email address for person responsible for editorial content.</p>
+ * <p>
+ * The &lt;managingEditor> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Email address for person responsible for editorial content.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -32,8 +39,15 @@ public class ManagingEditor implements Serializable {
 
 	private final String managingEditor;
 
-	ManagingEditor(String managingEditor) {
+	ManagingEditor(String managingEditor) throws RSSpectException {
+		if (managingEditor == null || managingEditor.equals("")) {
+			throw new RSSpectException("managingEditor SHOULD NOT be blank.");
+		}
 		this.managingEditor = managingEditor;
+	}
+
+	ManagingEditor(ManagingEditor managingEditor) {
+		this.managingEditor = managingEditor.managingEditor;
 	}
 
 	/**

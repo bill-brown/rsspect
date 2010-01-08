@@ -19,9 +19,16 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;generator> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>A string indicating the program used to generate the channel.</p>
+ * <p>
+ * The &lt;generator> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * A string indicating the program used to generate the channel.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -32,8 +39,15 @@ public class Generator implements Serializable {
 
 	private final String generator;
 
-	Generator(String generator) {
+	Generator(String generator) throws RSSpectException {
+		if (generator == null || generator.equals("")) {
+			throw new RSSpectException("generator SHOULD NOT be blank.");
+		}
 		this.generator = generator;
+	}
+
+	Generator(Generator generator) {
+		this.generator = generator.generator;
 	}
 
 	/**

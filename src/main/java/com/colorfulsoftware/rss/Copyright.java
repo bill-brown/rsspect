@@ -19,24 +19,35 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;copyright> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Copyright notice for content in the channel.</p>
+ * <p>
+ * The &lt;copyright> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Copyright notice for content in the channel.
+ * </p>
  * 
  * @author Bill Brown
  * 
  */
 public class Copyright implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 26097518613338635L;
 
 	private final String copyright;
 
-	Copyright(String copyright) {
+	Copyright(String copyright) throws RSSpectException {
+		if (copyright == null || copyright.equals("")) {
+			throw new RSSpectException("copyright SHOULD NOT be blank.");
+		}
 		this.copyright = copyright;
+	}
+
+	Copyright(Copyright copyright) {
+		this.copyright = copyright.copyright;
 	}
 
 	/**

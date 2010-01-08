@@ -19,10 +19,17 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;webMaster> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>Email address for person responsible for technical issues relating to
- * channel.</p>
+ * <p>
+ * The &lt;webMaster> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * Email address for person responsible for technical issues relating to
+ * channel.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -36,8 +43,15 @@ public class WebMaster implements Serializable {
 
 	private final String webMaster;
 
-	WebMaster(String webMaster) {
+	WebMaster(String webMaster) throws RSSpectException {
+		if (webMaster == null || webMaster.equals("")) {
+			throw new RSSpectException("webMaster SHOULD NOT be blank.");
+		}
 		this.webMaster = webMaster;
+	}
+
+	WebMaster(WebMaster webMaster) {
+		this.webMaster = webMaster.webMaster;
 	}
 
 	/**

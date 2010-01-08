@@ -19,14 +19,23 @@ package com.colorfulsoftware.rss;
 import java.io.Serializable;
 
 /**
- * <p>The &lt;title> element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>For Channel: The name of the channel. It's how people refer to your service.
+ * <p>
+ * The &lt;title> element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * For Channel: The name of the channel. It's how people refer to your service.
  * If you have an HTML website that contains the same information as your RSS
  * file, the title of your channel should be the same as the title of your
- * website.</p>
+ * website.
+ * </p>
  * 
- * <p>For Item: The title of the item.</p>
+ * <p>
+ * For Item: The title of the item.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -37,8 +46,15 @@ public class Title implements Serializable {
 
 	private final String title;
 
-	Title(String title) {
+	Title(String title) throws RSSpectException {
+		if (title == null || title.equals("")) {
+			throw new RSSpectException("title SHOULD NOT be blank.");
+		}
 		this.title = title;
+	}
+
+	Title(Title title) {
+		this.title = title.title;
 	}
 
 	/**

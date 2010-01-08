@@ -21,9 +21,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>The external namespace extension element.</p>
- * <p>From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>...</p>
- * <p>This class can be used to add extended namespace elements.</p>
+ * <p>
+ * The external namespace extension element.
+ * </p>
+ * <p>
+ * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
+ * specification</a>...
+ * </p>
+ * <p>
+ * This class can be used to add extended namespace elements.
+ * </p>
  * 
  * @author Bill Brown
  * 
@@ -55,6 +62,7 @@ public class Extension implements Serializable {
 		}
 
 		if (elementName == null
+				|| elementName.equals("")
 				|| (elementName.indexOf(":") == -1 && getAttribute("xmlns") == null)
 				|| elementName.indexOf(":") == 0) {
 
@@ -66,9 +74,9 @@ public class Extension implements Serializable {
 	}
 
 	Extension(Extension extension) {
-		this.elementName = extension.getElementName();
+		this.elementName = extension.elementName;
 		this.attributes = extension.getAttributes();
-		this.content = extension.getContent();
+		this.content = extension.content;
 	}
 
 	/**
