@@ -330,9 +330,13 @@ class RSSReader implements Serializable {
 					justReadStart = false;
 				}
 				// escape the markup.
-				xhtml.append(reader.getText().replaceAll("&", "&amp;")
-						.replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
-
+				String text = reader.getText();
+				// if the feed we are reading has invalid escaping the text
+				// will be null which results in a skipping of the malformed character.
+				if (text != null) {
+					xhtml.append(text.replaceAll("&", "&amp;").replaceAll(
+							"<", "&lt;").replaceAll(">", "&gt;"));
+				}
 			}
 			if (breakOut) {
 				break;
