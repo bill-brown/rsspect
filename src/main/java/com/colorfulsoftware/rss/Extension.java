@@ -44,6 +44,7 @@ public class Extension implements Serializable {
 	private final String elementName;
 	private final List<Attribute> attributes;
 	private final String content;
+	private final String namespacePrefix;
 
 	Extension(String elementName, List<Attribute> attributes, String content)
 			throws RSSpectException {
@@ -71,12 +72,26 @@ public class Extension implements Serializable {
 							+ elementName
 							+ "' is missing a namespace prefix or namespace declaration.");
 		}
+
+		// the namespace prefix is used here for validation only.
+		if (elementName.indexOf(":") != -1) {
+			String potentialPrefix = elementName.substring(0, elementName
+					.indexOf(":"));
+			if (getAttribute("xmlns:" + potentialPrefix) == null) {
+				this.namespacePrefix = potentialPrefix;
+			} else {
+				this.namespacePrefix = null;
+			}
+		} else {
+			this.namespacePrefix = null;
+		}
 	}
 
 	Extension(Extension extension) {
 		this.elementName = extension.elementName;
 		this.attributes = extension.getAttributes();
 		this.content = extension.content;
+		this.namespacePrefix = extension.namespacePrefix;
 	}
 
 	/**
@@ -143,5 +158,9 @@ public class Extension implements Serializable {
 		}
 
 		return sb.toString();
+	}
+
+	String getNamespacePrefix() {
+		return namespacePrefix;
 	}
 }

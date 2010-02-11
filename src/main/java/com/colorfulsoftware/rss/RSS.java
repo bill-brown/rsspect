@@ -76,6 +76,7 @@ public class RSS implements Serializable {
 	private final Channel channel;
 	private final List<Attribute> attributes;
 	private final List<Extension> extensions;
+	private List<String> unboundPrefixes;
 
 	RSS(Channel channel, List<Attribute> attributes, List<Extension> extensions)
 			throws RSSpectException {
@@ -97,13 +98,39 @@ public class RSS implements Serializable {
 			}
 		}
 
+		// check that all extension prefixes are bound to a namespace
+		this.unboundPrefixes = new LinkedList<String>();
+
+		if (this.channel.getUnboundPrefixes() != null) {
+			this.unboundPrefixes.addAll(this.channel.getUnboundPrefixes());
+		}
+
 		if (extensions == null) {
 			this.extensions = null;
 		} else {
 			this.extensions = new LinkedList<Extension>();
 			for (Extension extension : extensions) {
+				// check that the extension prefix is bound to a namespace
+				String namespacePrefix = extension.getNamespacePrefix();
+				if (namespacePrefix != null) {
+					if (getAttribute("xmlns:" + namespacePrefix) == null) {
+						this.unboundPrefixes.add(namespacePrefix);
+					}
+				}
 				this.extensions.add(new Extension(extension));
 			}
+		}
+
+		// if there are any unbound prefixes, throw an exception
+		if (this.unboundPrefixes.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (String namePrefix : this.unboundPrefixes) {
+				sb.append(namePrefix + " ");
+			}
+			throw new RSSpectException(
+					"the following extension prefix(es) ( "
+							+ sb
+							+ ") are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl.");
 		}
 	}
 

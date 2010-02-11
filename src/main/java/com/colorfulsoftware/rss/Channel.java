@@ -92,6 +92,8 @@ public class Channel implements Serializable {
 
 	private final List<Extension> extensions;
 
+	private List<String> unboundPrefixes;
+
 	Channel(Title title, Link link, Description description, Language language,
 			Copyright copyright, ManagingEditor managingEditor,
 			WebMaster webMaster, PubDate pubDate, LastBuildDate lastBuildDate,
@@ -150,11 +152,18 @@ public class Channel implements Serializable {
 		this.skipHours = (skipHours == null) ? null : new SkipHours(skipHours);
 		this.skipDays = (skipDays == null) ? null : new SkipDays(skipDays);
 
+		// check that the extension prefixes are bound to a namespace
+		this.unboundPrefixes = new LinkedList<String>();
+
 		if (items == null) {
 			this.items = null;
 		} else {
 			this.items = new LinkedList<Item>();
 			for (Item item : items) {
+				// add any unbound prefixes to test.
+				if (item.getUnboundPrefixes() != null) {
+					this.unboundPrefixes.addAll(item.getUnboundPrefixes());
+				}
 				this.items.add(new Item(item));
 			}
 		}
@@ -163,10 +172,19 @@ public class Channel implements Serializable {
 			this.extensions = null;
 		} else {
 			this.extensions = new LinkedList<Extension>();
+
 			for (Extension extension : extensions) {
+				// check that the extension prefix is bound to a namespace
+				String namespacePrefix = extension.getNamespacePrefix();
+				if (namespacePrefix != null) {
+					this.unboundPrefixes.add(namespacePrefix);
+				}
 				this.extensions.add(new Extension(extension));
 			}
 		}
+
+		this.unboundPrefixes = (this.unboundPrefixes.size() == 0) ? null
+				: this.unboundPrefixes;
 	}
 
 	Channel(Channel channel) {
@@ -515,5 +533,9 @@ public class Channel implements Serializable {
 
 		sb.append("</channel>");
 		return sb.toString();
+	}
+
+	List<String> getUnboundPrefixes() {
+		return unboundPrefixes;
 	}
 }

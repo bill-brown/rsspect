@@ -73,6 +73,8 @@ public class Item implements Serializable {
 
 	private final List<Extension> extensions;
 
+	private List<String> unboundPrefixes;
+
 	Item(Title title, Link link, Description description, Author author,
 			List<Category> categories, Comments comments, Enclosure enclosure,
 			GUID guid, PubDate pubDate, Source source,
@@ -114,14 +116,26 @@ public class Item implements Serializable {
 
 		this.source = (source == null) ? null : new Source(source);
 
+		// check that the extension prefixes are bound to a namespace
+		this.unboundPrefixes = new LinkedList<String>();
+		
 		if (extensions == null) {
 			this.extensions = null;
 		} else {
 			this.extensions = new LinkedList<Extension>();
+
 			for (Extension extension : extensions) {
+				// check that the extension prefix is bound to a namespace
+				String namespacePrefix = extension.getNamespacePrefix();
+				if (namespacePrefix != null) {
+					this.unboundPrefixes.add(namespacePrefix);
+				}
 				this.extensions.add(new Extension(extension));
 			}
 		}
+
+		this.unboundPrefixes = (this.unboundPrefixes.size() == 0) ? null
+				: this.unboundPrefixes;
 	}
 
 	Item(Item item) {
@@ -323,5 +337,9 @@ public class Item implements Serializable {
 
 		sb.append("</item>");
 		return sb.toString();
+	}
+
+	List<String> getUnboundPrefixes() {
+		return unboundPrefixes;
 	}
 }
