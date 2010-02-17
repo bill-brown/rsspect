@@ -1498,6 +1498,78 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception r) {
 			fail("should not get here.");
 		}
+
+		try {
+			rss1 = rssDoc.readRSSToBean(expectedRSS2);
+			Channel channel = rss1.getChannel();
+			List<Extension> extns = channel.getExtensions();
+			if (extns == null) {
+				extns = new LinkedList<Extension>();
+			}
+			// test a bound extension prefix.
+			List<Attribute> attrs = new LinkedList<Attribute>();
+			attrs.add(rssDoc.buildAttribute("xmlns:test", "http://12345.com"));
+			extns.add(rssDoc.buildExtension("test:ext", attrs,
+					"I am a bound extension element"));
+			channel = rssDoc.buildChannel(channel.getTitle(),
+					channel.getLink(), channel.getDescription(), channel
+							.getLanguage(), channel.getCopyright(), channel
+							.getManagingEditor(), channel.getWebMaster(),
+					channel.getPubDate(), channel.getLastBuildDate(), channel
+							.getCategories(), channel.getGenerator(), channel
+							.getDocs(), channel.getCloud(), channel.getTtl(),
+					channel.getImage(), channel.getRating(), channel
+							.getTextInput(), channel.getSkipHours(), channel
+							.getSkipDays(), extns, channel.getItems());
+			assertNotNull(rssDoc.buildRSS(channel, rss1.getAttributes(), rss1
+					.getExtensions()));
+
+			// test an unbound extension prefix at the channel level.
+			extns = new LinkedList<Extension>();
+			extns.add(rssDoc.buildExtension("test:ext", null,
+					"I am an unbound extension element"));
+			channel = rssDoc.buildChannel(channel.getTitle(),
+					channel.getLink(), channel.getDescription(), channel
+							.getLanguage(), channel.getCopyright(), channel
+							.getManagingEditor(), channel.getWebMaster(),
+					channel.getPubDate(), channel.getLastBuildDate(), channel
+							.getCategories(), channel.getGenerator(), channel
+							.getDocs(), channel.getCloud(), channel.getTtl(),
+					channel.getImage(), channel.getRating(), channel
+							.getTextInput(), channel.getSkipHours(), channel
+							.getSkipDays(), extns, channel.getItems());
+			rssDoc
+					.buildRSS(channel, rss1.getAttributes(), rss1
+							.getExtensions());
+			fail("should not get here");
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertTrue(e
+					.getMessage()
+					.equals(
+							"the following extension prefix(es) ( test ) are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl."));
+		}
+
+		try {
+			// test an unbound extension prefix at the rss level.
+			rss1 = rssDoc.readRSSToBean(expectedRSS2);
+			List<Extension> extns = rss1.getExtensions();
+			if (extns == null) {
+				extns = new LinkedList<Extension>();
+			}
+
+			extns.add(rssDoc.buildExtension("test:ext", null,
+					"I am an unbound extension element"));
+			rssDoc.buildRSS(rss1.getChannel(), rss1.getAttributes(), extns);
+			fail("should not get here");
+
+		} catch (Exception e) {
+			assertTrue(e instanceof RSSpectException);
+			assertTrue(e
+					.getMessage()
+					.equals(
+							"the following extension prefix(es) ( test ) are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl."));
+		}
 	}
 
 	/**

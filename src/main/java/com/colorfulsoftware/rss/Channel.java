@@ -209,6 +209,7 @@ public class Channel implements Serializable {
 		this.skipDays = channel.getSkipDays();
 		this.items = channel.getItems();
 		this.extensions = channel.getExtensions();
+		this.unboundPrefixes = channel.getUnboundPrefixes();
 	}
 
 	/**

@@ -118,7 +118,7 @@ public class Item implements Serializable {
 
 		// check that the extension prefixes are bound to a namespace
 		this.unboundPrefixes = new LinkedList<String>();
-		
+
 		if (extensions == null) {
 			this.extensions = null;
 		} else {

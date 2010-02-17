@@ -102,7 +102,11 @@ public class RSS implements Serializable {
 		this.unboundPrefixes = new LinkedList<String>();
 
 		if (this.channel.getUnboundPrefixes() != null) {
-			this.unboundPrefixes.addAll(this.channel.getUnboundPrefixes());
+			for (String unboundPrefix : this.channel.getUnboundPrefixes()) {
+				if (getAttribute("xmlns:" + unboundPrefix) == null) {
+					this.unboundPrefixes.add(unboundPrefix);
+				}
+			}
 		}
 
 		if (extensions == null) {
@@ -176,12 +180,10 @@ public class RSS implements Serializable {
 	 * @return the Attribute object if attrName matches or null if not found.
 	 */
 	public Attribute getAttribute(String attrName) {
-		if (this.attributes != null) {
-			for (Attribute attribute : this.attributes) {
-				if (attribute.getName().equals(attrName)) {
-					return new Attribute(attribute);
+		for (Attribute attribute : this.attributes) {
+			if (attribute.getName().equals(attrName)) {
+				return new Attribute(attribute);
 
-				}
 			}
 		}
 		return null;
