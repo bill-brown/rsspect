@@ -38,8 +38,8 @@ class RSSReader implements Serializable {
 
 	private RSSDoc rss;
 
-	public RSSReader() throws Exception {
-		rss = new RSSDoc();
+	public RSSReader(RSSDoc rss) throws Exception {
+		this.rss = rss;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class RSSReader implements Serializable {
 	RSS readRSS(XMLStreamReader reader) throws Exception {
 
 		Channel channel = null;
-		List<Attribute> attributes = null;
+		List<Attribute> attributes = getAttributes(reader);
 		List<Extension> extensions = null;
 		String elementName = null;
 
@@ -62,18 +62,11 @@ class RSSReader implements Serializable {
 			int next = reader.next();
 			switch (next) {
 
-			// so far: neither the stax-api or geronimo stax implementations
-			// can see this :(
-			// case XMLStreamConstants.START_DOCUMENT:
-			// rss = new RSSDoc(reader.getEncoding(), reader.getVersion());
-			// break;
-
 			case XMLStreamConstants.START_ELEMENT:
 				elementName = getElementName(reader);
 				// call each feed elements read method depending on the name
-				if (elementName.equals("rss")) {
-					attributes = getAttributes(reader);
-				} else if (elementName.equals("channel")) {
+
+				if (elementName.equals("channel")) {
 					if (attributes == null) {
 						throw new RSSpectException(
 								"rss documents must contain the version attribute.");
@@ -103,6 +96,37 @@ class RSSReader implements Serializable {
 	List<Attribute> getAttributes(XMLStreamReader reader) throws Exception {
 
 		List<Attribute> attributes = new LinkedList<Attribute>();
+
+		// this is here to accommodate initially calling sub elements from the
+		// FeedReader
+		if (reader.getEventType() == XMLStreamConstants.START_DOCUMENT) {
+			rss.setEncoding(reader.getEncoding());
+			rss.setXmlVersion(reader.getVersion());
+			reader.next();
+		}
+
+		// make sure all the attribute values are properly xml encoded/escaped
+		// with value.replaceAll("&amp;","&").replaceAll("&", "&amp;")
+
+		// add the processing instructions for now.
+		List<RSSDoc.ProcessingInstruction> processingInstructions = null;
+		while (reader.getEventType() != XMLStreamConstants.START_ELEMENT
+				&& reader.getEventType() != XMLStreamConstants.END_ELEMENT
+				&& reader.getEventType() != XMLStreamConstants.NAMESPACE) {
+			if (reader.getEventType() == XMLStreamConstants.PROCESSING_INSTRUCTION) {
+				if (processingInstructions == null) {
+					processingInstructions = new LinkedList<RSSDoc.ProcessingInstruction>();
+				}
+				processingInstructions
+						.add(new RSSDoc().new ProcessingInstruction(reader
+								.getPITarget(), reader.getPIData()));
+			}
+			reader.next();
+		}
+
+		if (processingInstructions != null) {
+			rss.setProcessingInstructions(processingInstructions);
+		}
 
 		int eventSkip = 0;
 		for (int i = 0; i < reader.getNamespaceCount(); i++) {

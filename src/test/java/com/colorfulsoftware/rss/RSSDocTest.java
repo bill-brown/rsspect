@@ -188,6 +188,8 @@ public class RSSDocTest implements Serializable {
 	// bad lastBuildDate
 	private String expectedRSS10 = "<rss version=\"2.0\"><channel><lastBuildDate>abcdefghijabcdefghij</lastBuildDate><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
 
+	private String badRSS = "<rss><channel><title>simplest feed</title><link>http://www.outthere.net</link><description>something cool</description></channel></rss>";
+
 	private static Calendar theDate;
 	static {
 		theDate = Calendar.getInstance();
@@ -204,7 +206,8 @@ public class RSSDocTest implements Serializable {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		rssDoc = new RSSDoc("UTF-8", "1.0");
+		rssDoc = new RSSDoc();
+		rssDoc.setEncoding("ISO-8859-1");
 
 		// add the indenting stream writer jar to the classpath
 		// http://forums.sun.com/thread.jspa?threadID=300557&start=0&tstart=0
@@ -238,6 +241,50 @@ public class RSSDocTest implements Serializable {
 	public void tearDown() throws Exception {
 		new File("target/out1.xml").delete();
 		// new File("out2.xml").delete();
+	}
+
+	/**
+	 * test the feed doc constructors.
+	 */
+	@Test
+	public void testFeedDocTest() {
+		try {
+			RSSDoc rss2 = null;
+			List<RSSDoc.ProcessingInstruction> insts = new LinkedList<RSSDoc.ProcessingInstruction>();
+			insts
+					.add(new RSSDoc().new ProcessingInstruction(
+							"xml-stylesheet",
+							"href=\"http://www.blogger.com/styles/atom.css\" type=\"text/css\""));
+			rss2 = new RSSDoc(insts);
+			rss2.setEncoding("ISO-8859-1");
+			System.out
+					.println("pi before: " + rss2.getProcessingInstructions());
+			assertNotNull(rss2);
+			String output = rss2
+					.readRSSToString(
+							rss2
+									.readRSSToBean(new java.net.URL(
+											"http://omsa-uchicago.blogspot.com/feeds/posts/default?alt=rss")),
+							null);
+			System.out.println("output first: " + output);
+			assertTrue(output
+					.indexOf("<?xml-stylesheet href=\"http://www.blogger.com/styles/atom.css\" type=\"text/css\"?>") != -1);
+			// needed for running on windows
+			rss2.setEncoding("ISO-8859-1");
+			assertNotNull(rss2.readRSSToBean(output));
+			try {
+				rss2.readRSSToBean(badRSS);
+				fail("should not get here.");
+			} catch (Exception e) {
+				assertTrue(e instanceof RSSpectException);
+				assertEquals(e.getMessage(),
+						"rss documents must contain the version attribute.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("should not get here.");
+		}
 	}
 
 	/**
@@ -524,9 +571,11 @@ public class RSSDocTest implements Serializable {
 					"http://www.earthbeats.net/drops.xml"));
 			fail("should not get here.");
 		} catch (Exception e) {
+			e.printStackTrace();
 			assertTrue(e instanceof RSSpectException);
-			assertEquals(e.getMessage(),
-					"rss documents must contain the version attribute.");
+			assertEquals(
+					e.getMessage(),
+					"Extension element 'id' is missing a namespace prefix or namespace declaration.");
 		}
 
 		try {

@@ -85,6 +85,8 @@ public final class RSSDoc implements Serializable {
 
 	private XMLInputFactory inputFactory;
 
+	private List<ProcessingInstruction> processingInstructions;
+
 	/**
 	 * @throws Exception
 	 *             if the rsspect.properties file cant be read.
@@ -105,17 +107,41 @@ public final class RSSDoc implements Serializable {
 	}
 
 	/**
-	 * @param encoding
-	 *            the xml encoding eg. UTF-8
-	 * @param xmlVersion
-	 *            the xml document version eg. 1.0
+	 * @param processingInstructions
+	 *            xml processing instructions.
 	 * @throws Exception
-	 *             if the rsspect properties file can't be read.
+	 *             if the library version information cannot be loaded from the
+	 *             environment.
 	 */
-	public RSSDoc(String encoding, String xmlVersion) throws Exception {
+	public RSSDoc(List<ProcessingInstruction> processingInstructions)
+			throws Exception {
 		this();
-		this.encoding = encoding;
-		this.xmlVersion = xmlVersion;
+		this.processingInstructions = processingInstructions;
+	}
+
+	class ProcessingInstruction implements Serializable {
+		private final String target;
+		private final String data;
+		private static final long serialVersionUID = -4261298860522801834L;
+
+		ProcessingInstruction(String target, String data) {
+			this.target = target;
+			this.data = data;
+		}
+
+		/**
+		 * @return the target of the processing instruction
+		 */
+		public String getTarget() {
+			return target;
+		}
+
+		/**
+		 * @return the processing instruction data.
+		 */
+		public String getData() {
+			return data;
+		}
 	}
 
 	/**
@@ -221,15 +247,20 @@ public final class RSSDoc implements Serializable {
 		}
 		try {
 			StringWriter theString = new StringWriter();
+			if (xmlStreamWriter == null || xmlStreamWriter.equals("")) {
+				writeRSSOutput(rss, XMLOutputFactory.newInstance()
+						.createXMLStreamWriter(theString), encoding, xmlVersion);
+			} else {
+				Class<?> cls = Class.forName(xmlStreamWriter);
+				Constructor<?> ct = cls
+						.getConstructor(new Class[] { XMLStreamWriter.class });
+				Object arglist[] = new Object[] { XMLOutputFactory
+						.newInstance().createXMLStreamWriter(theString) };
+				XMLStreamWriter writer = (XMLStreamWriter) ct
+						.newInstance(arglist);
 
-			Class<?> cls = Class.forName(xmlStreamWriter);
-			Constructor<?> ct = cls
-					.getConstructor(new Class[] { XMLStreamWriter.class });
-			Object arglist[] = new Object[] { XMLOutputFactory.newInstance()
-					.createXMLStreamWriter(theString) };
-			XMLStreamWriter writer = (XMLStreamWriter) ct.newInstance(arglist);
-
-			writeRSSOutput(rss, writer, encoding, xmlVersion);
+				writeRSSOutput(rss, writer, encoding, xmlVersion);
+			}
 
 			return theString.toString();
 
@@ -258,7 +289,7 @@ public final class RSSDoc implements Serializable {
 			encoding = localEncoding;
 
 		}
-		return new RSSReader().readRSS(inputFactory
+		return new RSSReader(this).readRSS(inputFactory
 				.createXMLStreamReader(new ByteArrayInputStream(xmlString
 						.getBytes(encoding))));
 	}
@@ -273,7 +304,7 @@ public final class RSSDoc implements Serializable {
 	 *             if the file cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(File file) throws Exception {
-		return new RSSReader().readRSS(inputFactory
+		return new RSSReader(this).readRSS(inputFactory
 				.createXMLStreamReader(new FileInputStream(file)));
 	}
 
@@ -300,7 +331,7 @@ public final class RSSDoc implements Serializable {
 	 *             if the URL cannot be parsed into a RSS element.
 	 */
 	public RSS readRSSToBean(InputStream inputStream) throws Exception {
-		return new RSSReader().readRSS(inputFactory
+		return new RSSReader(this).readRSS(inputFactory
 				.createXMLStreamReader(inputStream));
 	}
 
@@ -863,6 +894,12 @@ public final class RSSDoc implements Serializable {
 
 		// write the xml header.
 		writer.writeStartDocument(encoding, version);
+		if (this.processingInstructions != null) {
+			for (ProcessingInstruction pi : this.processingInstructions) {
+				writer.writeProcessingInstruction(pi.getTarget(), pi.getData());
+			}
+		}
+
 		new RSSWriter().writeRSS(writer, rss);
 		writer.flush();
 		writer.close();
@@ -880,6 +917,24 @@ public final class RSSDoc implements Serializable {
 	 */
 	public String getXmlVersion() {
 		return xmlVersion;
+	}
+
+	void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	void setXmlVersion(String xmlVersion) {
+		this.xmlVersion = xmlVersion;
+	}
+
+	void setProcessingInstructions(
+			List<ProcessingInstruction> processingInstructions) {
+		this.processingInstructions = processingInstructions;
+	}
+
+	List<ProcessingInstruction> getProcessingInstructions() {
+		// TODO Auto-generated method stub
+		return processingInstructions;
 	}
 
 }
