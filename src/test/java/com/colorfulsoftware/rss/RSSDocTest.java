@@ -266,7 +266,6 @@ public class RSSDocTest implements Serializable {
 									.readRSSToBean(new java.net.URL(
 											"http://omsa-uchicago.blogspot.com/feeds/posts/default?alt=rss")),
 							null);
-			System.out.println("output first: " + output);
 			assertTrue(output
 					.indexOf("<?xml-stylesheet href=\"http://www.blogger.com/styles/atom.css\" type=\"text/css\"?>") != -1);
 			// needed for running on windows
