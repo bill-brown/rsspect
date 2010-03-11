@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.colorfulsoftware</groupId>
 	<artifactId>rsspect</artifactId>
 	<packaging>jar</packaging>
 	<name>RSSpect</name>
-	<version>1.0.0.0-SNAPSHOT</version>
+	<version>1.0.0.0</version>
 	<description>A RSS 2.0 feed library written in Java on top of the Stax API.</description>
 	<url>http://www.colorfulsoftware.com/projects/rsspect</url>
 	<licenses>
@@ -17,9 +16,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>http://www.colorfulsoftware.com/svn</url>
-		<connection>scm:svn:http://www.colorfulsoftware.com/scm/rsspect</connection>
-		<developerConnection>scm:svn:https://billbrown.homelinux.net/pubRepo/rsspect</developerConnection>
+		<url>http://www.colorfulsoftware.com/svn/tags/rsspect-1.0.0.0</url>
+		<connection>scm:svn:http://www.colorfulsoftware.com/scm/rsspect/tags/rsspect-1.0.0.0</connection>
+		<developerConnection>scm:svn:https://billbrown.homelinux.net/pubRepo/rsspect/tags/rsspect-1.0.0.0</developerConnection>
 	</scm>
 	<build>
 		<resources>
