@@ -107,7 +107,7 @@ public class Channel implements Serializable {
 			throw new RSSpectException(
 					"channel elements MUST contain a title element.");
 		}
-		this.title = new Title(title.getTitle());
+		this.title = new Title(title);
 
 		// make sure link is present
 		if (link == null) {
@@ -121,7 +121,7 @@ public class Channel implements Serializable {
 			throw new RSSpectException(
 					"channel elements MUST contain a description element.");
 		}
-		this.description = new Description(description.getDescription());
+		this.description = new Description(description);
 
 		this.language = (language == null) ? null : new Language(language);
 		this.copyright = (copyright == null) ? null : new Copyright(copyright);

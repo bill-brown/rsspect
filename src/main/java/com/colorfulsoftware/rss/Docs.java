@@ -19,9 +19,6 @@ import java.io.Serializable;
 
 /**
  * <p>
- * The &lt;author> element.
- * </p>
- * <p>
  * From the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0
  * specification</a>...
  * </p>

@@ -46,6 +46,10 @@ public class Description implements Serializable {
 		// not sure why, but descriptions can be blank.
 		this.description = (description == null) ? "" : description;
 	}
+	
+	Description(Description description){
+		this.description = description.description;
+	}
 
 	/**
 	 * @return the description (can be the empty string).
