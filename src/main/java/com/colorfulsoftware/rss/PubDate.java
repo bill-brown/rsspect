@@ -100,4 +100,19 @@ public class PubDate implements Serializable {
 	public String toString() {
 		return "<pubDate>" + pubDate + "</pubDate>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof PubDate)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

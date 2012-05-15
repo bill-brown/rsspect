@@ -111,4 +111,19 @@ public class SkipHours implements Serializable {
 		sb.append("</skipHours>");
 		return sb.toString();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof SkipHours)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

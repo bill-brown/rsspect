@@ -102,4 +102,20 @@ class RSSDateConstruct implements Serializable {
 	public String toString() {
 		return text;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof RSS)) {
+			return false;
+		}
+		return text.equals(((RSSDateConstruct) obj).text);
+	}
+
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
 }

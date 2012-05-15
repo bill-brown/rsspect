@@ -81,4 +81,19 @@ public class TTL implements Serializable {
 	public String toString() {
 		return "<ttl>" + ttl + "</ttl>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof TTL)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

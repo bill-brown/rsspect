@@ -117,5 +117,20 @@ public class Category implements Serializable {
 		return "<category" + ((domain == null) ? ">" : domain + " >")
 				+ category + "</category>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Category)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 
 }

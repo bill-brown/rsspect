@@ -106,5 +106,20 @@ public class Source implements Serializable {
 	public String toString() {
 		return "<source" + url + " >" + source + "</source>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Source)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 
 }

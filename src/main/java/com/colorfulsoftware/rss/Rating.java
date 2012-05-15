@@ -66,4 +66,19 @@ public class Rating implements Serializable {
 	public String toString() {
 		return "<rating>" + rating + "</rating>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Rating)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

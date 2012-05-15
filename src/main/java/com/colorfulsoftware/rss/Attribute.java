@@ -67,12 +67,17 @@ public class Attribute implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Attribute) {
-			Attribute local = (Attribute) obj;
-			return local.name.equals(this.name)
-					&& local.value.equals(this.value);
+		if (obj == this) {
+			return true;
 		}
-		return false;
+		if (!(obj instanceof Attribute)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
 	}
 
 	/**

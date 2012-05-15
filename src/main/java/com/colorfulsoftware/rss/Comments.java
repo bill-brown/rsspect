@@ -85,4 +85,19 @@ public class Comments implements Serializable {
 	public String toString() {
 		return "<comments>" + comments + "</comments>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Comments)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

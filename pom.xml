@@ -16,9 +16,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>http://www.colorfulsoftware.com/svn/repos/ColorfulSoftware/list/rsspect</url>
-		<connection>scm:svn:http://www.colorfulsoftware.com/scm/rsspect</connection>
-		<developerConnection>scm:svn:https://billbrown.homelinux.net/pubRepo/rsspect</developerConnection>
+		<connection>scm:git:https://code.google.com/p/rsspect</connection>
+		<developerConnection>scm:git:https://code.google.com/p/rsspect</developerConnection>
+		<url>http://www.colorfulsoftware.com/projects/rsspect</url>
 	</scm>
 	<build>
 		<resources>

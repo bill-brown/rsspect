@@ -71,4 +71,19 @@ public class LastBuildDate implements Serializable {
 	public String toString() {
 		return "<lastBuildDate>" + lastBuildDate + "</lastBuildDate>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof LastBuildDate)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

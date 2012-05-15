@@ -150,4 +150,19 @@ public class TextInput implements Serializable {
 		return "<textInput>" + title + description + name + link
 				+ "</textInput>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof TextInput)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
+	}
 }

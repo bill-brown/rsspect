@@ -92,8 +92,18 @@ public class RSS implements Serializable {
 		} else {
 			this.attributes = new LinkedList<Attribute>();
 
+			boolean containsVersion = false;
+
 			for (Attribute attr : attributes) {
 				this.attributes.add(new Attribute(attr));
+				if (attr.getName().equals("version")) {
+					containsVersion = true;
+				}
+			}
+
+			if (!containsVersion) {
+				throw new RSSpectException(
+						"RSS elements must contain a version attribute.");
 			}
 		}
 
@@ -227,5 +237,20 @@ public class RSS implements Serializable {
 
 		sb.append("</rss>");
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof RSS)) {
+			return false;
+		}
+		return this.toString().equals(obj.toString());
+	}
+	
+	@Override public int hashCode() {
+		return toString().hashCode();
 	}
 }
