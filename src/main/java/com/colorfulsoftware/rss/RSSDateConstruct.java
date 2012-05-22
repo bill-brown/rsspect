@@ -17,7 +17,9 @@ package com.colorfulsoftware.rss;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 class RSSDateConstruct implements Serializable {
 
@@ -30,7 +32,7 @@ class RSSDateConstruct implements Serializable {
 	/**
 	 * 
 	 * @param updated
-	 *            the date formatted to [RFC3339]
+	 *            the date formatted to [RFC822]
 	 * @throws RSSpectException
 	 *             If the dateTime format is invalid.
 	 */
@@ -42,47 +44,34 @@ class RSSDateConstruct implements Serializable {
 		}
 
 		Date local = null;
-		SimpleDateFormat sdf = new SimpleDateFormat(
-				"EEE, dd MMM yyyy HH:mm:ss Z");
-		SimpleDateFormat sdf2 = new SimpleDateFormat(
-				"dd MMM yyyy HH:mm:ss Z");
-		SimpleDateFormat sdf3 = new SimpleDateFormat(
-                                "EEE, dd MMM yyyy HH:mm Z");
-		SimpleDateFormat sdf4 = new SimpleDateFormat(
-                                "dd MMM yyyy HH:mm Z");
-		SimpleDateFormat[] rfc822 = new 
-SimpleDateFormat[]{sdf,sdf2,sdf3,sdf4};
+		List<SimpleDateFormat> formats = new ArrayList<SimpleDateFormat>();
+		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z"));
+		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z"));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z"));
+		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm Z"));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm:ss Z"));
+		formats.add(new SimpleDateFormat("dd MMM yy HH:mm:ss Z"));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm Z"));
+		formats.add(new SimpleDateFormat("dd MMM yy HH:mm Z"));
 
 		boolean valid = false;
-		for(SimpleDateFormat fmt: rfc822){
-		try {
-			local = fmt.parse(dateTime);
-			valid = true;
-			break;
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			//System.out.println("e.getMessage());
+		SimpleDateFormat sdf = null;
+		for (SimpleDateFormat fmt : formats) {
+			try {
+				local = fmt.parse(dateTime);
+				valid = true;
+				sdf = fmt;
+				break;
+			} catch (Exception e) {
+				System.out.println("error parsing date: "
+						+ e.getLocalizedMessage());
+			}
 		}
-		}
-
-		//*		
-		//if (!valid) {	
-		//	try {
-				// example: Mon Oct 19 10:52:18 CDT 2009
-				// or: Tue Oct 20 02:48:09 GMT+10:00 2009
-		//		sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
-		//		local = sdf.parse(dateTime);
-		//		valid = true;
-		//	} catch (Exception e4) {
-		//		valid = false;
-		//	}
-		//}
-		//*/
 
 		if (!valid) {
 			throw new RSSpectException(
-					"error trying to parse rfc822 date: '"
-							+ dateTime+"'");
+					"Error trying to parse a date in RFC 822 format for: '"
+							+ dateTime + "'");
 		}
 
 		this.text = sdf.format(this.dateTime = new Date(local.getTime()));
