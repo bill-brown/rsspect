@@ -43,30 +43,46 @@ class RSSDateConstruct implements Serializable {
 
 		Date local = null;
 		SimpleDateFormat sdf = new SimpleDateFormat(
-				"EEE, dd MMM yyyy HH:mm:ss z");
-		boolean valid = true;
+				"EEE, dd MMM yyyy HH:mm:ss Z");
+		SimpleDateFormat sdf2 = new SimpleDateFormat(
+				"dd MMM yyyy HH:mm:ss Z");
+		SimpleDateFormat sdf3 = new SimpleDateFormat(
+                                "EEE, dd MMM yyyy HH:mm Z");
+		SimpleDateFormat sdf4 = new SimpleDateFormat(
+                                "dd MMM yyyy HH:mm Z");
+		SimpleDateFormat[] rfc822 = new 
+SimpleDateFormat[]{sdf,sdf2,sdf3,sdf4};
+
+		boolean valid = false;
+		for(SimpleDateFormat fmt: rfc822){
 		try {
-			local = sdf.parse(dateTime);
+			local = fmt.parse(dateTime);
+			valid = true;
+			break;
 		} catch (Exception e1) {
-			valid = false;
+			e1.printStackTrace();
+			//System.out.println("e.getMessage());
+		}
 		}
 
-		if (!valid) {
-			try {
+		//*		
+		//if (!valid) {	
+		//	try {
 				// example: Mon Oct 19 10:52:18 CDT 2009
 				// or: Tue Oct 20 02:48:09 GMT+10:00 2009
-				sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
-				local = sdf.parse(dateTime);
-				valid = true;
-			} catch (Exception e4) {
-				valid = false;
-			}
-		}
+		//		sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+		//		local = sdf.parse(dateTime);
+		//		valid = true;
+		//	} catch (Exception e4) {
+		//		valid = false;
+		//	}
+		//}
+		//*/
 
 		if (!valid) {
 			throw new RSSpectException(
-					"error trying to create the date element with string: "
-							+ dateTime);
+					"error trying to parse rfc822 date: '"
+							+ dateTime+"'");
 		}
 
 		this.text = sdf.format(this.dateTime = new Date(local.getTime()));
