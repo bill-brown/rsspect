@@ -127,9 +127,8 @@ class RSSReader implements Serializable {
 			rss.setProcessingInstructions(processingInstructions);
 		}
 
-		int eventSkip = 0;
 		for (int i = 0; i < reader.getNamespaceCount(); i++) {
-			eventSkip++;
+			
 			String attrName = "xmlns";
 			if (reader.getNamespacePrefix(i) != null) {
 				attrName += ":" + reader.getNamespacePrefix(i);
@@ -139,7 +138,7 @@ class RSSReader implements Serializable {
 					i).replaceAll("&amp;", "&").replaceAll("&", "&amp;")));
 		}
 		for (int i = 0; i < reader.getAttributeCount(); i++) {
-			eventSkip++;
+			
 			String attrName = null;
 			if (reader.getAttributeName(i).getPrefix() != null
 					&& !reader.getAttributeName(i).getPrefix().equals("")) {

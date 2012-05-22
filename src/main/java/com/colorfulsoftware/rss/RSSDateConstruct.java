@@ -45,6 +45,8 @@ class RSSDateConstruct implements Serializable {
 
 		Date local = null;
 		List<SimpleDateFormat> formats = new ArrayList<SimpleDateFormat>();
+		// for the rfc 822 spec, day of week and seconds are optional.
+		// for the rss spec, year can be 2 or 4 digits with preference for 4
 		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z"));
 		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z"));
 		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z"));
@@ -53,6 +55,9 @@ class RSSDateConstruct implements Serializable {
 		formats.add(new SimpleDateFormat("dd MMM yy HH:mm:ss Z"));
 		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm Z"));
 		formats.add(new SimpleDateFormat("dd MMM yy HH:mm Z"));
+		// for convenience add the default format for
+		// Calendar.getInstance().getTime().toString()
+		formats.add(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy"));
 
 		boolean valid = false;
 		SimpleDateFormat sdf = null;

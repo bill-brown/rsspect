@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -219,11 +220,10 @@ public class RSSDocTest implements Serializable {
 			method.setAccessible(true);
 			method.invoke(sysloader, new Object[] { new java.net.URL(
 					"http://ftpna2.bea.com/pub/downloads/jsr173.jar") });
-			method
-					.invoke(
-							sysloader,
-							new Object[] { new java.net.URL(
-									"http://repo2.maven.org/maven2/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar") });
+			method.invoke(
+					sysloader,
+					new Object[] { new java.net.URL(
+							"http://repo2.maven.org/maven2/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar") });
 		} catch (Throwable t) {
 			t.printStackTrace();
 			throw new IOException(
@@ -250,10 +250,8 @@ public class RSSDocTest implements Serializable {
 		try {
 			RSSDoc rss2 = null;
 			List<RSSDoc.ProcessingInstruction> insts = new LinkedList<RSSDoc.ProcessingInstruction>();
-			insts
-					.add(new RSSDoc().new ProcessingInstruction(
-							"xml-stylesheet",
-							"href=\"http://www.blogger.com/styles/atom.css\" type=\"text/css\""));
+			insts.add(new RSSDoc().new ProcessingInstruction("xml-stylesheet",
+					"href=\"http://www.blogger.com/styles/atom.css\" type=\"text/css\""));
 			rss2 = new RSSDoc(insts);
 			rss2.setEncoding("ISO-8859-1");
 			System.out
@@ -261,9 +259,8 @@ public class RSSDocTest implements Serializable {
 			assertNotNull(rss2);
 			String output = rss2
 					.readRSSToString(
-							rss2
-									.readRSSToBean(new java.net.URL(
-											"http://omsa-uchicago.blogspot.com/feeds/posts/default?alt=rss")),
+							rss2.readRSSToBean(new java.net.URL(
+									"http://omsa-uchicago.blogspot.com/feeds/posts/default?alt=rss")),
 							null);
 			assertTrue(output
 					.indexOf("<?xml-stylesheet href=\"http://www.blogger.com/styles/atom.css\" type=\"text/css\"?>") != -1);
@@ -637,8 +634,8 @@ public class RSSDocTest implements Serializable {
 			assertNotNull(rss1.toString());
 			assertNotNull(rss1.getChannel());
 			assertNotNull(rss1.getChannel().toString());
-			rssDoc.writeRSSDoc(new File("target/out3.xml"), rss1, rssDoc
-					.getEncoding(), rssDoc.getXmlVersion());
+			rssDoc.writeRSSDoc(new File("target/out3.xml"), rss1,
+					rssDoc.getEncoding(), rssDoc.getXmlVersion());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("should be working. " + e.getLocalizedMessage());
@@ -660,7 +657,7 @@ public class RSSDocTest implements Serializable {
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertTrue(e.getMessage().startsWith(
-					"error trying to create the date element with string: "));
+					"Error trying to parse a date in RFC 822 format for: "));
 		}
 
 		try {
@@ -673,12 +670,12 @@ public class RSSDocTest implements Serializable {
 		}
 
 		try {
-			Channel channel = rssDoc.buildChannel(rssDoc
-					.buildTitle("this is a title"), rssDoc
-					.buildLink("http://www.minoritydirectory.net"), rssDoc
-					.buildDescription("this is a description"), null, null,
+			Channel channel = rssDoc.buildChannel(
+					rssDoc.buildTitle("this is a title"),
+					rssDoc.buildLink("http://www.minoritydirectory.net"),
+					rssDoc.buildDescription("this is a description"), null,
 					null, null, null, null, null, null, null, null, null, null,
-					null, null, null, null, null, null);
+					null, null, null, null, null, null, null);
 			RSS rss = rssDoc.buildRSS(channel, null, null);
 			assertNotNull(rss);
 			fail("we should have thrown an exception above.");
@@ -1109,9 +1106,7 @@ public class RSSDocTest implements Serializable {
 	@Test
 	public void testBuildGUID() {
 		try {
-			rssDoc
-					.buildGUID(rssDoc.buildAttribute("isPermaLink", "true"),
-							null);
+			rssDoc.buildGUID(rssDoc.buildAttribute("isPermaLink", "true"), null);
 			fail("should not get here.");
 		} catch (RSSpectException r) {
 			assertEquals(r.getMessage(), "guid SHOULD NOT be blank.");
@@ -1137,8 +1132,8 @@ public class RSSDocTest implements Serializable {
 		}
 
 		try {
-			GUID guid = rssDoc.buildGUID(rssDoc.buildAttribute("isPermaLink",
-					"true"),
+			GUID guid = rssDoc.buildGUID(
+					rssDoc.buildAttribute("isPermaLink", "true"),
 					"http://www.colorfulsoftware.com/projects/rsspect/api");
 			assertNotNull(guid);
 			assertEquals(guid.getGuid(),
@@ -1243,12 +1238,12 @@ public class RSSDocTest implements Serializable {
 			}
 
 			try {
-				assertNotNull(rssDoc.buildChannel(rssDoc
-						.buildTitle("this is a title"), rssDoc
-						.buildLink("http://www.minoritydirectory.net"), rssDoc
-						.buildDescription("this is a description"), null, null,
+				assertNotNull(rssDoc.buildChannel(
+						rssDoc.buildTitle("this is a title"),
+						rssDoc.buildLink("http://www.minoritydirectory.net"),
+						rssDoc.buildDescription("this is a description"), null,
 						null, null, null, null, null, null, null, null, null,
-						null, null, null, null, null, null, null));
+						null, null, null, null, null, null, null, null));
 			} catch (RSSpectException r) {
 				fail("this shouldn't happen");
 			}
@@ -1479,9 +1474,7 @@ public class RSSDocTest implements Serializable {
 				assertEquals(r.getMessage(),
 						"enclosure elements MUST have a url attribute.");
 			}
-			attrs
-					.add(rssDoc.buildAttribute("url",
-							"http://www.earthbeats.net"));
+			attrs.add(rssDoc.buildAttribute("url", "http://www.earthbeats.net"));
 
 			try {
 				rssDoc.buildEnclosure(attrs);
@@ -1559,42 +1552,39 @@ public class RSSDocTest implements Serializable {
 			extns.add(rssDoc.buildExtension("test:ext", attrs,
 					"I am a bound extension element"));
 			channel = rssDoc.buildChannel(channel.getTitle(),
-					channel.getLink(), channel.getDescription(), channel
-							.getLanguage(), channel.getCopyright(), channel
-							.getManagingEditor(), channel.getWebMaster(),
-					channel.getPubDate(), channel.getLastBuildDate(), channel
-							.getCategories(), channel.getGenerator(), channel
-							.getDocs(), channel.getCloud(), channel.getTtl(),
-					channel.getImage(), channel.getRating(), channel
-							.getTextInput(), channel.getSkipHours(), channel
-							.getSkipDays(), extns, channel.getItems());
-			assertNotNull(rssDoc.buildRSS(channel, rss1.getAttributes(), rss1
-					.getExtensions()));
+					channel.getLink(), channel.getDescription(),
+					channel.getLanguage(), channel.getCopyright(),
+					channel.getManagingEditor(), channel.getWebMaster(),
+					channel.getPubDate(), channel.getLastBuildDate(),
+					channel.getCategories(), channel.getGenerator(),
+					channel.getDocs(), channel.getCloud(), channel.getTtl(),
+					channel.getImage(), channel.getRating(),
+					channel.getTextInput(), channel.getSkipHours(),
+					channel.getSkipDays(), extns, channel.getItems());
+			assertNotNull(rssDoc.buildRSS(channel, rss1.getAttributes(),
+					rss1.getExtensions()));
 
 			// test an unbound extension prefix at the channel level.
 			extns = new LinkedList<Extension>();
 			extns.add(rssDoc.buildExtension("test:ext", null,
 					"I am an unbound extension element"));
 			channel = rssDoc.buildChannel(channel.getTitle(),
-					channel.getLink(), channel.getDescription(), channel
-							.getLanguage(), channel.getCopyright(), channel
-							.getManagingEditor(), channel.getWebMaster(),
-					channel.getPubDate(), channel.getLastBuildDate(), channel
-							.getCategories(), channel.getGenerator(), channel
-							.getDocs(), channel.getCloud(), channel.getTtl(),
-					channel.getImage(), channel.getRating(), channel
-							.getTextInput(), channel.getSkipHours(), channel
-							.getSkipDays(), extns, channel.getItems());
-			rssDoc
-					.buildRSS(channel, rss1.getAttributes(), rss1
-							.getExtensions());
+					channel.getLink(), channel.getDescription(),
+					channel.getLanguage(), channel.getCopyright(),
+					channel.getManagingEditor(), channel.getWebMaster(),
+					channel.getPubDate(), channel.getLastBuildDate(),
+					channel.getCategories(), channel.getGenerator(),
+					channel.getDocs(), channel.getCloud(), channel.getTtl(),
+					channel.getImage(), channel.getRating(),
+					channel.getTextInput(), channel.getSkipHours(),
+					channel.getSkipDays(), extns, channel.getItems());
+			rssDoc.buildRSS(channel, rss1.getAttributes(), rss1.getExtensions());
 			fail("should not get here");
 		} catch (Exception e) {
 			assertTrue(e instanceof RSSpectException);
 			assertTrue(e
 					.getMessage()
-					.equals(
-							"the following extension prefix(es) ( test ) are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl."));
+					.equals("the following extension prefix(es) ( test ) are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl."));
 		}
 
 		try {
@@ -1614,8 +1604,7 @@ public class RSSDocTest implements Serializable {
 			assertTrue(e instanceof RSSpectException);
 			assertTrue(e
 					.getMessage()
-					.equals(
-							"the following extension prefix(es) ( test ) are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl."));
+					.equals("the following extension prefix(es) ( test ) are not bound to a namespace declaration. See http://www.w3.org/TR/1999/REC-xml-names-19990114/#ns-decl."));
 		}
 	}
 
@@ -1763,9 +1752,9 @@ public class RSSDocTest implements Serializable {
 			}
 
 			try {
-				Item item = rssDoc.buildItem(null, null, rssDoc
-						.buildDescription("something cool"), null, null, null,
-						null, null, null, null, null);
+				Item item = rssDoc.buildItem(null, null,
+						rssDoc.buildDescription("something cool"), null, null,
+						null, null, null, null, null, null);
 				assertNotNull(item.getDescription());
 				assertNull(item.getTitle());
 			} catch (RSSpectException r) {
@@ -1828,6 +1817,33 @@ public class RSSDocTest implements Serializable {
 			assertNotNull(lastBuildDate);
 			assertNotNull(lastBuildDate.getDateTime());
 			assertNotNull(lastBuildDate.getText());
+
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"EEE, dd MMM yyyy HH:mm:ss Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("dd MMM yyyy HH:mm Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("EEE, dd MMM yy HH:mm:ss Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("dd MMM yy HH:mm:ss Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("EEE, dd MMM yy HH:mm Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+			sdf = new SimpleDateFormat("dd MMM yy HH:mm Z");
+			assertNotNull(rssDoc.buildLastBuildDate(sdf.format(Calendar
+					.getInstance().getTime())));
+
 		} catch (RSSpectException r) {
 			r.printStackTrace();
 			fail("should not fail here.");
@@ -2094,8 +2110,8 @@ public class RSSDocTest implements Serializable {
 		}
 
 		try {
-			Source source = rssDoc.buildSource(rssDoc.buildAttribute("cat",
-					"dog"), "somewhere cool");
+			Source source = rssDoc.buildSource(
+					rssDoc.buildAttribute("cat", "dog"), "somewhere cool");
 			assertNotNull(source);
 			fail("we should have thrown an exception above.");
 		} catch (RSSpectException r) {
@@ -2104,8 +2120,9 @@ public class RSSDocTest implements Serializable {
 		}
 
 		try {
-			Source source = rssDoc.buildSource(rssDoc.buildAttribute("url",
-					"http://www.earthbeats.net"), "somewhere cool");
+			Source source = rssDoc.buildSource(
+					rssDoc.buildAttribute("url", "http://www.earthbeats.net"),
+					"somewhere cool");
 			assertNotNull(source);
 			assertNotNull(source.getUrl());
 			assertNotNull(source.getUrl().getName());
