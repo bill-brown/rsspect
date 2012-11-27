@@ -51,7 +51,7 @@ public class LastBuildDate implements Serializable {
 	 * 
 	 * @return the date timestamp for this element.
 	 */
-	protected Date getDateTime() {
+	public Date getDateTime() {
 		return lastBuildDate.getDateTime();
 	}
 

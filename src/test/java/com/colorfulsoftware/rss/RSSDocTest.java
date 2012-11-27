@@ -289,7 +289,7 @@ public class RSSDocTest implements Serializable {
 	public void testWriteRSSDocOutputStreamRSSStringString() {
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"));
 			rssDoc.writeRSSDoc(new FileOutputStream("target/out1.xml"), rss1,
 					rssDoc.getEncoding(), rssDoc.getXmlVersion());
 			RSS rss2 = rssDoc.readRSSToBean(new File("target/out1.xml"));
@@ -341,7 +341,7 @@ public class RSSDocTest implements Serializable {
 									new FileOutputStream("target/out2.xml"),
 									rssDoc.getEncoding()));
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"));
 			rssDoc.writeRSSDoc(writer, rss1, null, null);
 
 			rssDoc.writeRSSDoc(writer, null, null, null);
@@ -353,7 +353,7 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"));
 			XMLStreamWriter writer = XMLOutputFactory.newInstance()
 					.createXMLStreamWriter(
 							new FileOutputStream("target/out2.xml"),
@@ -366,7 +366,7 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"));
 			XMLStreamWriter writer = XMLOutputFactory.newInstance()
 					.createXMLStreamWriter(
 							new FileOutputStream("target/out2.xml"),
@@ -380,7 +380,7 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"));
 			rssDoc.writeRSSDoc(new File("target/out2.xml"), rss1, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -551,7 +551,7 @@ public class RSSDocTest implements Serializable {
 	public void testReadRSSToBeanURL() {
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage"));
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"));
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());
@@ -563,7 +563,7 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://www.earthbeats.net/drops.xml"));
+					"http://www.atomenabled.org/atom.xml"));
 			fail("should not get here.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -611,7 +611,7 @@ public class RSSDocTest implements Serializable {
 	public void testReadRSSToBeanInputStream() {
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://feeds.nytimes.com/nyt/rss/HomePage").openStream());
+					"http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml").openStream());
 			assertNotNull(rss1);
 			assertNotNull(rss1.getAttributes());
 			assertNotNull(rss1.getChannel());

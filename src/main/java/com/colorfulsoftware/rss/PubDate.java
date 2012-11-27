@@ -80,7 +80,7 @@ public class PubDate implements Serializable {
 	 * 
 	 * @return the date timestamp for this element.
 	 */
-	protected Date getDateTime() {
+	public Date getDateTime() {
 		return pubDate.getDateTime();
 	}
 
