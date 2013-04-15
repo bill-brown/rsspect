@@ -130,7 +130,8 @@ class RSSReader implements Serializable {
 		for (int i = 0; i < reader.getNamespaceCount(); i++) {
 			
 			String attrName = "xmlns";
-			if (reader.getNamespacePrefix(i) != null) {
+			String nmprx = reader.getNamespacePrefix(i); 
+			if ( nmprx != null && !nmprx.trim().equals("")) {
 				attrName += ":" + reader.getNamespacePrefix(i);
 			}
 
