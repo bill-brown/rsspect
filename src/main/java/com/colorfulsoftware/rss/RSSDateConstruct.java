@@ -68,8 +68,10 @@ class RSSDateConstruct implements Serializable {
 				sdf = fmt;
 				break;
 			} catch (Exception e) {
+				/*
 				System.out.println("error parsing date: "
 						+ e.getLocalizedMessage());
+				*/
 			}
 		}
 
