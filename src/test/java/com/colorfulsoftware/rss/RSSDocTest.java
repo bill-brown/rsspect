@@ -563,7 +563,7 @@ public class RSSDocTest implements Serializable {
 
 		try {
 			rss1 = rssDoc.readRSSToBean(new java.net.URL(
-					"http://www.atomenabled.org/atom.xml"));
+			"http://earthbeats.net/drops.xml"));
 			fail("should not get here.");
 		} catch (Exception e) {
 			e.printStackTrace();
