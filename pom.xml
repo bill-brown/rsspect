@@ -5,7 +5,7 @@
 	<artifactId>rsspect</artifactId>
 	<packaging>jar</packaging>
 	<name>RSSpect</name>
-	<version>1.0.5</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<description>A RSS 2.0 feed library written in Java on top of the Stax API.</description>
 	<url>http://www.colorfulsoftware.com/projects/rsspect</url>
 	<licenses>
@@ -20,7 +20,7 @@
 		<connection>scm:git:https://code.google.com/p/rsspect</connection>
 		<developerConnection>scm:git:https://code.google.com/p/rsspect</developerConnection>
 		<url>http://www.colorfulsoftware.com/rsspect</url>
-	  <tag>rsspect-1.0.5</tag>
+	  <tag>HEAD</tag>
   </scm>
 	
 	<properties>
