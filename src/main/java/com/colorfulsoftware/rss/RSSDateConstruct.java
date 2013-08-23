@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 class RSSDateConstruct implements Serializable {
 
@@ -47,17 +48,17 @@ class RSSDateConstruct implements Serializable {
 		List<SimpleDateFormat> formats = new ArrayList<SimpleDateFormat>();
 		// for the rfc 822 spec, day of week and seconds are optional.
 		// for the rss spec, year can be 2 or 4 digits with preference for 4
-		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z"));
-		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z"));
-		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z"));
-		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm Z"));
-		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm:ss Z"));
-		formats.add(new SimpleDateFormat("dd MMM yy HH:mm:ss Z"));
-		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm Z"));
-		formats.add(new SimpleDateFormat("dd MMM yy HH:mm Z"));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US));
+		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z", Locale.US));
+		formats.add(new SimpleDateFormat("dd MMM yyyy HH:mm Z", Locale.US));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm:ss Z", Locale.US));
+		formats.add(new SimpleDateFormat("dd MMM yy HH:mm:ss Z", Locale.US));
+		formats.add(new SimpleDateFormat("EEE, dd MMM yy HH:mm Z", Locale.US));
+		formats.add(new SimpleDateFormat("dd MMM yy HH:mm Z", Locale.US));
 		// for convenience add the default format for
 		// Calendar.getInstance().getTime().toString()
-		formats.add(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy"));
+		formats.add(new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.US));
 
 		boolean valid = false;
 		SimpleDateFormat sdf = null;
@@ -86,7 +87,7 @@ class RSSDateConstruct implements Serializable {
 
 	RSSDateConstruct(Date dateTime) {
 		this.dateTime = new Date(dateTime.getTime());
-		this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
+		this.text = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US)
 				.format(this.dateTime);
 	}
 
