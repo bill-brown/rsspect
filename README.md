@@ -1,5 +1,5 @@
-# emap
-Automatically exported from code.google.com/p/emap
+# RSSpect
+Automatically exported from code.google.com/p/rsspect
 
 Please see the project page http://www.colorfulsoftware.com/rsspect for 
 all 
